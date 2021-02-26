@@ -137,9 +137,10 @@ tank2.style.opacity = 1
                             
                             
                             
-                            if((missle.getBoundingClientRect().top) <= tank2Position.bottom
-                            && (missle.getBoundingClientRect().left - 18) <= tank2Position.right
-                            && (missle.getBoundingClientRect().left - 5) >= tank2Position.left
+                            if((missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
+                            && (missle.getBoundingClientRect().left - 18) <= tank2.getBoundingClientRect().right
+                            && (missle.getBoundingClientRect().left - 5) >= tank2.getBoundingClientRect().left
+                            && (missle.getBoundingClientRect().top) >= tank2.getBoundingClientRect().top
                             ){
                                 
                                 // missle.style.background = 'black'  for early testing
@@ -165,9 +166,10 @@ tank2.style.opacity = 1
                 
                         missle.style.transform = `translateY(${trajector}px)`
                     
-                        if((missle.getBoundingClientRect().top) >= tank2Position.top
-                        && (missle.getBoundingClientRect().left - 18) <= tank2Position.right
-                        && (missle.getBoundingClientRect().left - 5) >= tank2Position.left
+                        if((missle.getBoundingClientRect().top) >= tank2.getBoundingClientRect().top
+                        && (missle.getBoundingClientRect().left - 18) <= tank2.getBoundingClientRect().right
+                        && (missle.getBoundingClientRect().left - 5) >= tank2.getBoundingClientRect().left
+                        && (missle.getBoundingClientRect().top - 10) <= tank2.getBoundingClientRect().bottom
                         ){
                             
                             // missle.style.background = 'black'  for early testing
@@ -189,9 +191,10 @@ tank2.style.opacity = 1
                 
                         missle.style.transform = `translateX(-${trajector}px)`
                     
-                        if((missle.getBoundingClientRect().left) <= tank2Position.right
-                        && (missle.getBoundingClientRect().top + 10) >= tank2Position.top
-                        && (missle.getBoundingClientRect().top + 0) <= tank2Position.bottom
+                        if((missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
+                        && (missle.getBoundingClientRect().top + 10) >= tank2.getBoundingClientRect().top
+                        && (missle.getBoundingClientRect().top + 0) <= tank2.getBoundingClientRect().bottom
+                        && (missle.getBoundingClientRect().left - 5) >= tank2.getBoundingClientRect().left
                         ){
                             
                             // missle.style.background = 'black'  for early testing
@@ -213,9 +216,10 @@ tank2.style.opacity = 1
                 
                         missle.style.transform = `translateX(${trajector}px)`
                     
-                        if((missle.getBoundingClientRect().left - 10 ) >= tank2Position.left
-                        && (missle.getBoundingClientRect().top + 10) >= tank2Position.top
-                        && (missle.getBoundingClientRect().top + 0) <= tank2Position.bottom
+                        if((missle.getBoundingClientRect().left ) >= tank2.getBoundingClientRect().left
+                        && (missle.getBoundingClientRect().top) >= tank2.getBoundingClientRect().top
+                        && (missle.getBoundingClientRect().bottom) <= tank2.getBoundingClientRect().bottom
+                        && (missle.getBoundingClientRect().right) <= tank2.getBoundingClientRect().right
                         ){
                             
                             // missle.style.background = 'black'  for early testing
@@ -255,9 +259,10 @@ tank2.style.opacity = 1
                         
                             missle2.style.transform = `translateY(-${trajector}px)`
                             
-                            if((missle2.getBoundingClientRect().top) <= tank1Position.bottom
-                            && (missle2.getBoundingClientRect().left - 18) <= tank1Position.right
-                            && (missle2.getBoundingClientRect().left - 5) >= tank1Position.left
+                            if((missle2.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
+                            && (missle2.getBoundingClientRect().left - 18) <= tank.getBoundingClientRect().right
+                            && (missle2.getBoundingClientRect().left - 5) >= tank.getBoundingClientRect().left
+                            && (missle2.getBoundingClientRect().top) >= tank.getBoundingClientRect().top
                             ){
                                 
                                 tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
@@ -281,9 +286,10 @@ tank2.style.opacity = 1
                 
                         missle2.style.transform = `translateY(${trajector}px)`
 
-                        if((missle2.getBoundingClientRect().top) >= tank1Position.top
-                        && (missle2.getBoundingClientRect().left - 18) <= tank1Position.right
-                        && (missle2.getBoundingClientRect().left - 5) >= tank1Position.left
+                        if((missle2.getBoundingClientRect().top) >= tank.getBoundingClientRect().top
+                        && (missle2.getBoundingClientRect().left - 18) <= tank.getBoundingClientRect().right
+                        && (missle2.getBoundingClientRect().left - 5) >= tank.getBoundingClientRect().left
+                        && (missle2.getBoundingClientRect().top - 10) <= tank.getBoundingClientRect().bottom
                         ){
                             
                             // missle.style.background = 'black'  for early testing
@@ -305,9 +311,10 @@ tank2.style.opacity = 1
                 
                         missle2.style.transform = `translateX(-${trajector}px)`
                     
-                        if((missle2.getBoundingClientRect().left) <= tank1Position.right
-                        && (missle2.getBoundingClientRect().top + 10) >= tank1Position.top
-                        && (missle2.getBoundingClientRect().top + 0) <= tank1Position.bottom
+                        if((missle2.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
+                        && (missle2.getBoundingClientRect().top + 10) >= tank.getBoundingClientRect().top
+                        && (missle2.getBoundingClientRect().top + 0) <= tank.getBoundingClientRect().bottom
+                        && (missle2.getBoundingClientRect().left - 5) >= tank.getBoundingClientRect().left
                         ){
                             
                             // missle.style.background = 'black'  for early testing
@@ -329,9 +336,11 @@ tank2.style.opacity = 1
                 
                         missle2.style.transform = `translateX(${trajector}px)`
                     
-                        if((missle2.getBoundingClientRect().left - 10 ) >= tank1Position.left
-                        && (missle2.getBoundingClientRect().top + 10) >= tank1Position.top
-                        && (missle2.getBoundingClientRect().top + 0) <= tank1Position.bottom
+                        if((missle2.getBoundingClientRect().left ) >= tank.getBoundingClientRect().left
+                        && (missle2.getBoundingClientRect().top) >= tank.getBoundingClientRect().top
+                        && (missle2.getBoundingClientRect().bottom) <= tank.getBoundingClientRect().bottom
+                        && (missle2.getBoundingClientRect().right) <= tank.getBoundingClientRect().right
+                        
                         ){
                             
                             // missle.style.background = 'black'  for early testing
@@ -624,14 +633,7 @@ setInterval(()=>{
         right: tank2.offsetLeft + 40,
     }
     
-    if(tank2.style.opacity == 0){
-        console.log('player 2 LOST');
-        // location.reload()
-    }
-    if(tank.style.opacity == 0){
-        console.log('player 1 LOST!');
-        // location.reload()
-    }
+   
     
    
     //pass current player1 and player2 tanks position to movement function
