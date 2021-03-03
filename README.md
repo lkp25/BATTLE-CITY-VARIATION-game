@@ -25,3 +25,8 @@ FIRE - 'Q' key
 3. The goal is to destroy the other player's tank by shooting to it. Each time a tank gets hit,
 it loses 10% of "life" which is opacity. After 10 hits it disappears and game is over - 
 winner is logged in the console.
+
+//03.03.2021 - optimized missle/tank boundaries, fixed no-collision bug when tanks were charging on
+one another(one would slide under the other), set map to be sligtly bigger, 
+tanks size is exactly 1/13 of the map size now. 
+Added bounce effect on tanks collision.
