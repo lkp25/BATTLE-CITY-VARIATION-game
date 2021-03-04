@@ -67,7 +67,7 @@ tank2.style.opacity = 1
         missle2Num = 0
         missle1Num = 0
         
-    }, 500);
+    }, 900);
     
     
      document.addEventListener('keydown', ((e)=> {   
@@ -116,7 +116,7 @@ tank2.style.opacity = 1
     function createMissle(position, which){
         
         const obstaclesPositions = Obstacle.getAll()
-        console.log(obstaclesPositions);
+        
 
         //check which tank was shooting
 
@@ -145,10 +145,14 @@ tank2.style.opacity = 1
 
 
             if(facing === 'up'){
-                setInterval( ()=>{
+                //new interval is being called every time a missle is fired.
+                //i needs to be assigne to a variable so that it can be cleared
+                //when the missle disappears! otherwise it runs forever
+                // feeding on the app's performance!
+                let performanceEater = setInterval( ()=>{
                     //increase the value 
                     trajector += 10
-                        
+                   
                         //move the missle upwards by current trajector value
                         missle.style.transform = `translateY(-${trajector}px)`
                         
@@ -165,6 +169,8 @@ tank2.style.opacity = 1
                                 //remove the obstacle and the missle if true
                                 obstacle.node.style.display = 'none'
                                 missle.remove()
+                                //stop the interval from running forever
+                                clearInterval(performanceEater)
                             } 
                         })    
                             
@@ -181,6 +187,8 @@ tank2.style.opacity = 1
                                 
                                 missle.remove()
                                 tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
+                                //stop the interval from running forever
+                                clearInterval(performanceEater)
                             }                            
                         
                     
@@ -188,14 +196,16 @@ tank2.style.opacity = 1
                         //remove the missle - it hasn't hit anything
                         if(trajector >= 580){
                             missle.remove()
-                           
+                            //stop the interval from running forever
+                            clearInterval(performanceEater)
                             
                         }
                 }, 20)
             }
             
             
-            if(facing === 'down'){setInterval( ()=>{
+            if(facing === 'down'){
+                let performanceEater = setInterval( ()=>{
                 trajector += 10
                     
                 
@@ -214,6 +224,7 @@ tank2.style.opacity = 1
                                 //remove the obstacle and the missle if true
                                 obstacle.node.style.display = 'none'
                                 missle.remove()
+                                clearInterval(performanceEater)
                             } 
                         })    
 
@@ -228,16 +239,18 @@ tank2.style.opacity = 1
                             
                             missle.remove()
                             tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
+                            clearInterval(performanceEater)
                         }
                 
                 
                     if(trajector >= 580){
                         missle.remove()
-                    
+                        clearInterval(performanceEater)
                         
                     }
             }, 20)}
-            if(facing === 'left'){setInterval( ()=>{
+            if(facing === 'left'){
+                let performanceEater = setInterval( ()=>{
                 trajector += 10
                     
                 
@@ -256,6 +269,7 @@ tank2.style.opacity = 1
                                 //remove the obstacle and the missle if true
                                 obstacle.node.style.display = 'none'
                                 missle.remove()
+                                clearInterval(performanceEater)
                             } 
                         })    
 
@@ -269,16 +283,18 @@ tank2.style.opacity = 1
                             
                             missle.remove()
                             tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
+                            clearInterval(performanceEater)
                         }
                 
                 
                     if(trajector >= 580){
                         missle.remove()
-                    
+                        clearInterval(performanceEater)
                         
                     }
             }, 20)}
-            if(facing === 'right'){setInterval( ()=>{
+            if(facing === 'right'){
+                let performanceEater = setInterval( ()=>{
                 trajector += 10
                     
                 
@@ -298,6 +314,7 @@ tank2.style.opacity = 1
                                 //remove the obstacle and the missle if true
                                 obstacle.node.style.display = 'none'
                                 missle.remove()
+                                clearInterval(performanceEater)
                             } 
                         })    
 
@@ -311,12 +328,13 @@ tank2.style.opacity = 1
                             
                             missle.remove()
                             tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
+                            clearInterval(performanceEater)
                         }
                 
                 
                     if(trajector >= 580){
                         missle.remove()
-                    
+                        clearInterval(performanceEater)
                         
                     }
             }, 20)}
@@ -340,7 +358,7 @@ tank2.style.opacity = 1
                 map.appendChild(missle2)
                 let trajector = 0
             if(facing2 === 'up'){
-                setInterval( ()=>{
+                let performanceEater = setInterval( ()=>{
                     trajector += 10
                         
                         
@@ -359,6 +377,7 @@ tank2.style.opacity = 1
                                     //remove the obstacle and the missle if true
                                     obstacle.node.style.display = 'none'
                                     missle2.remove()
+                                    clearInterval(performanceEater)
                                 } 
                             })    
 
@@ -370,20 +389,22 @@ tank2.style.opacity = 1
                                 
                                 tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
                                 missle2.remove()
+                                clearInterval(performanceEater)
                             }    
                         
                     
                     
                         if(trajector >= 580){
                             missle2.remove()
-                            
+                            clearInterval(performanceEater)
                             
                         }
                 }, 20)
             }
             
             
-            if(facing2 === 'down'){setInterval( ()=>{
+            if(facing2 === 'down'){
+                let performanceEater = setInterval( ()=>{
                 trajector += 10
                     
                 
@@ -402,6 +423,7 @@ tank2.style.opacity = 1
                                 //remove the obstacle and the missle if true
                                 obstacle.node.style.display = 'none'
                                 missle2.remove()
+                                clearInterval(performanceEater)
                             } 
                         })    
 
@@ -415,16 +437,18 @@ tank2.style.opacity = 1
                             
                             missle2.remove()
                             tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
+                            clearInterval(performanceEater)
                         }
                 
                 
                     if(trajector >= 580){
                         missle2.remove()
-                    
+                        clearInterval(performanceEater)
                         
                     }
             }, 20)}
-            if(facing2 === 'left'){setInterval( ()=>{
+            if(facing2 === 'left'){
+                let performanceEater = setInterval( ()=>{
                 trajector += 10
                     
                 
@@ -443,6 +467,7 @@ tank2.style.opacity = 1
                                 //remove the obstacle and the missle if true
                                 obstacle.node.style.display = 'none'
                                 missle2.remove()
+                                clearInterval(performanceEater)
                             } 
                         })    
 
@@ -456,16 +481,18 @@ tank2.style.opacity = 1
                             
                             missle2.remove()
                             tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
+                            clearInterval(performanceEater)
                         }
                 
                 
                     if(trajector >= 580){
                         missle2.remove()
-                    
+                        clearInterval(performanceEater)
                         
                     }
             }, 20)}
-            if(facing2 === 'right'){setInterval( ()=>{
+            if(facing2 === 'right'){
+                let performanceEater = setInterval( ()=>{
                 trajector += 10
                     
                 
@@ -484,6 +511,7 @@ tank2.style.opacity = 1
                                 //remove the obstacle and the missle if true
                                 obstacle.node.style.display = 'none'
                                 missle2.remove()
+                                clearInterval(performanceEater)
                             } 
                         })    
 
@@ -498,12 +526,13 @@ tank2.style.opacity = 1
                             
                             missle2.remove()
                             tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
+                            clearInterval(performanceEater)
                         }
                 
                 
                     if(trajector >= 580){
                         missle2.remove()
-                    
+                        clearInterval(performanceEater)
                         
                     }
             }, 20)}
@@ -830,19 +859,19 @@ class Obstacle{
     //obstacle creator
     static create = function(){
         //only allow specific number of obstacles
-        if(this.number > 20){
+        if(this.number > 100){
             
             return
         }   
 
         //positions available for generated obstacles
-        const positionsArray = [0,47,94,141,188,235,282,329,376,423,470,517,564]
+        const positionsArray = [0,46,69,92,115,138,161,184,207,230,253,276,299, 322,345,368,391,414,437,460,483,506,529,552,575,598]
         
         //create obstacle and append it to DOM
         const obstacle = document.createElement('div')                
         obstacle.classList.add('brick')
         //position it randomly using positionsArray
-        obstacle.setAttribute('style', `top: ${positionsArray[Math.floor(Math.random() * 13)]}px; left: ${positionsArray[Math.floor(Math.random() * 13)]}px`)
+        obstacle.setAttribute('style', `top: ${positionsArray[Math.floor(Math.random() * 26)]}px; left: ${positionsArray[Math.floor(Math.random() * 26)]}px`)
         map.appendChild(obstacle)
         //increase obstacles counter
         this.number ++
@@ -853,9 +882,9 @@ class Obstacle{
         return  [...document.querySelectorAll('.brick')].map(element => {
             return {
                 top: element.offsetTop,
-                bottom: element.offsetTop + 45,
+                bottom: element.offsetTop + 22,
                 left: element.offsetLeft,
-                right: element.offsetLeft + 45,
+                right: element.offsetLeft + 22,
                 node: element
             }
 
@@ -915,7 +944,7 @@ class Obstacle{
 
 
 //Create initial obstacles, as many as allowed
-for(let x = 0; x < 20; x++){
+for(let x = 0; x < 100; x++){
     Obstacle.create()
 }
 

@@ -34,3 +34,5 @@ Added bounce effect on tanks collision.
 //04.03.2021 - created factory function for generating wall-obstacles (crimson square).
 added wall-tank collision detection - tanks can not move through walls
 added missle-wall hit detection - when missle hits the wall, wall disappears.
++ fixed major performance issue by clearing amassing intervals(every time a missle
+was shot - there was an interval set to run and never stop, even after the missle was removed from game area and it was no longer needed as a movement function for this particular missle)
