@@ -30,3 +30,7 @@ winner is logged in the console.
 one another(one would slide under the other), set map to be sligtly bigger, 
 tanks size is exactly 1/13 of the map size now. 
 Added bounce effect on tanks collision.
+
+//04.03.2021 - created factory function for generating wall-obstacles (crimson square).
+added wall-tank collision detection - tanks can not move through walls
+added missle-wall hit detection - when missle hits the wall, wall disappears.

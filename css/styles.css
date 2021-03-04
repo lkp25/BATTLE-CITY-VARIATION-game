@@ -14,8 +14,8 @@ body{
 }
 .map{
     overflow: hidden;
-    width: 585px;
-    height: 585px;
+    width: 611px;
+    height: 611px;
     background: rgb(15, 1, 15);
     position: relative;
 }
@@ -45,6 +45,23 @@ body{
     z-index: 2;
     /* transform: translate(-50% - 50%); */
 }
+
+.brick{
+    
+        position: absolute;
+        width: 45px;
+        height: 45px;
+        background: rgb(90, 3, 3);
+      z-index: 3;
+    }
+
+
+
+
+
+
+
+
 
 .gameOver{
     width: 100vw;

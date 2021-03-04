@@ -6,8 +6,8 @@ document.body.style.overflow = 'hidden'
 //define game area
 const map = document.querySelector('.map')
 //map size
-let mapHeight = 540
-let mapWidth = 540
+let mapHeight = 566
+let mapWidth = 566
 
 let tank1Position = {}
 let tank2Position = {}
@@ -23,6 +23,7 @@ let left = false
 let fire = false
 let facing = 'down'
 
+let mobilitiy = true
 
 let up2 = false
 let down2 = false
@@ -97,10 +98,26 @@ tank2.style.opacity = 1
     }))
     
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function createMissle(position, which){
         
-        
-        
+        const obstaclesPositions = Obstacle.getAll()
+        console.log(obstaclesPositions);
+
         //check which tank was shooting
 
         
@@ -112,10 +129,10 @@ tank2.style.opacity = 1
                 missle.style.top = parseInt(tank.style.top.slice(0, length -2)) + 18 + 'px'
                 missle.style.left = parseInt(tank.style.left.slice(0, length -2)) + 18 + 'px'
                 
-                console.log('tank position left:  ' +tank.style.left);
+                
                 //missle must be appended to MAP not to tank
                 map.appendChild(missle)
-                console.log(missle.style.top + '  left:  ' + missle.style.left);
+                
                 
                 //variable used to control the life-span of a missle
                 let trajector = 0
@@ -129,16 +146,31 @@ tank2.style.opacity = 1
 
             if(facing === 'up'){
                 setInterval( ()=>{
-                    trajector += 20
+                    //increase the value 
+                    trajector += 10
                         
-                        
+                        //move the missle upwards by current trajector value
                         missle.style.transform = `translateY(-${trajector}px)`
                         
+                        obstaclesPositions.forEach(obstacle =>{
+                            //check if obstacle was hit by missle
+                            if(
+                               
+                                missle.offsetTop > obstacle.top
+                                && missle.getBoundingClientRect().bottom  < obstacle.bottom
+                                && missle.offsetLeft < obstacle.right
+                                && missle.offsetLeft +10  > obstacle.left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.style.display = 'none'
+                                missle.remove()
+                            } 
+                        })    
                             
                             
                             
-                            
-                            
+                            //check if other player was hit by missle
                             if((missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
                             && (missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
                             && (missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
@@ -152,7 +184,8 @@ tank2.style.opacity = 1
                             }                            
                         
                     
-
+                        //if trajector value happens to be bigger than map size,
+                        //remove the missle - it hasn't hit anything
                         if(trajector >= 580){
                             missle.remove()
                            
@@ -163,11 +196,28 @@ tank2.style.opacity = 1
             
             
             if(facing === 'down'){setInterval( ()=>{
-                trajector += 20
+                trajector += 10
                     
                 
                         missle.style.transform = `translateY(${trajector}px)`
                     
+                        obstaclesPositions.forEach(obstacle =>{
+                            //check if obstacle was hit by missle
+                            if(
+                               
+                                missle.getBoundingClientRect().bottom >= obstacle.top
+                                && missle.offsetTop  <= obstacle.bottom
+                                && missle.offsetLeft <= obstacle.right
+                                && missle.offsetLeft +10  >= obstacle.left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.style.display = 'none'
+                                missle.remove()
+                            } 
+                        })    
+
+                        //check if missle hit other player's tank
                         if((missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
                         && (missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
                         && (missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
@@ -188,11 +238,27 @@ tank2.style.opacity = 1
                     }
             }, 20)}
             if(facing === 'left'){setInterval( ()=>{
-                trajector += 20
+                trajector += 10
                     
                 
                         missle.style.transform = `translateX(-${trajector}px)`
                     
+                        obstaclesPositions.forEach(obstacle =>{
+                            //check if obstacle was hit by missle
+                            if(
+                               
+                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.style.display = 'none'
+                                missle.remove()
+                            } 
+                        })    
+
                         if((missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
                         && (missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
                         && (missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
@@ -213,11 +279,28 @@ tank2.style.opacity = 1
                     }
             }, 20)}
             if(facing === 'right'){setInterval( ()=>{
-                trajector += 20
+                trajector += 10
                     
                 
                         missle.style.transform = `translateX(${trajector}px)`
                     
+
+                        obstaclesPositions.forEach(obstacle =>{
+                            //check if obstacle was hit by missle
+                            if(
+                               
+                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.style.display = 'none'
+                                missle.remove()
+                            } 
+                        })    
+
                         if((missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
                         && (missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
                         && (missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
@@ -258,11 +341,27 @@ tank2.style.opacity = 1
                 let trajector = 0
             if(facing2 === 'up'){
                 setInterval( ()=>{
-                    trajector += 20
+                    trajector += 10
                         
                         
                             missle2.style.transform = `translateY(-${trajector}px)`
                             
+                            obstaclesPositions.forEach(obstacle =>{
+                                //check if obstacle was hit by missle
+                                if(
+                                   
+                                    missle2.offsetTop > obstacle.top
+                                    && missle2.getBoundingClientRect().bottom  < obstacle.bottom
+                                    && missle2.offsetLeft < obstacle.right
+                                    && missle2.offsetLeft +10  > obstacle.left
+                                
+                                ){
+                                    //remove the obstacle and the missle if true
+                                    obstacle.node.style.display = 'none'
+                                    missle2.remove()
+                                } 
+                            })    
+
                             if((missle2.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
                             && (missle2.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
                             && (missle2.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
@@ -285,10 +384,26 @@ tank2.style.opacity = 1
             
             
             if(facing2 === 'down'){setInterval( ()=>{
-                trajector += 20
+                trajector += 10
                     
                 
                         missle2.style.transform = `translateY(${trajector}px)`
+
+                        obstaclesPositions.forEach(obstacle =>{
+                            //check if obstacle was hit by missle
+                            if(
+                               
+                                missle2.getBoundingClientRect().bottom >= obstacle.top
+                                && missle2.offsetTop  <= obstacle.bottom
+                                && missle2.offsetLeft <= obstacle.right
+                                && missle2.offsetLeft +10  >= obstacle.left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.style.display = 'none'
+                                missle2.remove()
+                            } 
+                        })    
 
                         if((missle2.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
                         && (missle2.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
@@ -310,11 +425,27 @@ tank2.style.opacity = 1
                     }
             }, 20)}
             if(facing2 === 'left'){setInterval( ()=>{
-                trajector += 20
+                trajector += 10
                     
                 
                         missle2.style.transform = `translateX(-${trajector}px)`
                     
+                        obstaclesPositions.forEach(obstacle =>{
+                            //check if obstacle was hit by missle
+                            if(
+                               
+                                missle2.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle2.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle2.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle2.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.style.display = 'none'
+                                missle2.remove()
+                            } 
+                        })    
+
                         if((missle2.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
                         && (missle2.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
                         && (missle2.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
@@ -335,11 +466,27 @@ tank2.style.opacity = 1
                     }
             }, 20)}
             if(facing2 === 'right'){setInterval( ()=>{
-                trajector += 20
+                trajector += 10
                     
                 
                         missle2.style.transform = `translateX(${trajector}px)`
                     
+                        obstaclesPositions.forEach(obstacle =>{
+                            //check if obstacle was hit by missle
+                            if(
+                               
+                                missle2.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle2.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle2.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle2.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.style.display = 'none'
+                                missle2.remove()
+                            } 
+                        })    
+
                         if((missle2.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
                         && (missle2.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
                         && (missle2.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
@@ -468,6 +615,11 @@ document.addEventListener('keyup', ((e) =>{
     function movement(tank1Position, tank2Position){
         //=============VERTICAL MOVEMENT============================
         //access tank Y position on map
+        if(!mobilitiy){
+            return setTimeout(() => {
+                mobilitiy = true
+            },500)
+        }
         let yPos = parseInt(tank.style.top.slice(0, length -2)) 
         //go down
         if(down){
@@ -639,16 +791,16 @@ document.addEventListener('keyup', ((e) =>{
 //MAIN EXECUTOR
 setInterval(()=>{
      tank1Position = {
-        top:tank.getBoundingClientRect().top,
-        left: tank.getBoundingClientRect().left,
-        bottom: tank.getBoundingClientRect().bottom,
-        right: tank.getBoundingClientRect().right
+        top:tank.offsetTop,
+        left: tank.offsetLeft,
+        bottom: tank.offsetTop + 45,
+        right: tank.offsetLeft + 45
     }
      tank2Position = {
-        top:tank2.getBoundingClientRect().top,
-        left: tank2.getBoundingClientRect().left,
-        bottom: tank2.getBoundingClientRect().bottom,
-        right: tank2.getBoundingClientRect().right
+        top:tank2.offsetTop,
+        left: tank2.offsetLeft,
+        bottom: tank2.offsetTop + 45,
+        right: tank2.offsetLeft + 45
     }
     
     
@@ -657,9 +809,131 @@ setInterval(()=>{
     movement(tank1Position, tank2Position)
     movement2(tank1Position, tank2Position)
     
-    
 
+
+
+
+
+
+    //testing!
+    Obstacle.checkCrash()
 
 },10)
 
+class Obstacle{
+    constructor(){
+        
+    }
+    //counter of obstacles
+    static number = 1
 
+    //obstacle creator
+    static create = function(){
+        //only allow specific number of obstacles
+        if(this.number > 20){
+            
+            return
+        }   
+
+        //positions available for generated obstacles
+        const positionsArray = [0,47,94,141,188,235,282,329,376,423,470,517,564]
+        
+        //create obstacle and append it to DOM
+        const obstacle = document.createElement('div')                
+        obstacle.classList.add('brick')
+        //position it randomly using positionsArray
+        obstacle.setAttribute('style', `top: ${positionsArray[Math.floor(Math.random() * 13)]}px; left: ${positionsArray[Math.floor(Math.random() * 13)]}px`)
+        map.appendChild(obstacle)
+        //increase obstacles counter
+        this.number ++
+    }
+
+    //function to get all positions of all obstacles
+    static getAll = function(){
+        return  [...document.querySelectorAll('.brick')].map(element => {
+            return {
+                top: element.offsetTop,
+                bottom: element.offsetTop + 45,
+                left: element.offsetLeft,
+                right: element.offsetLeft + 45,
+                node: element
+            }
+
+            
+        })
+        
+        
+    }   
+
+    //function to check player collision with obstacle
+    static checkCrash = function(){
+        
+        //it needs to know all the positions so it calls getAll function first
+        this.getAll().forEach(element =>{
+            
+            //player one crashes obstacle
+            if(element.top < tank1Position.bottom 
+            &&element.bottom >tank1Position.top 
+            &&element.left < tank1Position.right 
+            &&element.right > tank1Position.left 
+            ){
+                if(facing === 'down'){
+                    tank.style.top = `${element.top - 48}px`
+                } else if(facing === "up"){
+                    tank.style.top = `${element.bottom + 3}px`
+                
+                } else if(facing === "left"){
+                    tank.style.left = `${element.right + 3}px`
+                
+                } else if(facing === "right"){
+                    tank.style.left = `${element.left - 48}px`
+                }
+            }
+            
+            //player 2 crashes obstacle
+            if(element.top < tank2Position.bottom 
+            &&element.bottom >tank2Position.top 
+            &&element.left < tank2Position.right 
+            &&element.right > tank2Position.left 
+            ){
+                if(facing2 === 'down'){
+                    tank2.style.top = `${element.top - 48}px`
+                } else if(facing2 === "up"){
+                    tank2.style.top = `${element.bottom + 3}px`
+                
+                } else if(facing2 === "left"){
+                    tank2.style.left = `${element.right + 3}px`
+                
+                } else if(facing2 === "right"){
+                    tank2.style.left = `${element.left - 48}px`
+                }
+            }
+        })
+       
+    }
+}
+
+
+//Create initial obstacles, as many as allowed
+for(let x = 0; x < 20; x++){
+    Obstacle.create()
+}
+
+// class Enemy{
+//     constructor(){
+        
+//     }
+//     static number = 1
+//     static create = function(){
+//         if(this.number > 2){
+//             console.log('taki huj');
+//             return
+//         }   
+//         const huj = document.createElement('div')
+                
+//                 huj.classList.add('brick')
+//                 huj.setAttribute('style', "top: 70px; left: 60px")
+//                 map.appendChild(huj)
+//         this.number ++
+//     }
+// }
