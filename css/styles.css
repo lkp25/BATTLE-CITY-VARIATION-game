@@ -14,9 +14,9 @@ body{
 }
 .map{
     overflow: hidden;
-    width: 611px;
-    height: 611px;
-    background: rgb(15, 1, 15);
+    width: 620px;
+    height: 620px;
+    background: rgb(87, 4, 87);
     position: relative;
 }
 .tank{

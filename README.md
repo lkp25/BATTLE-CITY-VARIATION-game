@@ -26,13 +26,23 @@ FIRE - 'Q' key
 it loses 10% of "life" which is opacity. After 10 hits it disappears and game is over - 
 winner is logged in the console.
 
-//03.03.2021 - optimized missle/tank boundaries, fixed no-collision bug when tanks were charging on
-one another(one would slide under the other), set map to be sligtly bigger, 
-tanks size is exactly 1/13 of the map size now. 
-Added bounce effect on tanks collision.
 
-//04.03.2021 - created factory function for generating wall-obstacles (crimson square).
-added wall-tank collision detection - tanks can not move through walls
-added missle-wall hit detection - when missle hits the wall, wall disappears.
-+ fixed major performance issue by clearing amassing intervals(every time a missle
+
+//03.03.2021 
+- optimized missle/tank boundaries, 
+- fixed no-collision bug when tanks were charging on one another(one would slide under the other), 
+- set map to be sligtly bigger, tanks size is exactly 1/13 of the map size now. 
+- Added bounce effect on tanks collision.
+
+//04.03.2021 
+- created factory function for generating wall-obstacles (crimson square).
+- added wall-tank collision detection - tanks can not move through walls
+- added missle-wall hit detection - when missle hits the wall, wall disappears.
+
+- fixed major performance issue by clearing amassing intervals(every time a missle
 was shot - there was an interval set to run and never stop, even after the missle was removed from game area and it was no longer needed as a movement function for this particular missle)
+
+//05.03.2021 
+- optimized tanks' movement speed 
+- perfected tank-obstacle collision detection, added strict block-movement functionality
+when tank triaes to run through the obstacle with movement being unlocked after the obstacle is destroyed.
