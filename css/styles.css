@@ -7,7 +7,7 @@
     padding: 0;
 }
 body{
-    background: black;
+    background: rgba(0, 0, 0, 0.486);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,20 +16,20 @@ body{
     overflow: hidden;
     width: 620px;
     height: 620px;
-    background: rgb(87, 4, 87);
+    background: rgb(7, 0, 7);
     position: relative;
 }
 .tank{
     position: absolute;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background:linear-gradient(0deg, rgba(232,22,48,0.7707457983193278) 0%, rgba(255,201,1,1) 0%, rgba(191,4,4,1) 20%);
   z-index: 3;
 }
 .tank2{
     position: absolute;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     background: linear-gradient(0deg, rgba(232,22,48,0.7707457983193278) 0%, rgba(255,201,1,1) 0%, rgba(67,51,131,1) 20%);
   z-index: 3;
 }

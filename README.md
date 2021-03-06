@@ -46,3 +46,7 @@ was shot - there was an interval set to run and never stop, even after the missl
 - optimized tanks' movement speed 
 - perfected tank-obstacle collision detection, added strict block-movement functionality
 when tank triaes to run through the obstacle with movement being unlocked after the obstacle is destroyed.
+
+//06.03.2021
+- fixed a bug related to strange movent after colliding with obstacle - if after collision player was pressing movement keys fast, tank was being teleported to the other side of the obstacle (very weird-looking behavior, not very common but annoying nevertheless). Collision detecting method was changed and implemented in the movement function directly like for player - player collision. 
+Previously it was being called directly by Main Executor Interval, now is a dependency of movement function.

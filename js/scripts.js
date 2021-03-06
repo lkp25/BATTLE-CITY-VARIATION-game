@@ -697,15 +697,7 @@ document.addEventListener('keyup', ((e) =>{
         //go down
         if(down){
             
-            //if collision with wall happens, unable to move away from it
-            blockUp = false
-            blockLeft = false
-            blockRight = false
-            //if collision happened and tank is still trying to run throught
-            // obstacle, DISABLE movement towards obstacle.
-            if(blockDown){
-                return
-            }
+           
             //set tank facing
             tank.style.transform = `rotateZ(0deg)`
             facing = 'down'
@@ -717,9 +709,19 @@ document.addEventListener('keyup', ((e) =>{
             }else{
                 yPos -= 1
             }
-
-
-
+            //Check for crash with any obstacle
+            Obstacle.getAll().forEach(element =>{
+                if
+                (element.top -1<= tank1Position.bottom 
+                &&element.bottom >=tank1Position.top 
+                &&element.left <= tank1Position.right 
+                &&element.right >=tank1Position.left 
+                ){
+                    yPos -= 1   }
+                })
+            
+           
+                     
             if(yPos >= mapHeight){  //STOP when it reaches MAP-BOTTOM
                 tank.style.top = `${mapHeight}px`
             }else{  //keep going down if there is space
@@ -728,16 +730,7 @@ document.addEventListener('keyup', ((e) =>{
         }
         //go up
         if(up){
-            //if collision with wall happens, unable to move away from it
-            blockDown = false
-            blockLeft = false
-            blockRight = false
-            //if collision happened and tank is still trying to run throught
-            // obstacle, DISABLE movement towards obstacle.
-            if(blockUp){
-                return
-            }
-
+           
             tank.style.transform = `rotateZ(180deg)`
             facing = 'up'
 
@@ -747,7 +740,16 @@ document.addEventListener('keyup', ((e) =>{
             }else{
                 yPos += 1
             }
-
+            //Check for crash with any obstacle
+            Obstacle.getAll().forEach(element =>{
+                if
+                (element.top <= tank1Position.bottom 
+                &&element.bottom +1>=tank1Position.top 
+                &&element.left <= tank1Position.right 
+                &&element.right >=tank1Position.left 
+                ){
+                    yPos += 1   }
+                })
 
             if(yPos <= 0){  //STOP when it reaches MAP-TOP
                 tank.style.top = `${0}px`
@@ -762,15 +764,7 @@ document.addEventListener('keyup', ((e) =>{
         let xPos = parseInt(tank.style.left.slice(0, length -2))
         //go left
         if(left){
-            //if collision with wall happens, unable to move away from it
-            blockDown = false
-            blockUp = false
-            blockRight = false
-            //if collision happened and tank is still trying to run throught
-            // obstacle, DISABLE movement towards obstacle.
-            if(blockLeft){
-                return
-            }
+           
 
             tank.style.transform = `rotateZ(90deg)`
             facing = 'left'
@@ -782,6 +776,15 @@ document.addEventListener('keyup', ((e) =>{
                 xPos += 1
             }
             
+            Obstacle.getAll().forEach(element =>{
+                if
+                (element.top <= tank1Position.bottom 
+                &&element.bottom >=tank1Position.top 
+                &&element.left <= tank1Position.right 
+                &&element.right +1>=tank1Position.left 
+                ){
+                    xPos += 1   }
+                })
             
             
             if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
@@ -792,15 +795,7 @@ document.addEventListener('keyup', ((e) =>{
         }
         //go right
         if(right){
-            //if collision with wall happens, unable to move away from it
-            blockDown = false
-            blockLeft = false
-            blockUp = false
-            //if collision happened and tank is still trying to run throught
-            // obstacle, DISABLE movement towards obstacle.
-            if(blockRight){
-                return
-            }
+           
             tank.style.transform = `rotateZ(-90deg)`
             facing = 'right'
 
@@ -811,6 +806,15 @@ document.addEventListener('keyup', ((e) =>{
                 xPos -= 1
             }
             
+            Obstacle.getAll().forEach(element =>{
+                if
+                (element.top <= tank1Position.bottom 
+                &&element.bottom >=tank1Position.top 
+                &&element.left -1<= tank1Position.right 
+                &&element.right>=tank1Position.left 
+                ){
+                    xPos -= 1   }
+                })
             if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
                 tank.style.left = `${mapWidth}px`
             }else{  //keep going right if there is space
@@ -828,15 +832,7 @@ document.addEventListener('keyup', ((e) =>{
         let yPos = parseInt(tank2.style.top.slice(0, length -2)) 
         //go down
         if(down2){
-            //if collision with wall happens, unable to move away from it
-            blockUp2 = false
-            blockLeft2 = false
-            blockRight2 = false
-            //if collision happened and tank is still trying to run throught
-            // obstacle, DISABLE movement towards obstacle.
-            if(blockDown2){
-                return
-            }
+            
             tank2.style.transform = `rotateZ(0deg)`
             facing2 = 'down'
 
@@ -846,6 +842,18 @@ document.addEventListener('keyup', ((e) =>{
             }else{
                 yPos -= 1 
             }
+
+            //Check for crash with any obstacle
+            Obstacle.getAll().forEach(element =>{
+                if
+                (element.top -1<= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right >=tank2Position.left 
+                ){
+                    yPos -= 1   }
+                })
+
             if(yPos >= mapHeight){  //STOP when it reaches MAP-BOTTOM
                 tank2.style.top = `${mapHeight}px`
             }else{  //keep going down if there is space
@@ -854,15 +862,7 @@ document.addEventListener('keyup', ((e) =>{
         }
         //go up
         if(up2){
-            //if collision with wall happens, unable to move away from it
-            blockDown2 = false
-            blockLeft2 = false
-            blockRight2 = false
-            //if collision happened and tank is still trying to run throught
-            // obstacle, DISABLE movement towards obstacle.
-            if(blockUp2){
-                return
-            }
+           
             tank2.style.transform = `rotateZ(180deg)`
             facing2 = 'up'
             if(!(tank2Position.top - 2 <= tank1Position.bottom && tank2Position.left <= tank1Position.right && tank2Position.right >= tank1Position.left && tank2Position.bottom > tank1Position.top)){
@@ -871,6 +871,18 @@ document.addEventListener('keyup', ((e) =>{
             }else{
                 yPos += 1
             }
+
+            //Check for crash with any obstacle
+            Obstacle.getAll().forEach(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom +1>=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right >=tank2Position.left 
+                ){
+                    yPos += 1   }
+                })
+
             if(yPos <= 0){  //STOP when it reaches MAP-TOP
                 tank2.style.top = `${0}px`
             }else{  //keep going up if there is space
@@ -884,15 +896,7 @@ document.addEventListener('keyup', ((e) =>{
         let xPos = parseInt(tank2.style.left.slice(0, length -2))
         //go left
         if(left2){
-            //if collision with wall happens, unable to move away from it
-            blockDown2 = false
-            blockUp2 = false
-            blockRight2 = false
-            //if collision happened and tank is still trying to run throught
-            // obstacle, DISABLE movement towards obstacle.
-            if(blockLeft2){
-                return
-            }
+            
             tank2.style.transform = `rotateZ(90deg)`
             facing2 = 'left'
             if(!(tank2Position.left -2  <= tank1Position.right && tank2Position.bottom >= tank1Position.top && tank2Position.top <= tank1Position.bottom && tank2Position.right >= tank1Position.left) ){                
@@ -900,6 +904,17 @@ document.addEventListener('keyup', ((e) =>{
             }else{
                 xPos += 1
             }
+
+            Obstacle.getAll().forEach(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right +1>=tank2Position.left 
+                ){
+                    xPos += 1   }
+                })
+
             if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
                 tank2.style.left = `${0}px`
             }else{  //keep going left if there is space
@@ -908,15 +923,7 @@ document.addEventListener('keyup', ((e) =>{
         }
         //go right
         if(right2){
-            //if collision with wall happens, unable to move away from it
-            blockDown2 = false
-            blockLeft2 = false
-            blockUp2 = false
-            //if collision happened and tank is still trying to run throught
-            // obstacle, DISABLE movement towards obstacle.
-            if(blockRight2){
-                return
-            }
+            
             tank2.style.transform = `rotateZ(-90deg)`
             facing2 = 'right'
             if(!(tank2Position.right +2 >= tank1Position.left && tank2Position.bottom >= tank1Position.top && tank2Position.top <= tank1Position.bottom && tank2Position.left <= tank1Position.right)){
@@ -925,6 +932,17 @@ document.addEventListener('keyup', ((e) =>{
             }else{
                 xPos -= 1
             }
+
+            Obstacle.getAll().forEach(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left -1<= tank2Position.right 
+                &&element.right>=tank2Position.left 
+                ){
+                    xPos -= 1   }
+                })
+
             if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
                 tank2.style.left = `${mapWidth}px`
             }else{  //keep going right if there is space
@@ -952,14 +970,14 @@ setInterval(()=>{
      tank1Position = {
         top:tank.offsetTop,
         left: tank.offsetLeft,
-        bottom: tank.offsetTop + 45,
-        right: tank.offsetLeft + 45
+        bottom: tank.offsetTop + 40,
+        right: tank.offsetLeft + 40
     }
      tank2Position = {
         top:tank2.offsetTop,
         left: tank2.offsetLeft,
-        bottom: tank2.offsetTop + 45,
-        right: tank2.offsetLeft + 45
+        bottom: tank2.offsetTop + 40,
+        right: tank2.offsetLeft + 40
     }    
     
    
@@ -970,7 +988,7 @@ setInterval(()=>{
 
     //constantly check position of each obstacle for collision
     //with player tanks
-    Obstacle.checkCrash()
+    // Obstacle.checkCrash()
 
 },15)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1030,92 +1048,7 @@ class Obstacle{
         
     }   
 
-    //function to check player collision with obstacle
-    static checkCrash = function(){
-        
-        //it needs to know all the positions so it calls getAll function first
-        this.getAll().forEach(element =>{
-            
-            //player one crashes with obstacle
-            if(element.top < tank1Position.bottom 
-            &&element.bottom >tank1Position.top 
-            &&element.left < tank1Position.right 
-            &&element.right > tank1Position.left 
-            ){
-                
-                
-                //make it stop in front of the obstacle
-                if(facing === 'down'){
-                    blockDown = true
-                    blockLeft = false
-                    blockRight = false
-                    blockUp = false
-                    tank.style.top = `${element.top - 45}px`
-                } 
-                else if(facing === "up"){
-                    blockDown = false
-                    blockLeft = false
-                    blockRight = false
-                    blockUp = true
-                    tank.style.top = `${element.bottom }px`
-                
-                } else if(facing === "left"){
-                    blockDown = false
-                    blockLeft = true
-                    blockRight = false
-                    blockUp = false
-                    tank.style.left = `${element.right }px`
-                
-                } else if(facing === "right"){
-                    blockDown = false
-                    blockLeft = false
-                    blockRight = true
-                    blockUp = false
-                    tank.style.left = `${element.left - 45}px`
-                }
-            }
-            
-            //player 2 crashes with obstacle
-            if(element.top < tank2Position.bottom 
-            &&element.bottom >tank2Position.top 
-            &&element.left < tank2Position.right 
-            &&element.right > tank2Position.left 
-            ){
-                //make it stop in front of the obstacle
-                //make it stop in front of the obstacle
-                if(facing2 === 'down'){
-                    blockDown2 = true
-                    blockLeft2 = false
-                    blockRight2 = false
-                    blockUp2 = false
-                    tank2.style.top = `${element.top - 45}px`
-                } 
-                else if(facing2 === "up"){
-                    blockDown2 = false
-                    blockLeft2 = false
-                    blockRight2 = false
-                    blockUp2 = true
-                    tank2.style.top = `${element.bottom }px`
-                
-                } else if(facing2 === "left"){
-                    blockDown2 = false
-                    blockLeft2 = true
-                    blockRight2 = false
-                    blockUp2 = false
-                    tank2.style.left = `${element.right }px`
-                
-                } else if(facing2 === "right"){
-                    blockDown2 = false
-                    blockLeft2 = false
-                    blockRight2 = true
-                    blockUp2 = false
-                    tank2.style.left = `${element.left - 45}px`
-                }
-            }
-            
-        })
-       
-    }
+   
 }
 
 
