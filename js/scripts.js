@@ -8,8 +8,8 @@ document.body.style.overflow = 'hidden'
 //define game area
 const map = document.querySelector('.map')
 //map size
-let mapHeight = 575
-let mapWidth = 575
+let mapHeight = 580
+let mapWidth = 580
 
 let tank1Position = {}
 let tank2Position = {}
@@ -18,15 +18,7 @@ let missle1Position = {}
 let missle2Position = {}
 
 //movement of player tanks - key values
-let blockDown = false
-let blockUp = false
-let blockLeft = false
-let blockRight = false
 
-let blockDown2 = false
-let blockUp2 = false
-let blockLeft2 = false
-let blockRight2 = false
 
 
 
@@ -56,7 +48,7 @@ let facing2 = 'down'
 const tank = document.createElement('div')
 // .setAttribute('style', "top: 0px; left: 360px")
 map.appendChild(tank)
-tank.setAttribute('style', "top: 0px; left: 360px")
+tank.setAttribute('style', "top: 360px; left: 575px")
 tank.classList.add('tank')
 tank.style.opacity = 1
 
@@ -172,9 +164,7 @@ tank2.style.opacity = 1
                 let performanceEater = setInterval( ()=>{
                     //increase the value 
                     trajector += 10
-                    //auto-unlock mobility if tank crashed the wall first but destroyed
-                    //it by shooting afterwards (path clear)
-                    blockUp = false
+                    
                     
                     
                         //move the missle upwards by current trajector value
@@ -231,7 +221,7 @@ tank2.style.opacity = 1
             if(facing === 'down'){
                 let performanceEater = setInterval( ()=>{
                 trajector += 10
-                blockDown = false
+             
                 
                 
                         missle.style.transform = `translateY(${trajector}px)`
@@ -278,7 +268,7 @@ tank2.style.opacity = 1
                 let performanceEater = setInterval( ()=>{
                 trajector += 10
                 
-                blockLeft = false
+               
                    
                 
                         missle.style.transform = `translateX(-${trajector}px)`
@@ -323,9 +313,7 @@ tank2.style.opacity = 1
             if(facing === 'right'){
                 let performanceEater = setInterval( ()=>{
                 trajector += 10
-               
-                blockRight = false    
-                
+            
                         missle.style.transform = `translateX(${trajector}px)`
                     
 
@@ -388,8 +376,7 @@ tank2.style.opacity = 1
             if(facing2 === 'up'){
                 let performanceEater = setInterval( ()=>{
                     trajector += 10
-                    // automatically unlock mobility if tank crashed on a wall and destroyed it later
-                    blockUp2 = false
+                   
                     
                     
                         
@@ -437,7 +424,7 @@ tank2.style.opacity = 1
                 let performanceEater = setInterval( ()=>{
                 trajector += 10
                 
-                blockDown2 = false
+                
                     
                 
                         missle2.style.transform = `translateY(${trajector}px)`
@@ -484,8 +471,7 @@ tank2.style.opacity = 1
                 trajector += 10
                 
                 
-                blockLeft2 = false
-                   
+                
                 
                         missle2.style.transform = `translateX(-${trajector}px)`
                     
@@ -530,8 +516,7 @@ tank2.style.opacity = 1
                 let performanceEater = setInterval( ()=>{
                 trajector += 10
                 
-                blockRight2 = false
-                
+               
                         missle2.style.transform = `translateX(${trajector}px)`
                     
                         obstaclesPositions.forEach(obstacle =>{
@@ -1019,13 +1004,13 @@ class Obstacle{
         }   
 
         //positions available for generated obstacles
-        const positionsArray = [0,46,69,92,115,138,161,184,207,230,253,276,299, 322,345,368,391,414,437,460,483,506,529,552,575,598]
+        const positionsArray = [46,69,92,115,138,161,184,207,230,253,276,299, 322,345,368,391,414,437,460,483,506,529,552,575,598,0,23]
         
         //create obstacle and append it to DOM
         const obstacle = document.createElement('div')                
         obstacle.classList.add('brick')
         //position it randomly using positionsArray
-        obstacle.setAttribute('style', `top: ${positionsArray[Math.floor(Math.random() * 26)]}px; left: ${positionsArray[Math.floor(Math.random() * 26)]}px`)
+        obstacle.setAttribute('style', `top: ${positionsArray[Math.floor(Math.random() * 26)]}px; left: ${positionsArray[Math.floor(Math.random() * 23)]}px`)
         map.appendChild(obstacle)
         //increase obstacles counter
         this.number ++
@@ -1063,23 +1048,127 @@ for(let x = 0; x < 100; x++){
 
 
 
+//======================================================================================
+//=========================ENEMIES AI===================================================
+//======================================================================================
+
+class Enemy{
+    constructor(){}
+    //current number of enemies
+    static number = 0    
 
 
-// class Enemy{
-//     constructor(){
+
+    //=======================create new enemy tank on the map.========================
+    static create = function(){
         
-//     }
-//     static number = 1
-//     static create = function(){
-//         if(this.number > 2){
-//             console.log('taki huj');
-//             return
-//         }   
-//         const huj = document.createElement('div')
+        //check if max number of enemies was not exceeded and don't execute if true
+        if(this.number > 2){
+            
+            return
+        }   
+        //else create new enemy
+        const enemy = document.createElement('div')
                 
-//                 huj.classList.add('brick')
-//                 huj.setAttribute('style', "top: 70px; left: 60px")
-//                 map.appendChild(huj)
-//         this.number ++
-//     }
-// }
+                //add CSS styles
+                enemy.classList.add('enemy-tank')
+                //add initial position
+                enemy.setAttribute('style', "top: 70px; left: 0px")
+                //add ID in case it is needed
+                enemy.setAttribute('id', `enemy${this.number}`) 
+                //append it to map
+                map.appendChild(enemy)
+                //increase current number of enemies
+                this.number ++
+
+        //INITIALIZE MOVENT OF THE ENEMY - passing enemy div as an argument        
+        this.move(enemy)
+        
+    }
+    
+
+
+
+    //==============================================================================
+    //==================================movement AI=================================
+    //==============================================================================
+    static move = function(enemy){
+       
+        
+        let upORdown = 70
+        let leftORright = 0
+        let randomMove = 0
+
+
+        setInterval(() => {
+            randomMove = Math.floor(Math.random() * 4)
+            console.log(randomMove);
+        }, 1500);
+        const mainEnemyInterval = setInterval(()=>{
+            if(randomMove === 3){
+                AI_down()
+            }else if(randomMove === 2){
+                AI_up()
+            }else if(randomMove === 1){
+                AI_left()
+            }else if(randomMove === 0){
+                AI_right()
+            }
+          
+        },50)
+
+
+       //vertical movement functions====================
+        function AI_down(){
+            upORdown += 1            
+            enemy.style.top = `${upORdown}px`
+            enemy.style.transform = `rotateZ(0deg)`
+            if(upORdown === mapHeight){
+                
+                AI_up()
+            }
+        }        
+        function AI_up() {
+     
+            upORdown -= 1            
+            enemy.style.top = `${upORdown}px`
+            enemy.style.transform = `rotateZ(180deg)`
+            if(upORdown === 0){
+                
+                AI_down()
+            }      
+        }             
+        
+        
+
+        //horizontal movement functions====================
+        function AI_left(){
+            leftORright -= 1            
+            enemy.style.left = `${leftORright}px`
+            enemy.style.transform = `rotateZ(90deg)`
+            if(upORdown === mapHeight){
+                
+                
+            }
+        }
+        function AI_right(){
+            leftORright += 1            
+            enemy.style.left = `${leftORright}px`
+            enemy.style.transform = `rotateZ(270deg)`
+            if(upORdown === mapHeight){
+                
+                
+            }
+        }
+       
+        
+    }
+}
+
+
+
+// enemy creator interval
+Enemy.create()
+Enemy.create()
+
+ 
