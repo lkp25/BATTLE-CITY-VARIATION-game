@@ -1063,7 +1063,7 @@ class Enemy{
     static create = function(){
         
         //check if max number of enemies was not exceeded and don't execute if true
-        if(this.number > 2){
+        if(this.number > 20){
             
             return
         }   
@@ -1081,7 +1081,7 @@ class Enemy{
                 //increase current number of enemies
                 this.number ++
 
-        //INITIALIZE MOVENT OF THE ENEMY - passing enemy div as an argument        
+        //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
         this.move(enemy)
         
     }
@@ -1097,78 +1097,194 @@ class Enemy{
         
         let upORdown = 70
         let leftORright = 0
+        let enemyFacing = 'right'
+
+        //variable used to determine direction of AI movement
         let randomMove = 0
-
-
+        //change direction randomly after some time
         setInterval(() => {
-            randomMove = Math.floor(Math.random() * 4)
-            console.log(randomMove);
+            randomMove = Math.floor(Math.random() * 4)            
         }, 1500);
-        const mainEnemyInterval = setInterval(()=>{
+
+
+        //MAIN AI MOVEMENT INTERVAL
+        const enemyMovementInterval = setInterval(()=>{
+                
+            //get all positions of all alive enemies
+            const allCurrentEnemyPositions = Enemy.getAllEnemies()
+            
+            
+            //force move  according to random number:================
+            console.log();
+            
+            
+            //DOWN DOWN DOWN DOWN DOWN -if 3
             if(randomMove === 3){
                 AI_down()
+
+                //reaches bottom edge - change direction
+                if(upORdown === mapHeight){
+                                
+                                
+                    randomMove = 2
+                    AI_left()
+
+                }
+                //crashes with another enemy tank - change direction
+                allCurrentEnemyPositions.forEach(element =>{
+                    if
+                    (element.top -1<= enemy.offsetTop + 40
+                    &&element.bottom >=enemy.offsetTop
+                    &&element.left <= enemy.offsetLeft + 40
+                    &&element.right >=enemy.offsetLeft
+                    ){
+                        randomMove = 0
+                        AI_right()    }
+                    })
+
+
+
+
+
+            //up - 2
             }else if(randomMove === 2){
                 AI_up()
-            }else if(randomMove === 1){
+            //top edge
+                if(upORdown === 0){
+                
+                    randomMove = 1
+                    AI_down()
+                 }
+                 allCurrentEnemyPositions.forEach(element =>{
+                    if
+                    (element.top <= enemy.offsetTop + 40
+                        &&element.bottom +1 >=enemy.offsetTop
+                        &&element.left <= enemy.offsetLeft + 40
+                        &&element.right >=enemy.offsetLeft
+                    ){
+                        randomMove = 1
+                        AI_left()    }
+                    })
+            
+            
+            //left - 1
+             }else if(randomMove === 1){
                 AI_left()
+                //left edge
+                if(leftORright < 2){
+                    randomMove = 0
+                    AI_down()                
+                 }
+                 allCurrentEnemyPositions.forEach(element =>{
+                    if
+                    (element.top <= enemy.offsetTop + 40
+                        &&element.bottom >=enemy.offsetTop
+                        &&element.left <= enemy.offsetLeft + 40
+                        &&element.right + 1>=enemy.offsetLeft
+                    ){
+                        randomMove = 3
+                        AI_down()   }
+                    })
+            
+            //right - 0
             }else if(randomMove === 0){
                 AI_right()
+
+                //right edge
+                if(leftORright === mapWidth){
+                    randomMove = 3
+                    AI_left()
+                }
+                allCurrentEnemyPositions.forEach(element =>{
+                    if
+                    (element.top <= enemy.offsetTop + 40
+                        &&element.bottom >=enemy.offsetTop
+                        &&element.left -1 <= enemy.offsetLeft + 40
+                        &&element.right >=enemy.offsetLeft
+                    ){
+                        randomMove = 3
+                        AI_down()    }
+                    })
             }
+            
           
-        },50)
+
+            //change direction when map edges are touched===========
+
+            
+            
+            
+            
+           
+        },20)      
+        //*end of interval++++++++++++++++++++++++++
 
 
-       //vertical movement functions====================
+        //vertical movement functions====================
         function AI_down(){
+            enemyFacing = 'down'
             upORdown += 1            
             enemy.style.top = `${upORdown}px`
             enemy.style.transform = `rotateZ(0deg)`
-            if(upORdown === mapHeight){
-                
-                AI_up()
-            }
+            
         }        
         function AI_up() {
-     
+            enemyFacing = 'up'
             upORdown -= 1            
             enemy.style.top = `${upORdown}px`
             enemy.style.transform = `rotateZ(180deg)`
-            if(upORdown === 0){
-                
-                AI_down()
-            }      
+            
         }             
         
         
 
         //horizontal movement functions====================
         function AI_left(){
+            enemyFacing = 'left'
             leftORright -= 1            
             enemy.style.left = `${leftORright}px`
             enemy.style.transform = `rotateZ(90deg)`
-            if(upORdown === mapHeight){
-                
-                
-            }
+            
         }
         function AI_right(){
+            enemyFacing = 'right'
             leftORright += 1            
             enemy.style.left = `${leftORright}px`
             enemy.style.transform = `rotateZ(270deg)`
-            if(upORdown === mapHeight){
-                
-                
-            }
+            
         }
-       
-        
     }
+
+
+
+    static getAllEnemies = function(){
+        return  [...document.querySelectorAll('.enemy-tank')].map(element => {
+            return {
+                top: element.offsetTop,
+                bottom: element.offsetTop + 22,
+                left: element.offsetLeft,
+                right: element.offsetLeft + 22,
+                node: element.id
+            }
+
+            
+        })
+        
+        
+    }   
+    
 }
 
 
 
 // enemy creator interval
 Enemy.create()
-Enemy.create()
+// Enemy.create()
+// Enemy.create()
+
+
+ 
+
+ 
 
  
