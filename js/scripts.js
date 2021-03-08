@@ -1094,7 +1094,7 @@ class Enemy{
     //==============================================================================
     static move = function(enemy){
        
-        
+       
         let upORdown = 70
         let leftORright = 0
         let enemyFacing = 'right'
@@ -1112,10 +1112,16 @@ class Enemy{
                 
             //get all positions of all alive enemies
             const allCurrentEnemyPositions = Enemy.getAllEnemies()
+            // .reduce((all, theOne)=>{
+            //     if(!theOne.node === enemy.id){
+            //         all.push(theOne)
+            //     }
+            //     return all
+            // },[])
             
             
             //force move  according to random number:================
-            console.log();
+          
             
             
             //DOWN DOWN DOWN DOWN DOWN -if 3
@@ -1137,16 +1143,18 @@ class Enemy{
                     &&element.bottom >=enemy.offsetTop
                     &&element.left <= enemy.offsetLeft + 40
                     &&element.right >=enemy.offsetLeft
+                    &&element.node !== enemy.id
                     ){
-                        randomMove = 0
-                        AI_right()    }
+                        
+                        randomMove = 2
+                        AI_up()    }
                     })
 
 
 
 
 
-            //up - 2
+            //UP UP UP UP UP UP UP UP UP  - 2
             }else if(randomMove === 2){
                 AI_up()
             //top edge
@@ -1161,13 +1169,14 @@ class Enemy{
                         &&element.bottom +1 >=enemy.offsetTop
                         &&element.left <= enemy.offsetLeft + 40
                         &&element.right >=enemy.offsetLeft
+                        &&element.node !== enemy.id
                     ){
-                        randomMove = 1
-                        AI_left()    }
+                        randomMove = 3
+                        AI_down()    }
                     })
             
             
-            //left - 1
+            //LEFT LEFT LEFT LEFT LEFT LEFT - 1
              }else if(randomMove === 1){
                 AI_left()
                 //left edge
@@ -1181,12 +1190,13 @@ class Enemy{
                         &&element.bottom >=enemy.offsetTop
                         &&element.left <= enemy.offsetLeft + 40
                         &&element.right + 1>=enemy.offsetLeft
+                        &&element.node !== enemy.id
                     ){
-                        randomMove = 3
-                        AI_down()   }
+                        randomMove = 0
+                        AI_right()   }
                     })
             
-            //right - 0
+            //RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT - 0
             }else if(randomMove === 0){
                 AI_right()
 
@@ -1201,9 +1211,10 @@ class Enemy{
                         &&element.bottom >=enemy.offsetTop
                         &&element.left -1 <= enemy.offsetLeft + 40
                         &&element.right >=enemy.offsetLeft
+                        &&element.node !== enemy.id
                     ){
-                        randomMove = 3
-                        AI_down()    }
+                        randomMove = 1
+                        AI_left()    }
                     })
             }
             
@@ -1261,9 +1272,9 @@ class Enemy{
         return  [...document.querySelectorAll('.enemy-tank')].map(element => {
             return {
                 top: element.offsetTop,
-                bottom: element.offsetTop + 22,
+                bottom: element.offsetTop + 40,
                 left: element.offsetLeft,
-                right: element.offsetLeft + 22,
+                right: element.offsetLeft + 40,
                 node: element.id
             }
 
@@ -1279,8 +1290,6 @@ class Enemy{
 
 // enemy creator interval
 Enemy.create()
-// Enemy.create()
-// Enemy.create()
 
 
  

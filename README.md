@@ -50,3 +50,10 @@ when tank triaes to run through the obstacle with movement being unlocked after 
 //06.03.2021
 - fixed a bug related to strange movent after colliding with obstacle - if after collision player was pressing movement keys fast, tank was being teleported to the other side of the obstacle (very weird-looking behavior, not very common but annoying nevertheless). Collision detecting method was changed and implemented in the movement function directly like for player - player collision. 
 Previously it was being called directly by Main Executor Interval, now is a dependency of movement function.
+
+//07.03.2021
+- started works on enemy AI. basic movement interval function added and a factory function for mass-creating enemy tanks.
+
+//08.03.2021
+- created AI map boundaries detection - AI tanks never leave the game area
+- created and perfected AI tank + AI tank collision detection - when enemies bump on each other, they move away in opposite directions. 
