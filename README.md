@@ -56,4 +56,9 @@ Previously it was being called directly by Main Executor Interval, now is a depe
 
 //08.03.2021
 - created AI map boundaries detection - AI tanks never leave the game area
-- created and perfected AI tank + AI tank collision detection - when enemies bump on each other, they move away in opposite directions. 
+- created and perfected (AI tank//AI tank) collision detection - when enemies bump on each other, they move away in opposite directions. 
+
+//09.03.2021
+- added player vs enemy collision detection(both ways).
+- increased randomization of enemy movement - previously when tanks were colliding with each other or any player, they only performed GO-BACK action. now they randomly decide to go left or right or back. 
+Same thing was also added for map egdes - tanks randomly decide where to go, previously it was hard coded.

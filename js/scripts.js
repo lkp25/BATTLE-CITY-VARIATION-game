@@ -36,7 +36,7 @@ let facing2 = 'down'
 const tank = document.createElement('div')
 // .setAttribute('style', "top: 0px; left: 360px")
 map.appendChild(tank)
-tank.setAttribute('style', "top: 360px; left: 575px")
+tank.setAttribute('style', "top: 360px; left: 578px")
 tank.classList.add('tank')
 tank.style.opacity = 1
 
@@ -735,7 +735,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left 
                 ){
-                    yPos -= 1   }
+                    yPos -= 2   }
                 })
             //check for crash with AI-enemies
            Enemy.getAllEnemies().forEach(element =>{
@@ -745,7 +745,7 @@ document.addEventListener('keyup', ((e) =>{
             &&element.left <= tank1Position.right 
             &&element.right >=tank1Position.left 
             ){
-                yPos -= 1   }
+                yPos -= 5   }
            })
             
             
@@ -776,7 +776,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left 
                 ){
-                    yPos += 1   }
+                    yPos += 2   }
                 })
 
                 //Check for crash with enemy AI
@@ -787,7 +787,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left 
                 ){
-                    yPos += 1   }
+                    yPos += 5  }
                 })
 
             if(yPos <= 0){  //STOP when it reaches MAP-TOP
@@ -822,7 +822,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank1Position.right 
                 &&element.right +1>=tank1Position.left 
                 ){
-                    xPos += 1   }
+                    xPos += 2   }
             })
 
             Enemy.getAllEnemies().forEach(element =>{
@@ -832,7 +832,7 @@ document.addEventListener('keyup', ((e) =>{
                     &&element.left <= tank1Position.right 
                     &&element.right +1>=tank1Position.left 
                  ){
-                        xPos += 1   }
+                        xPos += 5   }
             })
             
             if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
@@ -861,7 +861,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left -1<= tank1Position.right 
                 &&element.right>=tank1Position.left 
                 ){
-                    xPos -= 1   }
+                    xPos -= 2   }
             })
             Enemy.getAllEnemies().forEach(element =>{
                 if
@@ -870,7 +870,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left -1<= tank1Position.right 
                 &&element.right>=tank1Position.left 
                 ){
-                    xPos -= 1   }
+                    xPos -= 5   }
                 })
 
             if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
@@ -909,7 +909,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
                 ){
-                    yPos -= 1   }
+                    yPos -= 2   }
             })
             Enemy.getAllEnemies().forEach(element =>{
                 if
@@ -918,7 +918,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
                 ){
-                    yPos -= 1   }
+                    yPos -= 5   }
             })
 
             if(yPos >= mapHeight){  //STOP when it reaches MAP-BOTTOM
@@ -947,7 +947,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
                 ){
-                    yPos += 1   }
+                    yPos += 2   }
             })
             Enemy.getAllEnemies().forEach(element =>{
                 if
@@ -956,7 +956,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
                 ){
-                    yPos += 1   }
+                    yPos += 5   }
             })
 
             if(yPos <= 0){  //STOP when it reaches MAP-TOP
@@ -988,7 +988,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right +1>=tank2Position.left 
                 ){
-                    xPos += 1   }
+                    xPos += 2   }
             })
             Enemy.getAllEnemies().forEach(element =>{
                 if
@@ -997,7 +997,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right +1>=tank2Position.left 
                 ){
-                    xPos += 1   }
+                    xPos += 5   }
             })
 
             if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
@@ -1025,7 +1025,7 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left -1<= tank2Position.right 
                 &&element.right>=tank2Position.left 
                 ){
-                    xPos -= 1   }
+                    xPos -= 2   }
             })
             Enemy.getAllEnemies().forEach(element =>{
                 if
@@ -1034,7 +1034,7 @@ document.addEventListener('keyup', ((e) =>{
                     &&element.left -1<= tank2Position.right 
                     &&element.right>=tank2Position.left 
                 ){
-                    xPos -= 1   }
+                    xPos -= 5   }
             })
             if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
                 tank2.style.left = `${mapWidth}px`
@@ -1255,14 +1255,23 @@ class Enemy{
 
         //current movement direction of enemy tank
         let enemyFacing = 'right'
-
-        
-        
-        //randomMove - parameter used to change direction randomly after specified time
+        let hyperRandom
         let randomMove = 0
         setInterval(() => {
+            hyperRandom = Math.floor(Math.random() * 1000)    
+            console.log(hyperRandom);
+            buuu()   
+        }, 3500);
+        function buuu(){return setTimeout(() => {
             randomMove = Math.floor(Math.random() * 4)            
-        }, 1500);
+        }, hyperRandom)}     
+        
+        //OLD, more predictable
+        //randomMove - parameter used to change direction randomly after specified time
+        // setInterval(() => {
+            // randomMove = Math.floor(Math.random() * 4)   
+        // }, 4000);
+           
 
 
         //=========================MAIN AI MOVEMENT INTERVAL==============================
@@ -1279,11 +1288,14 @@ class Enemy{
                 AI_down()
 
                 //reaches map bottom edge - change direction
-                if(upORdown === mapHeight){
+                if(upORdown > mapHeight - 2){
                                 
-                                
-                    randomMove = 2
-                    AI_left()
+                    upORdown -3           
+                    //if it is trying to go over the egde, draw random number again
+                    //to force changing direction
+                    if(randomMove === 3){
+                        randomMove = Math.floor(Math.random() * 4)
+                    }
 
                 }
                 //crashes with another enemy tank - change direction
@@ -1295,8 +1307,8 @@ class Enemy{
                     &&element.right >=enemy.offsetLeft
                     &&element.node !== enemy.id                
                     ){
-                        // upORdown --
-                        randomMove = 2
+                        upORdown -2
+                        randomMove = Math.floor(Math.random() * 4)
                         AI_up()    }
                     })
                 
@@ -1312,10 +1324,24 @@ class Enemy{
                         && enemy.offsetLeft + 41>= tank1Position.left 
                         && enemy.offsetTop <= tank1Position.bottom)
                         ){
-                        randomMove = 2
+                        upORdown -2
+                        randomMove = Math.floor(Math.random() * 4)
                         AI_up()    
                     }
-
+                // Check for crash with any obstacle
+                Obstacle.getAll().forEach(element =>{
+                if
+                (element.top - 1<= enemy.offsetTop + 40
+                &&element.bottom >=enemy.offsetTop
+                &&element.left <= enemy.offsetLeft + 40
+                &&element.right >=enemy.offsetLeft 
+                ){
+                    //and change direction for further movement
+                    
+                    randomMove = Math.floor(Math.random() * 4)
+                
+                    upORdown -2   }
+                })
 
 
 
@@ -1324,10 +1350,11 @@ class Enemy{
             }else if(randomMove === 2){
                 AI_up()
             //top edge
-                if(upORdown === 0){
-                
-                    randomMove = 1
-                    AI_down()
+                if(upORdown < 2){
+                    upORdown +3
+                    if(randomMove === 2){
+                        randomMove = Math.floor(Math.random() * 4)
+                    }
                  }
                  allCurrentEnemyPositions.forEach(element =>{
                     if
@@ -1337,7 +1364,8 @@ class Enemy{
                         &&element.right >=enemy.offsetLeft
                         &&element.node !== enemy.id
                     ){
-                        randomMove = 3
+                        upORdown +2
+                        randomMove = Math.floor(Math.random() * 4)
                         AI_down()    }
                     })
             
@@ -1352,17 +1380,39 @@ class Enemy{
                             && enemy.offsetLeft + 41>= tank1Position.left 
                             && enemy.offsetTop <= tank1Position.bottom)
                             ){
-                            randomMove = 3
+                            upORdown +2
+                            randomMove = Math.floor(Math.random() * 4)
                             AI_down()    
                         }
+                    
+                        // Check for crash with any obstacle
+                    Obstacle.getAll().forEach(element =>{
+                    if
+                    (element.top <= enemy.offsetTop + 40
+                    &&element.bottom + 1>=enemy.offsetTop
+                    &&element.left <= enemy.offsetLeft + 40
+                    &&element.right >=enemy.offsetLeft 
+                    ){
+                        //and change direction for further movement
+                       
+                        randomMove = Math.floor(Math.random() * 4)
+                    
+                        upORdown +2   }
+                    })
+
             
             //LEFT LEFT LEFT LEFT LEFT LEFT - 1
              }else if(randomMove === 1){
                 AI_left()
                 //left edge
                 if(leftORright < 2){
-                    randomMove = 0
-                    AI_down()                
+                    leftORright+3
+                    //if it is trying to go over the egde, draw random number again
+                    //to force changing direction
+                    if(randomMove === 1){
+                        randomMove = Math.floor(Math.random() * 4)
+                    }
+                                   
                  }
                  allCurrentEnemyPositions.forEach(element =>{
                     if
@@ -1372,7 +1422,8 @@ class Enemy{
                         &&element.right + 1>=enemy.offsetLeft
                         &&element.node !== enemy.id
                     ){
-                        randomMove = 0
+                        leftORright+2
+                        randomMove = Math.floor(Math.random() * 4)
                         AI_right()   }
                     })
                     if(
@@ -1386,17 +1437,38 @@ class Enemy{
                             && enemy.offsetLeft + 41>= tank1Position.left 
                             && enemy.offsetTop <= tank1Position.bottom)
                             ){
-                            randomMove = 0
+                            leftORright+2
+                            randomMove = Math.floor(Math.random() * 4)
                             AI_right()    
                         }
+                     // Check for crash with any obstacle
+                     Obstacle.getAll().forEach(element =>{
+                    if
+                    (element.top <= enemy.offsetTop + 40
+                    &&element.bottom >=enemy.offsetTop
+                    &&element.left <= enemy.offsetLeft + 40
+                    &&element.right +1 >=enemy.offsetLeft 
+                    ){
+                        //and change direction for further movement
+                        
+                        randomMove = Math.floor(Math.random() * 4)
+                    
+                        leftORright +2   }
+                    })    
+
+
             //RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT - 0
             }else if(randomMove === 0){
                 AI_right()
 
                 //right edge
-                if(leftORright === mapWidth){
-                    randomMove = 3
-                    AI_left()
+                if(leftORright > mapWidth - 2){
+                    leftORright-3
+                    //if it is trying to go over the egde, draw random number again
+                    //to force changing direction
+                    if(randomMove === 0){
+                        randomMove = Math.floor(Math.random() * 4)
+                    }
                 }
                 allCurrentEnemyPositions.forEach(element =>{
                     if
@@ -1406,7 +1478,8 @@ class Enemy{
                         &&element.right >=enemy.offsetLeft
                         &&element.node !== enemy.id
                     ){
-                        randomMove = 1
+                        leftORright-2
+                        randomMove = Math.floor(Math.random() * 4)
                         AI_left()    }
                     })
                     if(
@@ -1420,9 +1493,25 @@ class Enemy{
                         && enemy.offsetLeft + 41>= tank1Position.left 
                         && enemy.offsetTop <= tank1Position.bottom)
                         ){
-                            randomMove = 1
+                            leftORright-2
+                            randomMove = Math.floor(Math.random() * 4)
                             AI_left()    
                         }
+
+                 // Check for crash with any obstacle
+                     Obstacle.getAll().forEach(element =>{
+                    if
+                    (element.top <= enemy.offsetTop + 40
+                    &&element.bottom >=enemy.offsetTop
+                    &&element.left - 1<= enemy.offsetLeft + 40
+                    &&element.right >=enemy.offsetLeft 
+                    ){
+                        //and change direction for further movement
+                        
+                        randomMove = Math.floor(Math.random() * 4)
+                        leftORright -2   }
+                    
+                    })
             }
                         
            
