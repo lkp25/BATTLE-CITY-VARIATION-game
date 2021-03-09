@@ -1,7 +1,6 @@
 //hide scrollbars
 document.body.style.overflow = 'hidden'
 
-
 //=======================================================================
 //===================MAIN VARIABLES, CREATING PLAYERS====================
 //=======================================================================
@@ -17,32 +16,21 @@ let tank2Position = {}
 let missle1Position = {}
 let missle2Position = {}
 
-//movement of player tanks - key values
-
-
-
-
-
+//movement of player tanks - key values:
+//player one
 let up = false
 let down = false
 let right = false
 let left = false
 let fire = false
 let facing = 'down'
-
-
-
+//player two
 let up2 = false
 let down2 = false
 let right2 = false
 let left2 = false
 let fire2 = false
 let facing2 = 'down'
-
-
-
-
-
 
 //create player1 tank:  
 const tank = document.createElement('div')
@@ -63,6 +51,19 @@ tank2.style.opacity = 1
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 //=======================================================================================
 //==========================SHOOTING MISSLES -event listeners===========================
 //=======================================================================================
@@ -77,9 +78,8 @@ tank2.style.opacity = 1
         missle2Num = 0
         missle1Num = 0
         
-    }, 900);
-    
-    
+    }, 900);    
+    //player one shooting
      document.addEventListener('keydown', ((e)=> {   
          
          if(e.key === 'p' && missle1Num < 1){                 
@@ -96,6 +96,7 @@ tank2.style.opacity = 1
         }      
           
     }))
+    //player two shooting
     document.addEventListener('keyup', ((e)=> {           
     
         if(e.key === 'p'){                 
@@ -108,6 +109,14 @@ tank2.style.opacity = 1
     }))
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
+
+
+
+
+
+
+
+
 
 
 
@@ -571,6 +580,12 @@ tank2.style.opacity = 1
 
 
 
+
+
+
+
+
+
 //=======================================================================================
 //==========================EVENT LISTENERS - FOR PLAYERS' MOVEMENT======================
 //=======================================================================================
@@ -669,6 +684,24 @@ document.addEventListener('keyup', ((e) =>{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //======================================================================================
 //==============================TANK MOVEMENT FUNCTIONS=================================
 //======================================================================================
@@ -704,10 +737,20 @@ document.addEventListener('keyup', ((e) =>{
                 ){
                     yPos -= 1   }
                 })
+            //check for crash with AI-enemies
+           Enemy.getAllEnemies().forEach(element =>{
+            if
+            (element.top -1<= tank1Position.bottom 
+            &&element.bottom >=tank1Position.top 
+            &&element.left <= tank1Position.right 
+            &&element.right >=tank1Position.left 
+            ){
+                yPos -= 1   }
+           })
             
-           
-                     
-            if(yPos >= mapHeight){  //STOP when it reaches MAP-BOTTOM
+            
+                //STOP when it reaches MAP-BOTTOM
+            if(yPos >= mapHeight){  
                 tank.style.top = `${mapHeight}px`
             }else{  //keep going down if there is space
                 tank.style.top = `${yPos}px`
@@ -727,6 +770,17 @@ document.addEventListener('keyup', ((e) =>{
             }
             //Check for crash with any obstacle
             Obstacle.getAll().forEach(element =>{
+                if
+                (element.top <= tank1Position.bottom 
+                &&element.bottom +1>=tank1Position.top 
+                &&element.left <= tank1Position.right 
+                &&element.right >=tank1Position.left 
+                ){
+                    yPos += 1   }
+                })
+
+                //Check for crash with enemy AI
+            Enemy.getAllEnemies().forEach(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom +1>=tank1Position.top 
@@ -769,8 +823,17 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.right +1>=tank1Position.left 
                 ){
                     xPos += 1   }
-                })
-            
+            })
+
+            Enemy.getAllEnemies().forEach(element =>{
+                 if
+                 (element.top <= tank1Position.bottom 
+                    &&element.bottom >=tank1Position.top 
+                    &&element.left <= tank1Position.right 
+                    &&element.right +1>=tank1Position.left 
+                 ){
+                        xPos += 1   }
+            })
             
             if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
                 tank.style.left = `${0}px`
@@ -799,7 +862,17 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.right>=tank1Position.left 
                 ){
                     xPos -= 1   }
+            })
+            Enemy.getAllEnemies().forEach(element =>{
+                if
+                (element.top <= tank1Position.bottom 
+                &&element.bottom >=tank1Position.top 
+                &&element.left -1<= tank1Position.right 
+                &&element.right>=tank1Position.left 
+                ){
+                    xPos -= 1   }
                 })
+
             if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
                 tank.style.left = `${mapWidth}px`
             }else{  //keep going right if there is space
@@ -837,7 +910,16 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.right >=tank2Position.left 
                 ){
                     yPos -= 1   }
-                })
+            })
+            Enemy.getAllEnemies().forEach(element =>{
+                if
+                (element.top -1<= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right >=tank2Position.left 
+                ){
+                    yPos -= 1   }
+            })
 
             if(yPos >= mapHeight){  //STOP when it reaches MAP-BOTTOM
                 tank2.style.top = `${mapHeight}px`
@@ -866,7 +948,16 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.right >=tank2Position.left 
                 ){
                     yPos += 1   }
-                })
+            })
+            Enemy.getAllEnemies().forEach(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom +1>=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right >=tank2Position.left 
+                ){
+                    yPos += 1   }
+            })
 
             if(yPos <= 0){  //STOP when it reaches MAP-TOP
                 tank2.style.top = `${0}px`
@@ -898,7 +989,16 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.right +1>=tank2Position.left 
                 ){
                     xPos += 1   }
-                })
+            })
+            Enemy.getAllEnemies().forEach(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right +1>=tank2Position.left 
+                ){
+                    xPos += 1   }
+            })
 
             if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
                 tank2.style.left = `${0}px`
@@ -926,8 +1026,16 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.right>=tank2Position.left 
                 ){
                     xPos -= 1   }
-                })
-
+            })
+            Enemy.getAllEnemies().forEach(element =>{
+                if
+                    (element.top <= tank2Position.bottom 
+                    &&element.bottom >=tank2Position.top 
+                    &&element.left -1<= tank2Position.right 
+                    &&element.right>=tank2Position.left 
+                ){
+                    xPos -= 1   }
+            })
             if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
                 tank2.style.left = `${mapWidth}px`
             }else{  //keep going right if there is space
@@ -939,6 +1047,18 @@ document.addEventListener('keyup', ((e) =>{
     }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -977,6 +1097,22 @@ setInterval(()=>{
 
 },15)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1048,6 +1184,25 @@ for(let x = 0; x < 100; x++){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //======================================================================================
 //=========================ENEMIES AI===================================================
 //======================================================================================
@@ -1094,41 +1249,36 @@ class Enemy{
     //==============================================================================
     static move = function(enemy){
        
-       
+        //main positioning variables: vertical and horizontal
         let upORdown = 70
         let leftORright = 0
+
+        //current movement direction of enemy tank
         let enemyFacing = 'right'
 
-        //variable used to determine direction of AI movement
+        
+        
+        //randomMove - parameter used to change direction randomly after specified time
         let randomMove = 0
-        //change direction randomly after some time
         setInterval(() => {
             randomMove = Math.floor(Math.random() * 4)            
         }, 1500);
 
 
-        //MAIN AI MOVEMENT INTERVAL
+        //=========================MAIN AI MOVEMENT INTERVAL==============================
+        //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
+
         const enemyMovementInterval = setInterval(()=>{
                 
             //get all positions of all alive enemies
             const allCurrentEnemyPositions = Enemy.getAllEnemies()
-            // .reduce((all, theOne)=>{
-            //     if(!theOne.node === enemy.id){
-            //         all.push(theOne)
-            //     }
-            //     return all
-            // },[])
-            
-            
-            //force move  according to random number:================
-          
-            
-            
+                        
+            //force enemy movement  according to random number:================            
             //DOWN DOWN DOWN DOWN DOWN -if 3
             if(randomMove === 3){
                 AI_down()
 
-                //reaches bottom edge - change direction
+                //reaches map bottom edge - change direction
                 if(upORdown === mapHeight){
                                 
                                 
@@ -1143,12 +1293,28 @@ class Enemy{
                     &&element.bottom >=enemy.offsetTop
                     &&element.left <= enemy.offsetLeft + 40
                     &&element.right >=enemy.offsetLeft
-                    &&element.node !== enemy.id
+                    &&element.node !== enemy.id                
                     ){
-                        
+                        // upORdown --
                         randomMove = 2
                         AI_up()    }
                     })
+                
+                //collision with player one or two - change direction
+                if(
+                    (enemy.offsetTop + 41 >= tank2Position.top 
+                        && enemy.offsetLeft <= tank2Position.right 
+                        && enemy.offsetLeft + 41>= tank2Position.left 
+                        && enemy.offsetTop <= tank2Position.bottom) 
+                        ||
+                        (enemy.offsetTop + 41 >= tank1Position.top 
+                        && enemy.offsetLeft <= tank1Position.right 
+                        && enemy.offsetLeft + 41>= tank1Position.left 
+                        && enemy.offsetTop <= tank1Position.bottom)
+                        ){
+                        randomMove = 2
+                        AI_up()    
+                    }
 
 
 
@@ -1175,6 +1341,20 @@ class Enemy{
                         AI_down()    }
                     })
             
+                    if(
+                        (enemy.offsetTop + 41 >= tank2Position.top 
+                            && enemy.offsetLeft <= tank2Position.right 
+                            && enemy.offsetLeft + 41>= tank2Position.left 
+                            && enemy.offsetTop <= tank2Position.bottom) 
+                            ||
+                            (enemy.offsetTop + 41 >= tank1Position.top 
+                            && enemy.offsetLeft <= tank1Position.right 
+                            && enemy.offsetLeft + 41>= tank1Position.left 
+                            && enemy.offsetTop <= tank1Position.bottom)
+                            ){
+                            randomMove = 3
+                            AI_down()    
+                        }
             
             //LEFT LEFT LEFT LEFT LEFT LEFT - 1
              }else if(randomMove === 1){
@@ -1195,7 +1375,20 @@ class Enemy{
                         randomMove = 0
                         AI_right()   }
                     })
-            
+                    if(
+                        (enemy.offsetTop + 41 >= tank2Position.top 
+                            && enemy.offsetLeft <= tank2Position.right 
+                            && enemy.offsetLeft + 41>= tank2Position.left 
+                            && enemy.offsetTop <= tank2Position.bottom) 
+                            ||
+                            (enemy.offsetTop + 41 >= tank1Position.top 
+                            && enemy.offsetLeft <= tank1Position.right 
+                            && enemy.offsetLeft + 41>= tank1Position.left 
+                            && enemy.offsetTop <= tank1Position.bottom)
+                            ){
+                            randomMove = 0
+                            AI_right()    
+                        }
             //RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT - 0
             }else if(randomMove === 0){
                 AI_right()
@@ -1216,48 +1409,52 @@ class Enemy{
                         randomMove = 1
                         AI_left()    }
                     })
+                    if(
+                        (enemy.offsetTop + 41 >= tank2Position.top 
+                        && enemy.offsetLeft <= tank2Position.right 
+                        && enemy.offsetLeft + 41>= tank2Position.left 
+                        && enemy.offsetTop <= tank2Position.bottom) 
+                        ||
+                        (enemy.offsetTop + 41 >= tank1Position.top 
+                        && enemy.offsetLeft <= tank1Position.right 
+                        && enemy.offsetLeft + 41>= tank1Position.left 
+                        && enemy.offsetTop <= tank1Position.bottom)
+                        ){
+                            randomMove = 1
+                            AI_left()    
+                        }
             }
-            
-          
-
-            //change direction when map edges are touched===========
-
-            
-            
-            
-            
+                        
            
         },20)      
         //*end of interval++++++++++++++++++++++++++
 
 
         //vertical movement functions====================
-        function AI_down(){
+        function AI_down(){//go down
             enemyFacing = 'down'
             upORdown += 1            
             enemy.style.top = `${upORdown}px`
             enemy.style.transform = `rotateZ(0deg)`
             
         }        
-        function AI_up() {
+        function AI_up() {//go up
             enemyFacing = 'up'
             upORdown -= 1            
             enemy.style.top = `${upORdown}px`
             enemy.style.transform = `rotateZ(180deg)`
             
         }             
-        
-        
 
         //horizontal movement functions====================
-        function AI_left(){
+        function AI_left(){//go left
             enemyFacing = 'left'
             leftORright -= 1            
             enemy.style.left = `${leftORright}px`
             enemy.style.transform = `rotateZ(90deg)`
             
         }
-        function AI_right(){
+        function AI_right(){//go right
             enemyFacing = 'right'
             leftORright += 1            
             enemy.style.left = `${leftORright}px`
@@ -1267,7 +1464,7 @@ class Enemy{
     }
 
 
-
+    //method to return array of objects containing borders' positions of all alive enemies
     static getAllEnemies = function(){
         return  [...document.querySelectorAll('.enemy-tank')].map(element => {
             return {
