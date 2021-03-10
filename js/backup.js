@@ -1289,8 +1289,8 @@ class Enemy{
 
                 //reaches map bottom edge - change direction
                 if(upORdown > mapHeight - 2){
-                                
-                    upORdown -3           
+                    enemy.style.top = `${mapHeight - 2}px`            
+                            
                     //if it is trying to go over the egde, draw random number again
                     //to force changing direction
                     if(randomMove === 3){
@@ -1351,7 +1351,8 @@ class Enemy{
                 AI_up()
             //top edge
                 if(upORdown < 2){
-                    upORdown +3
+                    enemy.style.top = `2px`
+                    
                     if(randomMove === 2){
                         randomMove = Math.floor(Math.random() * 4)
                     }
@@ -1406,7 +1407,8 @@ class Enemy{
                 AI_left()
                 //left edge
                 if(leftORright < 2){
-                    leftORright+3
+                    enemy.style.left = `2px`
+                    
                     //if it is trying to go over the egde, draw random number again
                     //to force changing direction
                     if(randomMove === 1){
@@ -1463,7 +1465,8 @@ class Enemy{
 
                 //right edge
                 if(leftORright > mapWidth - 2){
-                    leftORright-3
+                    enemy.style.left = `${mapWidth -2}px`
+                    
                     //if it is trying to go over the egde, draw random number again
                     //to force changing direction
                     if(randomMove === 0){

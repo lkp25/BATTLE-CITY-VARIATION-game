@@ -1259,7 +1259,7 @@ class Enemy{
         let randomMove = 0
         setInterval(() => {
             hyperRandom = Math.floor(Math.random() * 1000)    
-            console.log(hyperRandom);
+            
             buuu()   
         }, 3500);
         function buuu(){return setTimeout(() => {
@@ -1277,8 +1277,35 @@ class Enemy{
         //=========================MAIN AI MOVEMENT INTERVAL==============================
         //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
 
+        let huj
         const enemyMovementInterval = setInterval(()=>{
-                
+            // Check for crash with any obstacle
+            huj = Obstacle.getAll().reduce((newArr, element) =>{
+                    if
+                    (element.top <= enemy.offsetTop + 40
+                    &&element.bottom >=enemy.offsetTop
+                    &&element.left<= enemy.offsetLeft + 40
+                    &&element.right >=enemy.offsetLeft 
+                    
+                    ){
+                        //and change direction for further movement
+                        newArr.push(element)                                                 
+                    }
+                    return newArr
+                    },[])[0]
+            if(huj && enemyFacing === 'right'){
+                randomMove = 1
+            }    
+            else if(huj && enemyFacing === 'left'){
+                randomMove = 0
+            }    
+            else if(huj && enemyFacing === 'up'){
+                randomMove = 3
+            }    
+            else if(huj && enemyFacing === 'down'){
+                randomMove = 2
+            }    
+
             //get all positions of all alive enemies
             const allCurrentEnemyPositions = Enemy.getAllEnemies()
                         
@@ -1289,8 +1316,8 @@ class Enemy{
 
                 //reaches map bottom edge - change direction
                 if(upORdown > mapHeight - 2){
-                                
-                    upORdown -3           
+                    enemy.style.top = `${mapHeight - 2}px`            
+                            
                     //if it is trying to go over the egde, draw random number again
                     //to force changing direction
                     if(randomMove === 3){
@@ -1328,20 +1355,14 @@ class Enemy{
                         randomMove = Math.floor(Math.random() * 4)
                         AI_up()    
                     }
-                // Check for crash with any obstacle
-                Obstacle.getAll().forEach(element =>{
-                if
-                (element.top - 1<= enemy.offsetTop + 40
-                &&element.bottom >=enemy.offsetTop
-                &&element.left <= enemy.offsetLeft + 40
-                &&element.right >=enemy.offsetLeft 
-                ){
-                    //and change direction for further movement
-                    
-                    randomMove = Math.floor(Math.random() * 4)
-                
-                    upORdown -2   }
-                })
+                    // if(huj !== undefined){
+                        
+                    //     huj = null
+                    //     enemy.style.top = `${parseInt(enemy.style.top.slice(0, length -2)) - 2}px`
+                        
+                    //     randomMove === 2
+                        
+                    // }
 
 
 
@@ -1351,7 +1372,8 @@ class Enemy{
                 AI_up()
             //top edge
                 if(upORdown < 2){
-                    upORdown +3
+                    enemy.style.top = `2px`
+                    
                     if(randomMove === 2){
                         randomMove = Math.floor(Math.random() * 4)
                     }
@@ -1386,19 +1408,13 @@ class Enemy{
                         }
                     
                         // Check for crash with any obstacle
-                    Obstacle.getAll().forEach(element =>{
-                    if
-                    (element.top <= enemy.offsetTop + 40
-                    &&element.bottom + 1>=enemy.offsetTop
-                    &&element.left <= enemy.offsetLeft + 40
-                    &&element.right >=enemy.offsetLeft 
-                    ){
-                        //and change direction for further movement
-                       
-                        randomMove = Math.floor(Math.random() * 4)
-                    
-                        upORdown +2   }
-                    })
+                        // if(huj !== undefined){
+                        
+                        //     huj = {}
+                        //     enemy.style.top = `${parseInt(enemy.style.top.slice(0, length -2)) + 2}px`
+                        //     randomMove === 3
+                            
+                        // }
 
             
             //LEFT LEFT LEFT LEFT LEFT LEFT - 1
@@ -1406,7 +1422,8 @@ class Enemy{
                 AI_left()
                 //left edge
                 if(leftORright < 2){
-                    leftORright+3
+                    enemy.style.left = `2px`
+                    
                     //if it is trying to go over the egde, draw random number again
                     //to force changing direction
                     if(randomMove === 1){
@@ -1441,20 +1458,13 @@ class Enemy{
                             randomMove = Math.floor(Math.random() * 4)
                             AI_right()    
                         }
-                     // Check for crash with any obstacle
-                     Obstacle.getAll().forEach(element =>{
-                    if
-                    (element.top <= enemy.offsetTop + 40
-                    &&element.bottom >=enemy.offsetTop
-                    &&element.left <= enemy.offsetLeft + 40
-                    &&element.right +1 >=enemy.offsetLeft 
-                    ){
-                        //and change direction for further movement
+                        // if(huj !== undefined){
                         
-                        randomMove = Math.floor(Math.random() * 4)
-                    
-                        leftORright +2   }
-                    })    
+                        //     huj = {}
+                        //     enemy.style.left = `${parseInt(enemy.style.left.slice(0, length -2)) + 2}px`
+                        //     randomMove === 0
+                            
+                        // }
 
 
             //RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT - 0
@@ -1463,7 +1473,8 @@ class Enemy{
 
                 //right edge
                 if(leftORright > mapWidth - 2){
-                    leftORright-3
+                    enemy.style.left = `${mapWidth -2}px`
+                    
                     //if it is trying to go over the egde, draw random number again
                     //to force changing direction
                     if(randomMove === 0){
@@ -1497,21 +1508,15 @@ class Enemy{
                             randomMove = Math.floor(Math.random() * 4)
                             AI_left()    
                         }
-
-                 // Check for crash with any obstacle
-                     Obstacle.getAll().forEach(element =>{
-                    if
-                    (element.top <= enemy.offsetTop + 40
-                    &&element.bottom >=enemy.offsetTop
-                    &&element.left - 1<= enemy.offsetLeft + 40
-                    &&element.right >=enemy.offsetLeft 
-                    ){
-                        //and change direction for further movement
+                    // if(huj !== undefined){
                         
-                        randomMove = Math.floor(Math.random() * 4)
-                        leftORright -2   }
+                    //     huj = {}
+                    //     enemy.style.left = `${parseInt(enemy.style.left.slice(0, length -2)) - 2}px`
+                    //     randomMove === 1
+                        
+                    // }
+                    // console.log(parseInt(enemy.style.left.slice(0, length -2)));
                     
-                    })
             }
                         
            
