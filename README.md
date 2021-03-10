@@ -68,3 +68,4 @@ Same thing was also added for map egdes - tanks randomly decide where to go, pre
 - AI-tanks obstacle detection tested thoroughly, many issues were found.
 after many unsatisfactory trials finally decent solution that works every time was applied.
 - added obstacle detection function for player1 - four nearest obstacles blink constantly.
+- fixed issue with obstacles being duplicated (2 or more on the exact same position on the map, stacked on one another) - it resulted with missles appearing as 'not working' the first time it hit the obstacle while in fact they were - simply there was a couple of  obstacles on the exact same position. Number of duplicates was approximately 30% of all obstacles generated when generating 200-400. Needed to be fixed.

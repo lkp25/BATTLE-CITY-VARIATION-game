@@ -190,7 +190,7 @@ tank2.style.opacity = 1
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.style.display = 'none'
+                                obstacle.node.remove()
                                 missle.remove()
                                 //stop the interval from running forever
                                 clearInterval(performanceEater)
@@ -246,7 +246,7 @@ tank2.style.opacity = 1
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.style.display = 'none'
+                                obstacle.node.remove()
                                 missle.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -293,7 +293,7 @@ tank2.style.opacity = 1
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.style.display = 'none'
+                                obstacle.node.remove()
                                 missle.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -337,7 +337,7 @@ tank2.style.opacity = 1
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.style.display = 'none'
+                                obstacle.node.remove()
                                 missle.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -402,7 +402,7 @@ tank2.style.opacity = 1
                                 
                                 ){
                                     //remove the obstacle and the missle if true
-                                    obstacle.node.style.display = 'none'
+                                    obstacle.node.remove()
                                     missle2.remove()
                                     clearInterval(performanceEater)
                                 } 
@@ -449,7 +449,7 @@ tank2.style.opacity = 1
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.style.display = 'none'
+                                obstacle.node.remove()
                                 missle2.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -495,7 +495,7 @@ tank2.style.opacity = 1
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.style.display = 'none'
+                                obstacle.node.remove()
                                 missle2.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -539,7 +539,7 @@ tank2.style.opacity = 1
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.style.display = 'none'
+                                obstacle.node.remove()
                                 missle2.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -1134,7 +1134,7 @@ class Obstacle{
     //obstacle creator
     static create = function(){
         //only allow specific number of obstacles
-        if(this.number > 100){
+        if(this.number > 500){
             
             return
         }   
@@ -1142,32 +1142,72 @@ class Obstacle{
         //positions available for generated obstacles
         const positionsArray = [46,69,92,115,138,161,184,207,230,253,276,299, 322,345,368,391,414,437,460,483,506,529,552,575,598,0,23]
         
-        //create obstacle and append it to DOM
+        const alreadyCreated = [...document.querySelectorAll('.brick')]
+        
+        //create new  obstacle
         const obstacle = document.createElement('div')                
         obstacle.classList.add('brick')
         //position it randomly using positionsArray
-        obstacle.setAttribute('style', `top: ${positionsArray[Math.floor(Math.random() * 26)]}px; left: ${positionsArray[Math.floor(Math.random() * 23)]}px`)
+        let top = positionsArray[Math.floor(Math.random() * 26)]
+        let left = positionsArray[Math.floor(Math.random() * 23)]
         map.appendChild(obstacle)
-        //increase obstacles counter
-        this.number ++
+
+        //add an id using it's generated positions so that
+        // if a duplicate occurs it will be identified
+
+        obstacle.id = `t${top}l${left}`
+        obstacle.setAttribute('style', `top: ${top}px; left: ${left}px`)
+        // obstacle.style.top = `${top}`
+        // obstacle.style.left = `${left}`
+        
+        //search the entire array of already created obstacles to check
+        //if one with same position already exists. If it does - remove the duplicate.
+        alreadyCreated.forEach((element)=>{
+            if(element.id === obstacle.id){
+                obstacle.remove();
+            }
+                
+            
+        })
+        
+                //increase obstacles counter
+                this.number ++
+        
     }
 
     //function to get all positions of all obstacles
     static getAll = function(){
-        return  [...document.querySelectorAll('.brick')].map(element => {
+        return  [...document.querySelectorAll('.brick')].map((element, index) => {
             return {
                 top: element.offsetTop,
                 bottom: element.offsetTop + 22,
                 left: element.offsetLeft,
                 right: element.offsetLeft + 22,
-                node: element
+                node: element,
+                index
             }
 
             
         })
+     
         
         
     }   
+    //REMOVE POSSIBLE DUPLICATES!  
+    // static removeDuplicates = this.getAll()        
+    // .reduce((duplicates, element, currentIndex, array)=>{
+        
+    //     duplicates.push([currentIndex, element.left, element.top])
+        
+    //     // for(let i = 0; duplicates.length; i++){
+    //     //     if(duplicates[i][1] === duplicates[i + 1] && duplicates[i][2] === duplicates[i + 2]){
+    //     //         console.log('huj');
+    //     //     }
+    //     // }
+        
+    //     return duplicates
+    // }, [])
+    //for finding closest obstacles - used lower in the
     static closest = function(){
         return  [...document.querySelectorAll('.brick')].map(element => {
             return [
@@ -1188,7 +1228,7 @@ class Obstacle{
 
 
 //Create initial obstacles, as many as allowed
-for(let x = 0; x < 100; x++){
+for(let x = 0; x < 500; x++){
     Obstacle.create()
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
