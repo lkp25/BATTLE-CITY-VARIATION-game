@@ -60,8 +60,12 @@ body{
         height: 22px;
         background: rgb(90, 3, 3);
       z-index: 3;
+      
     }
-
+.closest{
+    
+    outline: 2px solid rgb(150, 29, 29);
+}
 
 
 

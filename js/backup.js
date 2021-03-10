@@ -1094,7 +1094,7 @@ setInterval(()=>{
     //constantly check position of each obstacle for collision
     //with player tanks
     // Obstacle.checkCrash()
-
+    // highlightClosestObstacles()
 },15)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1168,7 +1168,21 @@ class Obstacle{
         
         
     }   
+    static closest = function(){
+        return  [...document.querySelectorAll('.brick')].map(element => {
+            return [
+                element,
+                Math.abs(element.getBoundingClientRect().left - 9 - tank.getBoundingClientRect().left) ** 2 + Math.abs(element.getBoundingClientRect().top - 9 - tank.getBoundingClientRect().top) ** 2
+                // (((Math.abs(element.offsetLeft - tank.offsetLeft)) * (Math.abs(element.offsetLeft - tank.offsetLeft)))    
+                // +    ((Math.abs(element.offsetTop - tank.offsetTop)) *  (Math.abs(element.offsetTop - tank.offsetTop))))
 
+            ]
+            // parseInt(Math.sqrt((Math.abs(element.offsetLeft+11 - tank.offsetLeft+20) *  Math.abs(element.offsetLeft + 11 - tank.offsetLeft +20))    +    (Math.abs(element.offsetTop+11 - tank.offsetTop+20) *  Math.abs(element.offsetTop + 11 - tank.offsetTop +20))))  
+            
+        }).sort((a, b) => {
+            return a[1] - b[1]}) //returns array of all obstacles with their distance from player 1
+    }
+    
    
 }
 
@@ -1317,34 +1331,45 @@ class Enemy{
                
                 //make it reverse (go left)
                  randomMove = 1
-                 //BUT ONLY A LITTLE BIT - after 50ms GET ANOTHER random direction,
-                 //dont just go backwards all along.
+                 //BUT ONLY A LITTLE BIT - after 50ms GET ANOTHER direction TO THE SIDE,
+                 //don't approach the obstacle again and don't keep going back, try to omit it.
                  setTimeout(() => {
-                     randomMove = Math.floor(Math.random() * 4)
-                            
+                    let helpingFactor = Math.floor(Math.random() * 2)
+                    if(helpingFactor === 0){
+                        randomMove = 3
+                    }else{
+                        randomMove = 2
+                    }
                 }, 50);
             }    
             else if(obstacleDetection && enemyFacing === 'left'){
                 randomMove = 0
                 setTimeout(() => {
-                    randomMove = Math.floor(Math.random() * 4)
-                    
+                    let helpingFactor = Math.floor(Math.random() * 2)
+                    if(helpingFactor === 0){
+                        randomMove = 3
+                    }else{
+                        randomMove = 2
+                    }
                 }, 50);
             }    
             else if(obstacleDetection && enemyFacing === 'up'){
                 randomMove = 3
                 setTimeout(() => {
-                    randomMove = Math.floor(Math.random() * 4)
+                    randomMove = Math.floor(Math.random() * 2)
                    
                 }, 50);
             }    
             else if(obstacleDetection && enemyFacing === 'down'){
                 randomMove = 2
                 setTimeout(() => {
-                    randomMove = Math.floor(Math.random() * 4)
+                    randomMove = Math.floor(Math.random() * 2)
                     
                 }, 50);
             }    
+
+
+
 
             //get all positions of all alive enemies
             const allCurrentEnemyPositions = Enemy.getAllEnemies()
@@ -1395,17 +1420,7 @@ class Enemy{
                         randomMove = Math.floor(Math.random() * 4)
                         AI_up()    
                     }
-                    // if(obstacleDetection !== undefined){
-                        
-                    //     obstacleDetection = null
-                    //     enemy.style.top = `${parseInt(enemy.style.top.slice(0, length -2)) - 2}px`
-                        
-                    //     randomMove === 2
-                        
-                    // }
-
-
-
+                   
 
             //UP UP UP UP UP UP UP UP UP  - 2
             }else if(randomMove === 2){
@@ -1446,15 +1461,7 @@ class Enemy{
                             randomMove = Math.floor(Math.random() * 4)
                             AI_down()    
                         }
-                    
-                        // Check for crash with any obstacle
-                        // if(obstacleDetection !== undefined){
-                        
-                        //     obstacleDetection = {}
-                        //     enemy.style.top = `${parseInt(enemy.style.top.slice(0, length -2)) + 2}px`
-                        //     randomMove === 3
-                            
-                        // }
+                                          
 
             
             //LEFT LEFT LEFT LEFT LEFT LEFT - 1
@@ -1498,15 +1505,7 @@ class Enemy{
                             randomMove = Math.floor(Math.random() * 4)
                             AI_right()    
                         }
-                        // if(obstacleDetection !== undefined){
                         
-                        //     obstacleDetection = {}
-                        //     enemy.style.left = `${parseInt(enemy.style.left.slice(0, length -2)) + 2}px`
-                        //     randomMove === 0
-                            
-                        // }
-
-
             //RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT - 0
             }else if(randomMove === 0){
                 AI_right()
@@ -1548,14 +1547,6 @@ class Enemy{
                             randomMove = Math.floor(Math.random() * 4)
                             AI_left()    
                         }
-                    // if(obstacleDetection !== undefined){
-                        
-                    //     obstacleDetection = {}
-                    //     enemy.style.left = `${parseInt(enemy.style.left.slice(0, length -2)) - 2}px`
-                    //     randomMove === 1
-                        
-                    // }
-                    // console.log(parseInt(enemy.style.left.slice(0, length -2)));
                     
             }
                         
@@ -1626,5 +1617,27 @@ Enemy.create()
  
 
  
+//little extra - nearest obstacles detector
 
+function highlightClosestObstacles(){
+    // return Obstacle.closest()
+    const theClosest = Obstacle.closest()
+    theClosest.length = 4
+    theClosest.forEach(theClosest =>{
+        if(!theClosest[0].classList.contains('closest')){
+
+            theClosest[0].classList.add('closest')
+        }
+        
+        setTimeout(() => {
+            theClosest[0].classList.remove('closest')
+        }, 250);
+        
+
+    })
+}
  
+setInterval(() => {
+    
+    highlightClosestObstacles()
+}, 500);

@@ -67,4 +67,4 @@ Same thing was also added for map egdes - tanks randomly decide where to go, pre
 //10.03.2021
 - AI-tanks obstacle detection tested thoroughly, many issues were found.
 after many unsatisfactory trials finally decent solution that works every time was applied.
-Might still need a bit of polishing
+- added obstacle detection function for player1 - four nearest obstacles blink constantly.
