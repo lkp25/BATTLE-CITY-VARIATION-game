@@ -62,3 +62,9 @@ Previously it was being called directly by Main Executor Interval, now is a depe
 - added player vs enemy collision detection(both ways).
 - increased randomization of enemy movement - previously when tanks were colliding with each other or any player, they only performed GO-BACK action. now they randomly decide to go left or right or back. 
 Same thing was also added for map egdes - tanks randomly decide where to go, previously it was hard coded.
+- added a VERY PRIMITIVE obstacle detection logic for enemy AI
+
+//10.03.2021
+- AI-tanks obstacle detection tested thoroughly, many issues were found.
+after many unsatisfactory trials finally decent solution that works every time was applied.
+Might still need a bit of polishing

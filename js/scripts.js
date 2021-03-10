@@ -1255,19 +1255,25 @@ class Enemy{
 
         //current movement direction of enemy tank
         let enemyFacing = 'right'
+        
+        
+        //main movement randomization interval -
+        //every iteration calls buuu function which after hyperRandom time
+        //returns sets randomMove to left/right/up/down.
         let hyperRandom
         let randomMove = 0
         setInterval(() => {
-            hyperRandom = Math.floor(Math.random() * 1000)    
+            hyperRandom = Math.floor(Math.random() * 3000)    
             
             buuu()   
-        }, 3500);
+        }, 5000);
         function buuu(){return setTimeout(() => {
             randomMove = Math.floor(Math.random() * 4)            
         }, hyperRandom)}     
         
-        //OLD, more predictable
-        //randomMove - parameter used to change direction randomly after specified time
+
+        //OLD, simple, more predictable
+        //randomMove - parameter used to change direction randomly ALLWAYS after specified time
         // setInterval(() => {
             // randomMove = Math.floor(Math.random() * 4)   
         // }, 4000);
@@ -1277,10 +1283,20 @@ class Enemy{
         //=========================MAIN AI MOVEMENT INTERVAL==============================
         //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
 
-        let huj
+        let obstacleDetection
         const enemyMovementInterval = setInterval(()=>{
+            
             // Check for crash with any obstacle
-            huj = Obstacle.getAll().reduce((newArr, element) =>{
+            //1 - gets positions of all obstacles
+            //2- reduce checks only for obstacles tanks is currently colliding with,
+            //because there could be more than one brick being hit in the same time
+            //(corners, row of 2 or 3 bricks crashed from the side) - tank is double the size
+            //of a single brick.
+            //3 - all colliding bricks are pushed to newArr, but only FIRST ONE will be set
+            //as value for obstacleDetection. rest is ignored.
+            
+            
+            obstacleDetection = Obstacle.getAll().reduce((newArr, element) =>{
                     if
                     (element.top <= enemy.offsetTop + 40
                     &&element.bottom >=enemy.offsetTop
@@ -1292,18 +1308,42 @@ class Enemy{
                         newArr.push(element)                                                 
                     }
                     return newArr
-                    },[])[0]
-            if(huj && enemyFacing === 'right'){
-                randomMove = 1
+                    },[])[0] //ONLY first item is needed, 
+                    //rest must be discarded not to interfere with changing movement direction.
+
+            //4 - obstacleDetection is only true in the moment of collision. 
+            //so if there was a collision and tank approached obstacle from the right: 
+            if(obstacleDetection && enemyFacing === 'right'){
+               
+                //make it reverse (go left)
+                 randomMove = 1
+                 //BUT ONLY A LITTLE BIT - after 50ms GET ANOTHER random direction,
+                 //dont just go backwards all along.
+                 setTimeout(() => {
+                     randomMove = Math.floor(Math.random() * 4)
+                            
+                }, 50);
             }    
-            else if(huj && enemyFacing === 'left'){
+            else if(obstacleDetection && enemyFacing === 'left'){
                 randomMove = 0
+                setTimeout(() => {
+                    randomMove = Math.floor(Math.random() * 4)
+                    
+                }, 50);
             }    
-            else if(huj && enemyFacing === 'up'){
+            else if(obstacleDetection && enemyFacing === 'up'){
                 randomMove = 3
+                setTimeout(() => {
+                    randomMove = Math.floor(Math.random() * 4)
+                   
+                }, 50);
             }    
-            else if(huj && enemyFacing === 'down'){
+            else if(obstacleDetection && enemyFacing === 'down'){
                 randomMove = 2
+                setTimeout(() => {
+                    randomMove = Math.floor(Math.random() * 4)
+                    
+                }, 50);
             }    
 
             //get all positions of all alive enemies
@@ -1355,9 +1395,9 @@ class Enemy{
                         randomMove = Math.floor(Math.random() * 4)
                         AI_up()    
                     }
-                    // if(huj !== undefined){
+                    // if(obstacleDetection !== undefined){
                         
-                    //     huj = null
+                    //     obstacleDetection = null
                     //     enemy.style.top = `${parseInt(enemy.style.top.slice(0, length -2)) - 2}px`
                         
                     //     randomMove === 2
@@ -1408,9 +1448,9 @@ class Enemy{
                         }
                     
                         // Check for crash with any obstacle
-                        // if(huj !== undefined){
+                        // if(obstacleDetection !== undefined){
                         
-                        //     huj = {}
+                        //     obstacleDetection = {}
                         //     enemy.style.top = `${parseInt(enemy.style.top.slice(0, length -2)) + 2}px`
                         //     randomMove === 3
                             
@@ -1458,9 +1498,9 @@ class Enemy{
                             randomMove = Math.floor(Math.random() * 4)
                             AI_right()    
                         }
-                        // if(huj !== undefined){
+                        // if(obstacleDetection !== undefined){
                         
-                        //     huj = {}
+                        //     obstacleDetection = {}
                         //     enemy.style.left = `${parseInt(enemy.style.left.slice(0, length -2)) + 2}px`
                         //     randomMove === 0
                             
@@ -1508,9 +1548,9 @@ class Enemy{
                             randomMove = Math.floor(Math.random() * 4)
                             AI_left()    
                         }
-                    // if(huj !== undefined){
+                    // if(obstacleDetection !== undefined){
                         
-                    //     huj = {}
+                    //     obstacleDetection = {}
                     //     enemy.style.left = `${parseInt(enemy.style.left.slice(0, length -2)) - 2}px`
                     //     randomMove === 1
                         
