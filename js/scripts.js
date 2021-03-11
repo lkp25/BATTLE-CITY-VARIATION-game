@@ -147,8 +147,8 @@ tank2.style.opacity = 1
                 const missle = document.createElement('div')
                 missle.classList.add('missle')
                 //shoot a missle from tank center
-                missle.style.top = parseInt(tank.style.top.slice(0, length -2)) + 18 + 'px'
-                missle.style.left = parseInt(tank.style.left.slice(0, length -2)) + 18 + 'px'
+                missle.style.top = parseInt(tank.style.top.slice(0, length -2)) + 15 + 'px'
+                missle.style.left = parseInt(tank.style.left.slice(0, length -2)) + 17 + 'px'
                 
                 
                 //missle must be appended to MAP not to tank
@@ -185,8 +185,8 @@ tank2.style.opacity = 1
                                
                                 missle.offsetTop > obstacle.top
                                 && missle.getBoundingClientRect().bottom  < obstacle.bottom
-                                && missle.offsetLeft < obstacle.right
-                                && missle.offsetLeft +10  > obstacle.left
+                                && missle.offsetLeft - 2 < obstacle.right
+                                && missle.offsetLeft + 8  > obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
@@ -241,8 +241,8 @@ tank2.style.opacity = 1
                                
                                 missle.getBoundingClientRect().bottom >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
-                                && missle.offsetLeft <= obstacle.right
-                                && missle.offsetLeft +10  >= obstacle.left
+                                && missle.offsetLeft -2<= obstacle.right
+                                && missle.offsetLeft +8  >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
@@ -280,7 +280,7 @@ tank2.style.opacity = 1
                
                    
                 
-                        missle.style.transform = `translateX(-${trajector}px)`
+                        missle.style.transform = `translateX(-${trajector}px) rotateZ(90deg)`
                     
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
@@ -323,7 +323,7 @@ tank2.style.opacity = 1
                 let performanceEater = setInterval( ()=>{
                 trajector += 10
             
-                        missle.style.transform = `translateX(${trajector}px)`
+                        missle.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
                     
 
                         obstaclesPositions.forEach(obstacle =>{
@@ -376,8 +376,8 @@ tank2.style.opacity = 1
                 missle2.classList.add('missle')
                 //shoot a missle from tank center       
                
-                missle2.style.top = parseInt(tank2.style.top.slice(0, length -2)) + 18 + 'px'
-                missle2.style.left = parseInt(tank2.style.left.slice(0, length -2)) + 18 + 'px'
+                missle2.style.top = parseInt(tank2.style.top.slice(0, length -2)) + 15 + 'px'
+                missle2.style.left = parseInt(tank2.style.left.slice(0, length -2)) + 17 + 'px'
                
                 //missle must be appended to MAP not to tank
                 map.appendChild(missle2)
@@ -397,8 +397,8 @@ tank2.style.opacity = 1
                                    
                                     missle2.offsetTop > obstacle.top
                                     && missle2.getBoundingClientRect().bottom  < obstacle.bottom
-                                    && missle2.offsetLeft < obstacle.right
-                                    && missle2.offsetLeft +10  > obstacle.left
+                                    && missle2.offsetLeft - 2< obstacle.right
+                                    && missle2.offsetLeft +8  > obstacle.left
                                 
                                 ){
                                     //remove the obstacle and the missle if true
@@ -444,8 +444,8 @@ tank2.style.opacity = 1
                                
                                 missle2.getBoundingClientRect().bottom >= obstacle.top
                                 && missle2.offsetTop  <= obstacle.bottom
-                                && missle2.offsetLeft <= obstacle.right
-                                && missle2.offsetLeft +10  >= obstacle.left
+                                && missle2.offsetLeft -2<= obstacle.right
+                                && missle2.offsetLeft +8  >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
@@ -482,7 +482,7 @@ tank2.style.opacity = 1
                 
                 
                 
-                        missle2.style.transform = `translateX(-${trajector}px)`
+                        missle2.style.transform = `translateX(-${trajector}px) rotateZ(90deg)`
                     
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
@@ -526,7 +526,7 @@ tank2.style.opacity = 1
                 trajector += 10
                 
                
-                        missle2.style.transform = `translateX(${trajector}px)`
+                        missle2.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
                     
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
@@ -595,24 +595,28 @@ tank2.style.opacity = 1
 document.addEventListener('keydown', ((e) =>{
     //player 1
     if(e.key === 'ArrowDown'){
+        tank.classList.add('tank-move')
         down = true
         right = false
         up = false
         left = false
     }
     else if(e.key === 'ArrowUp'){
+        tank.classList.add('tank-move')
         up = true
         right = false
         down = false
         left = false
     }
     else if(e.key === 'ArrowRight'){
+        tank.classList.add('tank-move')
         right = true
         down = false
         up = false
         left = false
     }
     else if(e.key === 'ArrowLeft'){
+        tank.classList.add('tank-move')
         left = true
         right = false
         up = false
@@ -620,12 +624,14 @@ document.addEventListener('keydown', ((e) =>{
     }
     //player 2
     if(e.key === 's'){
+        tank2.classList.add('tank2-move')
         down2 = true
         right2 = false
         up2 = false
         left2 = false
     }
     else if(e.key === 'w'){
+        tank2.classList.add('tank2-move')
         up2 = true
         right2 = false
         down2 = false
@@ -633,12 +639,14 @@ document.addEventListener('keydown', ((e) =>{
         
     }
     else if(e.key === 'd'){
+        tank2.classList.add('tank2-move')
         right2 = true
         down2 = false
         up2 = false
         left2 = false
     }
     else if(e.key === 'a'){
+        tank2.classList.add('tank2-move')
         left2 = true
         right2 = false
         up2 = false
@@ -647,7 +655,9 @@ document.addEventListener('keydown', ((e) =>{
 }))
 //key up - change to FALSE
 document.addEventListener('keyup', ((e) =>{
-    //player two
+    //player 1
+    tank.classList.remove('tank-move')
+    tank2.classList.remove('tank2-move')
     if(e.key === 'ArrowDown'){
         down = false
     }
@@ -1123,7 +1133,7 @@ setInterval(()=>{
 //=======================================================================================
 //======================THE MAIN OBSTACLE CONSTRUCTOR - brick walls=======================
 //=======================================================================================
-
+let numberOfObstacles = 100
 class Obstacle{
     constructor(){
         
@@ -1134,7 +1144,7 @@ class Obstacle{
     //obstacle creator
     static create = function(){
         //only allow specific number of obstacles
-        if(this.number > 500){
+        if(this.number > numberOfObstacles){
             
             return
         }   
@@ -1228,7 +1238,7 @@ class Obstacle{
 
 
 //Create initial obstacles, as many as allowed
-for(let x = 0; x < 500; x++){
+for(let x = 0; x < numberOfObstacles; x++){
     Obstacle.create()
 }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1311,21 +1321,47 @@ class Enemy{
         let enemyFacing = 'right'
         
         
-        //main movement randomization interval -
+
+
+        //main movement randomization interval options -
+        
+        
+        let randomMove = 0
+       
+       //option 1: hyperrandom
         //every iteration calls buuu function which after hyperRandom time
         //returns sets randomMove to left/right/up/down.
-        let hyperRandom
-        let randomMove = 0
-        setInterval(() => {
-            hyperRandom = Math.floor(Math.random() * 3000)    
+        // let hyperRandom
+        // setInterval(() => {
+        //     hyperRandom = Math.floor(Math.random() * 3000)    
             
-            buuu()   
-        }, 5000);
-        function buuu(){return setTimeout(() => {
-            randomMove = Math.floor(Math.random() * 4)            
-        }, hyperRandom)}     
+        //     buuu()   
+        // }, 5000);
+        // function buuu(){return setTimeout(() => {
+        //     randomMove = Math.floor(Math.random() * 4)            
+        // }, hyperRandom)}     
         
+        
+        // option 2: player pursuit
+        setInterval(() => {
+            if(tank1Position.top > enemy.offsetTop){
+                randomMove = 3
+                setTimeout(() => {
+                    if(tank1Position.left > enemy.offsetLeft){
+                        randomMove = 0
+                    }else{
+                        randomMove = 1
+        
+                    }
+                },250);
 
+            }else{
+                randomMove = 2
+
+            }
+        }, 1500);
+
+        //option 3: simplest random with set interval
         //OLD, simple, more predictable
         //randomMove - parameter used to change direction randomly ALLWAYS after specified time
         // setInterval(() => {
@@ -1600,14 +1636,14 @@ class Enemy{
             enemyFacing = 'down'
             upORdown += 1            
             enemy.style.top = `${upORdown}px`
-            enemy.style.transform = `rotateZ(0deg)`
+            enemy.style.transform = `rotateZ(90deg)`
             
         }        
         function AI_up() {//go up
             enemyFacing = 'up'
             upORdown -= 1            
             enemy.style.top = `${upORdown}px`
-            enemy.style.transform = `rotateZ(180deg)`
+            enemy.style.transform = `rotateZ(270deg)`
             
         }             
 
@@ -1616,14 +1652,14 @@ class Enemy{
             enemyFacing = 'left'
             leftORright -= 1            
             enemy.style.left = `${leftORright}px`
-            enemy.style.transform = `rotateZ(90deg)`
+            enemy.style.transform = `rotateZ(180deg)`
             
         }
         function AI_right(){//go right
             enemyFacing = 'right'
             leftORright += 1            
             enemy.style.left = `${leftORright}px`
-            enemy.style.transform = `rotateZ(270deg)`
+            enemy.style.transform = `rotateZ(0deg)`
             
         }
     }

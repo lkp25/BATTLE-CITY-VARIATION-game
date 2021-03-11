@@ -69,3 +69,11 @@ Same thing was also added for map egdes - tanks randomly decide where to go, pre
 after many unsatisfactory trials finally decent solution that works every time was applied.
 - added obstacle detection function for player1 - four nearest obstacles blink constantly.
 - fixed issue with obstacles being duplicated (2 or more on the exact same position on the map, stacked on one another) - it resulted with missles appearing as 'not working' the first time it hit the obstacle while in fact they were - simply there was a couple of  obstacles on the exact same position. Number of duplicates was approximately 30% of all obstacles generated when generating 200-400. Needed to be fixed.
+
+- added a function that tracks the position of player one and makes all enemy tanks follow it instead of complete randomness in movement. Will be used later to determine main goal of enemy tanks.
+
+- added nice graphics for player tanks and brick obstacles, self made.
+
+//11.03.2021
+- corrected positioning of missles to match new tank styling and new size of missle (more missle-like, not perfectly round)
+- created simple lightweight gif-animation for player tank movement. Added another graphic design for enemy tanks.
