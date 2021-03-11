@@ -19,6 +19,29 @@ body{
     background: rgb(3, 0, 3);
     position: relative;
 }
+.enemy-spawn{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, rgba(35, 59, 10, 0.541) 48%, rgba(170,0,0,0.8575805322128851) 50%, rgba(111, 80, 18, 0.432) 52%),
+    linear-gradient(135deg, rgba(35, 59, 10, 0.582) 48%, rgba(170,0,0,0.8575805322128851) 50%, rgba(111, 80, 18, 0.582) 52%),
+    linear-gradient(90deg, rgb(35, 59, 10) 48%, rgba(170,0,0,0.8575805322128851) 50%, rgb(111, 80, 18) 52%);;
+}
+.fire{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 12px;
+    background: url(../images/fire.gif) center/cover;
+    -webkit-clip-path: polygon(32% 34%, 21% 11%, 35% 17%, 38% 3%, 50% 20%, 57% 2%, 62% 19%, 75% 4%, 75% 12%, 79% 20%, 74% 41%, 84% 42%, 84% 64%, 85% 79%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 21% 56%, 19% 38%, 14% 27%);
+    clip-path: polygon(32% 34%, 21% 11%, 35% 17%, 38% 3%, 50% 20%, 57% 2%, 62% 19%, 75% 4%, 75% 12%, 79% 20%, 74% 41%, 84% 42%, 84% 64%, 85% 79%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 21% 56%, 19% 38%, 14% 27%);
+
+    /* -webkit-clip-path: polygon(17% 18%, 21% 11%, 30% 6%, 38% 3%, 49% 5%, 57% 2%, 64% 5%, 75% 4%, 84% 12%, 90% 16%, 91% 28%, 95% 39%, 94% 66%, 90% 83%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 15% 56%, 12% 39%, 14% 27%);
+    clip-path: polygon(17% 18%, 21% 11%, 30% 6%, 38% 3%, 49% 5%, 57% 2%, 64% 5%, 75% 4%, 84% 12%, 90% 16%, 91% 28%, 95% 39%, 94% 66%, 90% 83%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 15% 56%, 12% 39%, 14% 27%); */
+}
 .tank{
     position: absolute;
     width: 40px;
@@ -68,16 +91,18 @@ body{
 }
 
 .missle{
-    background: darkorange;
-    border-radius: 50%;
+    /* background: rgb(85, 85, 82); */
+    background: linear-gradient(0deg, rgba(231,238,40,0.5102415966386555) 1%, rgba(207,186,23,0.9136029411764706) 5%, rgba(207,131,23,0.9136029411764706) 9%, rgba(232,22,48,1) 13%, rgba(6,6,3,1) 15%, rgba(77,74,88,1) 19%, rgba(97,93,112,1) 71%, rgba(170,113,0,1) 97%, rgba(170,0,0,1) 100%);
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
     height: 10px;
     width: 6px;
     position: absolute;
     /* top:38%;
     left:38%; */
     z-index: 2;
-    /* transform: scale(0); */
-    /* animation: shot 20ms linear forwards; */
+    opacity: 0;
+    animation: shot 150ms linear forwards;
 }
 
 .brick{
@@ -95,8 +120,9 @@ body{
     outline: 2px solid rgb(150, 29, 29);
 }
 @keyframes shot {
-    from{transform: scale(0);}
-    to{transform: scale(1);}
+    0%{opacity: 0;}
+    20%{opacity: 0;}
+    100%{opacity: 1;}
 }
 
 

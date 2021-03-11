@@ -78,3 +78,5 @@ after many unsatisfactory trials finally decent solution that works every time w
 - corrected positioning of missles to match new tank styling and new size of missle (more missle-like, not perfectly round)
 - created simple lightweight gif-animation for player tank movement. Added another graphic design for enemy tanks.
 - added enemy-spawn monitoring function - if the spot where they spawn is currently occupied by already existing tank, a setTimeout is returned with recursion - after one second new tank will try to generate again if spawn is free. Players are not allowed to drive into the spawn - they will stop in front of it if they try. 
+
+- created setFire function to be used when tank gets hit - it will start burning (flame animation appended to tank)

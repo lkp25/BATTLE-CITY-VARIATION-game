@@ -206,7 +206,6 @@ tank2.style.opacity = 1
                             && (missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
                             ){
                                 
-                                // missle.style.background = 'black'  for early testing
                                 
                                 missle.remove()
                                 tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
@@ -233,8 +232,8 @@ tank2.style.opacity = 1
              
                 
                 
-                        missle.style.transform = `translateY(${trajector}px)`
-                    
+                        missle.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
+                        
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
@@ -259,7 +258,7 @@ tank2.style.opacity = 1
                         && (missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
                         ){
                             
-                            // missle.style.background = 'black'  for early testing
+                         
                             
                             missle.remove()
                             tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
@@ -280,7 +279,7 @@ tank2.style.opacity = 1
                
                    
                 
-                        missle.style.transform = `translateX(-${trajector}px) rotateZ(90deg)`
+                        missle.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
                     
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
@@ -305,7 +304,7 @@ tank2.style.opacity = 1
                         && (missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
                         ){
                             
-                            // missle.style.background = 'black'  for early testing
+                          
                             
                             missle.remove()
                             tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
@@ -349,7 +348,7 @@ tank2.style.opacity = 1
                         && (missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
                         ){
                             
-                            // missle.style.background = 'black'  for early testing
+                         
                             
                             missle.remove()
                             tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
@@ -436,7 +435,7 @@ tank2.style.opacity = 1
                 
                     
                 
-                        missle2.style.transform = `translateY(${trajector}px)`
+                        missle2.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
 
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
@@ -461,7 +460,7 @@ tank2.style.opacity = 1
                         && (missle2.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
                         ){
                             
-                            // missle.style.background = 'black'  for early testing
+                            
                             
                             missle2.remove()
                             tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
@@ -482,7 +481,7 @@ tank2.style.opacity = 1
                 
                 
                 
-                        missle2.style.transform = `translateX(-${trajector}px) rotateZ(90deg)`
+                        missle2.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
                     
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
@@ -507,7 +506,6 @@ tank2.style.opacity = 1
                         && (missle2.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
                         ){
                             
-                            // missle.style.background = 'black'  for early testing
                             
                             missle2.remove()
                             tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
@@ -552,7 +550,7 @@ tank2.style.opacity = 1
                         
                         ){
                             
-                            // missle.style.background = 'black'  for early testing
+                           
                             
                             missle2.remove()
                             tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
@@ -724,7 +722,8 @@ document.addEventListener('keyup', ((e) =>{
         if(tank1Position.left <= 40 && tank1Position.top <= 40){
             if(facing === 'left'){
                 tank.style.left = '42px'
-            }else if(facing === 'top'){
+            }
+            if(facing === 'up'){
                 tank.style.top = '42px'
             }
         }
@@ -904,12 +903,20 @@ document.addEventListener('keyup', ((e) =>{
     }
     
 
+
+
+
+
+
+
+
     function movement2(tank1Position, tank2Position){
         //dont let player take position of enemy spawn
         if(tank2Position.left <= 40 && tank2Position.top <= 40){
             if(facing2 === 'left'){
                 tank2.style.left = '42px'
-            }else if(facing2 === 'top'){
+            }
+            if(facing2 === 'up'){
                 tank2.style.top = '42px'
             }
         }
@@ -1749,3 +1756,16 @@ setInterval(() => {
     
     highlightClosestObstacles()
 }, 500);
+
+
+//fire!!
+let burning = false
+function setFire(where){
+    burning = true
+    const fire = document.createElement('div')
+
+    where.appendChild(fire)
+    fire.setAttribute('style', "top: 10px; left: 8px")
+    fire.classList.add('fire')
+    
+}
