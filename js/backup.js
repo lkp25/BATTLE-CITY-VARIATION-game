@@ -147,7 +147,7 @@ tank2.style.opacity = 1
                 const missle = document.createElement('div')
                 missle.classList.add('missle')
                 //shoot a missle from tank center
-                missle.style.top = parseInt(tank.style.top.slice(0, length -2)) + 16 + 'px'
+                missle.style.top = parseInt(tank.style.top.slice(0, length -2)) + 15 + 'px'
                 missle.style.left = parseInt(tank.style.left.slice(0, length -2)) + 17 + 'px'
                 
                 
@@ -376,8 +376,8 @@ tank2.style.opacity = 1
                 missle2.classList.add('missle')
                 //shoot a missle from tank center       
                
-                missle2.style.top = parseInt(tank2.style.top.slice(0, length -2)) + 18 + 'px'
-                missle2.style.left = parseInt(tank2.style.left.slice(0, length -2)) + 18 + 'px'
+                missle2.style.top = parseInt(tank2.style.top.slice(0, length -2)) + 15 + 'px'
+                missle2.style.left = parseInt(tank2.style.left.slice(0, length -2)) + 17 + 'px'
                
                 //missle must be appended to MAP not to tank
                 map.appendChild(missle2)
@@ -594,26 +594,29 @@ tank2.style.opacity = 1
 //key down - TRUE
 document.addEventListener('keydown', ((e) =>{
     //player 1
-    tank.classList.add('tank-move')
     if(e.key === 'ArrowDown'){
+        tank.classList.add('tank-move')
         down = true
         right = false
         up = false
         left = false
     }
     else if(e.key === 'ArrowUp'){
+        tank.classList.add('tank-move')
         up = true
         right = false
         down = false
         left = false
     }
     else if(e.key === 'ArrowRight'){
+        tank.classList.add('tank-move')
         right = true
         down = false
         up = false
         left = false
     }
     else if(e.key === 'ArrowLeft'){
+        tank.classList.add('tank-move')
         left = true
         right = false
         up = false
@@ -621,12 +624,14 @@ document.addEventListener('keydown', ((e) =>{
     }
     //player 2
     if(e.key === 's'){
+        tank2.classList.add('tank2-move')
         down2 = true
         right2 = false
         up2 = false
         left2 = false
     }
     else if(e.key === 'w'){
+        tank2.classList.add('tank2-move')
         up2 = true
         right2 = false
         down2 = false
@@ -634,12 +639,14 @@ document.addEventListener('keydown', ((e) =>{
         
     }
     else if(e.key === 'd'){
+        tank2.classList.add('tank2-move')
         right2 = true
         down2 = false
         up2 = false
         left2 = false
     }
     else if(e.key === 'a'){
+        tank2.classList.add('tank2-move')
         left2 = true
         right2 = false
         up2 = false
@@ -650,6 +657,7 @@ document.addEventListener('keydown', ((e) =>{
 document.addEventListener('keyup', ((e) =>{
     //player 1
     tank.classList.remove('tank-move')
+    tank2.classList.remove('tank2-move')
     if(e.key === 'ArrowDown'){
         down = false
     }
@@ -710,6 +718,16 @@ document.addEventListener('keyup', ((e) =>{
 
 
     function movement(tank1Position, tank2Position){
+       
+        //dont let player take position of enemy spawn
+
+        if(tank1Position.left <= 40 && tank1Position.top <= 40){
+            if(facing === 'left'){
+                tank.style.left = '42px'
+            }else if(facing === 'top'){
+                tank.style.top = '42px'
+            }
+        }
         //=============VERTICAL MOVEMENT====================
         //access tank Y position on map
        
@@ -887,6 +905,14 @@ document.addEventListener('keyup', ((e) =>{
     
 
     function movement2(tank1Position, tank2Position){
+        //dont let player take position of enemy spawn
+        if(tank2Position.left <= 40 && tank2Position.top <= 40){
+            if(facing2 === 'left'){
+                tank2.style.left = '42px'
+            }else if(facing2 === 'top'){
+                tank2.style.top = '42px'
+            }
+        }
         //=============VERTICAL MOVEMENT===================
         //access tank Y position on map
         let yPos = parseInt(tank2.style.top.slice(0, length -2)) 
@@ -1278,13 +1304,27 @@ class Enemy{
             
             return
         }   
+        let spawnStatus
+        this.getAllEnemies().forEach((element) =>{
+            if(element.top <= 40 && element.left <= 40){
+                spawnStatus = 'occupied'
+            }else{
+                spawnStatus = 'free'
+
+            }
+        })
+        if(spawnStatus === 'occupied'){
+            return setTimeout(() => {
+                Enemy.create()
+            }, 1000);
+        }
         //else create new enemy
         const enemy = document.createElement('div')
                 
                 //add CSS styles
                 enemy.classList.add('enemy-tank')
                 //add initial position
-                enemy.setAttribute('style', "top: 70px; left: 0px")
+                enemy.setAttribute('style', "top: 0px; left: 0px")
                 //add ID in case it is needed
                 enemy.setAttribute('id', `enemy${this.number}`) 
                 //append it to map
@@ -1306,7 +1346,7 @@ class Enemy{
     static move = function(enemy){
        
         //main positioning variables: vertical and horizontal
-        let upORdown = 70
+        let upORdown = 0
         let leftORright = 0
 
         //current movement direction of enemy tank

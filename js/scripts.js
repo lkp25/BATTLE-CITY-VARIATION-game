@@ -718,6 +718,16 @@ document.addEventListener('keyup', ((e) =>{
 
 
     function movement(tank1Position, tank2Position){
+       
+        //dont let player take position of enemy spawn
+
+        if(tank1Position.left <= 40 && tank1Position.top <= 40){
+            if(facing === 'left'){
+                tank.style.left = '42px'
+            }else if(facing === 'top'){
+                tank.style.top = '42px'
+            }
+        }
         //=============VERTICAL MOVEMENT====================
         //access tank Y position on map
        
@@ -895,6 +905,14 @@ document.addEventListener('keyup', ((e) =>{
     
 
     function movement2(tank1Position, tank2Position){
+        //dont let player take position of enemy spawn
+        if(tank2Position.left <= 40 && tank2Position.top <= 40){
+            if(facing2 === 'left'){
+                tank2.style.left = '42px'
+            }else if(facing2 === 'top'){
+                tank2.style.top = '42px'
+            }
+        }
         //=============VERTICAL MOVEMENT===================
         //access tank Y position on map
         let yPos = parseInt(tank2.style.top.slice(0, length -2)) 
@@ -1286,13 +1304,27 @@ class Enemy{
             
             return
         }   
+        let spawnStatus
+        this.getAllEnemies().forEach((element) =>{
+            if(element.top <= 40 && element.left <= 40){
+                spawnStatus = 'occupied'
+            }else{
+                spawnStatus = 'free'
+
+            }
+        })
+        if(spawnStatus === 'occupied'){
+            return setTimeout(() => {
+                Enemy.create()
+            }, 1000);
+        }
         //else create new enemy
         const enemy = document.createElement('div')
                 
                 //add CSS styles
                 enemy.classList.add('enemy-tank')
                 //add initial position
-                enemy.setAttribute('style', "top: 70px; left: 0px")
+                enemy.setAttribute('style', "top: 0px; left: 0px")
                 //add ID in case it is needed
                 enemy.setAttribute('id', `enemy${this.number}`) 
                 //append it to map
@@ -1314,7 +1346,7 @@ class Enemy{
     static move = function(enemy){
        
         //main positioning variables: vertical and horizontal
-        let upORdown = 70
+        let upORdown = 0
         let leftORright = 0
 
         //current movement direction of enemy tank
