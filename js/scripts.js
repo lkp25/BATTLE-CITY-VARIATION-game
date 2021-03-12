@@ -353,6 +353,35 @@ tank2.style.opacity = 1
 
 
 
+                //function used to check if player missle hit any enemy
+                //function used to check if player missle hit any enemy
+
+                //function used to check if player missle hit any enemy
+                //for both player one and two!
+
+            function checkIfEnemyWasHit(missle, allCurrentEnemyPositions){
+
+                allCurrentEnemyPositions.forEach((enemy)=>{
+                  
+                    
+                    if(
+                        
+                        missle.getBoundingClientRect().bottom >= enemy.DOMnode.getBoundingClientRect().top
+                        && missle.getBoundingClientRect().top  <= enemy.DOMnode.getBoundingClientRect().bottom
+                        && missle.getBoundingClientRect().left <= enemy.DOMnode.getBoundingClientRect().right
+                        && missle.getBoundingClientRect().right >= enemy.DOMnode.getBoundingClientRect().left
+                    
+                    ){
+                        //remove the obstacle and the missle if true
+                        enemy.DOMnode.style.display = 'none'
+                        enemy.DOMnode.remove()
+                        missle.remove()
+                        
+                    } 
+                })
+
+                
+            }
 
 
 
@@ -375,33 +404,8 @@ tank2.style.opacity = 1
 
 
 
-                //function used to check if player missle hit any enemy
-                //function used to check if player missle hit any enemy
-                //function used to check if player missle hit any enemy
-                //function used to check if player missle hit any enemy
-                function checkIfEnemyWasHit(missle, allCurrentEnemyPositions){
-
-                    allCurrentEnemyPositions.forEach((enemy)=>{
-                      
-                        
-                        if(
-                            
-                            missle.getBoundingClientRect().bottom >= enemy.DOMnode.getBoundingClientRect().top
-                            && missle.getBoundingClientRect().top  <= enemy.DOMnode.getBoundingClientRect().bottom
-                            && missle.getBoundingClientRect().left <= enemy.DOMnode.getBoundingClientRect().right
-                            && missle.getBoundingClientRect().right >= enemy.DOMnode.getBoundingClientRect().left
-                        
-                        ){
-                            //remove the obstacle and the missle if true
-                            enemy.DOMnode.style.display = 'none'
-                            enemy.DOMnode.remove()
-                            missle.remove()
-                            
-                        } 
-                    })
-
-                    
-                }
+                
+                
                 
                 
                
@@ -628,57 +632,60 @@ tank2.style.opacity = 1
         //PLAYER 2 WAS SHOOTING=============================================
         if(which === 2 && fire2 === true){
                 //calculate missle position based on tank position
-                const missle2 = document.createElement('div')
-                missle2.classList.add('missle')
+                const missle = document.createElement('div')
+                missle.classList.add('missle')
                 //shoot a missle from tank center       
                
-                missle2.style.top = parseInt(tank2.style.top.slice(0, length -2)) + 15 + 'px'
-                missle2.style.left = parseInt(tank2.style.left.slice(0, length -2)) + 17 + 'px'
+                missle.style.top = parseInt(tank2.style.top.slice(0, length -2)) + 15 + 'px'
+                missle.style.left = parseInt(tank2.style.left.slice(0, length -2)) + 17 + 'px'
                
                 //missle must be appended to MAP not to tank
-                map.appendChild(missle2)
+                map.appendChild(missle)
                 let trajector = 0
-            if(facing2 === 'up'){
+            
+            
+                if(facing2 === 'up'){
                 let performanceEater = setInterval( ()=>{
                     trajector += 10
                    
                     
                     
                         
-                            missle2.style.transform = `translateY(-${trajector}px)`
+                            missle.style.transform = `translateY(-${trajector}px)`
                             
                             obstaclesPositions.forEach(obstacle =>{
                                 //check if obstacle was hit by missle
                                 if(
                                    
-                                    missle2.offsetTop > obstacle.top
-                                    && missle2.getBoundingClientRect().bottom  < obstacle.bottom
-                                    && missle2.offsetLeft - 2< obstacle.right
-                                    && missle2.offsetLeft +8  > obstacle.left
+                                    missle.offsetTop > obstacle.top
+                                    && missle.getBoundingClientRect().bottom  < obstacle.bottom
+                                    && missle.offsetLeft - 2< obstacle.right
+                                    && missle.offsetLeft +8  > obstacle.left
                                 
                                 ){
                                     //remove the obstacle and the missle if true
                                     obstacle.node.remove()
-                                    missle2.remove()
+                                    missle.remove()
                                     clearInterval(performanceEater)
                                 } 
                             })    
 
-                            if((missle2.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
-                            && (missle2.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
-                            && (missle2.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
-                            && (missle2.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
+                            if((missle.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
+                            && (missle.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
+                            && (missle.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
+                            && (missle.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
                             ){
                                 
                                 tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
-                                missle2.remove()
+                                missle.remove()
                                 clearInterval(performanceEater)
                             }    
                         
-                    
+                      //check if any enemy was hit
+                      checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
                     
                         if(trajector >= 580){
-                            missle2.remove()
+                            missle.remove()
                             clearInterval(performanceEater)
                             
                         }
@@ -692,41 +699,43 @@ tank2.style.opacity = 1
                 
                     
                 
-                        missle2.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
+                        missle.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
 
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
-                                missle2.getBoundingClientRect().bottom >= obstacle.top
-                                && missle2.offsetTop  <= obstacle.bottom
-                                && missle2.offsetLeft -2<= obstacle.right
-                                && missle2.offsetLeft +8  >= obstacle.left
+                                missle.getBoundingClientRect().bottom >= obstacle.top
+                                && missle.offsetTop  <= obstacle.bottom
+                                && missle.offsetLeft -2<= obstacle.right
+                                && missle.offsetLeft +8  >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
-                                missle2.remove()
+                                missle.remove()
                                 clearInterval(performanceEater)
                             } 
                         })    
 
-                        if((missle2.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
-                        && (missle2.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
-                        && (missle2.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
-                        && (missle2.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
+                        if((missle.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
+                        && (missle.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
+                        && (missle.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
+                        && (missle.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
                         ){
                             
                             
                             
-                            missle2.remove()
+                            missle.remove()
                             tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
                             clearInterval(performanceEater)
                         }
                 
+                          //check if any enemy was hit
+                          checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
                 
                     if(trajector >= 580){
-                        missle2.remove()
+                        missle.remove()
                         clearInterval(performanceEater)
                         
                     }
@@ -738,40 +747,42 @@ tank2.style.opacity = 1
                 
                 
                 
-                        missle2.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
+                        missle.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
                     
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
-                                missle2.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                                && missle2.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                                && missle2.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                                && missle2.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
                             
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
-                                missle2.remove()
+                                missle.remove()
                                 clearInterval(performanceEater)
                             } 
                         })    
 
-                        if((missle2.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
-                        && (missle2.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
-                        && (missle2.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
-                        && (missle2.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
+                        if((missle.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
+                        && (missle.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
+                        && (missle.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
+                        && (missle.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
                         ){
                             
                             
-                            missle2.remove()
+                            missle.remove()
                             tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
                             clearInterval(performanceEater)
                         }
                 
+                          //check if any enemy was hit
+                          checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
                 
                     if(trajector >= 580){
-                        missle2.remove()
+                        missle.remove()
                         clearInterval(performanceEater)
                         
                     }
@@ -781,42 +792,44 @@ tank2.style.opacity = 1
                 trajector += 10
                 
                
-                        missle2.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
+                        missle.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
                     
                         obstaclesPositions.forEach(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
-                                missle2.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                                && missle2.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                                && missle2.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                                && missle2.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
                             
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
-                                missle2.remove()
+                                missle.remove()
                                 clearInterval(performanceEater)
                             } 
                         })    
 
-                        if((missle2.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
-                        && (missle2.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
-                        && (missle2.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
-                        && (missle2.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
+                        if((missle.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
+                        && (missle.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
+                        && (missle.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
+                        && (missle.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
                         
                         ){
                             
                            
                             
-                            missle2.remove()
+                            missle.remove()
                             tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
                             clearInterval(performanceEater)
                         }
                 
-                
+                  //check if any enemy was hit
+                  checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+
                     if(trajector >= 580){
-                        missle2.remove()
+                        missle.remove()
                         clearInterval(performanceEater)
                         
                     }
