@@ -137,12 +137,34 @@ tank2.style.opacity = 1
     function createMissle(whoIsShooting, which){
         //GET ALL OBSTACLES' POSITIONS
         const obstaclesPositions = Obstacle.getAll()
-        
+        //GET ALL ENEMIES' POSITIONS
+        const allCurrentEnemyPositions = Enemy.getAllEnemies()
 
-        //check which tank was shooting:
+
+        
+        //CHECK WHO WAS SHOOTING:
             //ENEMY was shooting
             if(which === 'enemy'){
                 
+                //function for checking if player was hit by enemy
+                function checkIfPlayerWasHit(which){
+                    if((missle.getBoundingClientRect().top) <= which.getBoundingClientRect().bottom
+                            && (missle.getBoundingClientRect().left) <= which.getBoundingClientRect().right
+                            && (missle.getBoundingClientRect().right) >= which.getBoundingClientRect().left
+                            && (missle.getBoundingClientRect().bottom) >= which.getBoundingClientRect().top
+                            ){
+                                
+                                
+                                missle.remove()
+                                which.style.opacity = `${((((which.style.opacity * 10) - 1) / 10))}`
+                                
+                                
+                            }   
+                }
+
+               
+
+
                 //calculate missle position based on tank-facing position
                 const enemyDirection = whoIsShooting.style.transform
                 let missleDirection
@@ -215,6 +237,11 @@ tank2.style.opacity = 1
                                 clearInterval(shootingInterval)
                             } 
                         })    
+                        
+                        //check if one of the players was hit
+                        checkIfPlayerWasHit(tank)
+                        checkIfPlayerWasHit(tank2)
+                        
                     }, 20);
                 }
 
@@ -248,6 +275,9 @@ tank2.style.opacity = 1
                                 //stop the interval from running forever
                                 clearInterval(shootingInterval)
                             } 
+                            //check if one of the players was hit
+                            checkIfPlayerWasHit(tank)
+                            checkIfPlayerWasHit(tank2)
                         })    
                     }, 20);
                 }
@@ -276,6 +306,9 @@ tank2.style.opacity = 1
                                 missle.remove()
                                 clearInterval(shootingInterval)
                             } 
+                            //check if one of the players was hit
+                            checkIfPlayerWasHit(tank)
+                            checkIfPlayerWasHit(tank2)
                         })    
                     }, 20);
                 }
@@ -304,8 +337,12 @@ tank2.style.opacity = 1
                                 obstacle.node.remove()
                                 missle.remove()
                                 clearInterval(shootingInterval)
+
                             } 
                         })    
+                        //check if one of the players was hit
+                        checkIfPlayerWasHit(tank)
+                        checkIfPlayerWasHit(tank2)
 
                     }, 20);
                 }
@@ -329,15 +366,42 @@ tank2.style.opacity = 1
                 //shoot a missle from tank center
                 missle.style.top = parseInt(tank.style.top.slice(0, length -2)) + 15 + 'px'
                 missle.style.left = parseInt(tank.style.left.slice(0, length -2)) + 17 + 'px'
-                
-                
+                                
                 //missle must be appended to MAP not to tank
-                map.appendChild(missle)
-                
-                
+                map.appendChild(missle)                
                 //variable used to control the life-span of a missle
                 let trajector = 0
                 
+
+
+
+                //function used to check if player missle hit any enemy
+                //function used to check if player missle hit any enemy
+                //function used to check if player missle hit any enemy
+                //function used to check if player missle hit any enemy
+                function checkIfEnemyWasHit(missle, allCurrentEnemyPositions){
+
+                    allCurrentEnemyPositions.forEach((enemy)=>{
+                      
+                        
+                        if(
+                            
+                            missle.getBoundingClientRect().bottom >= enemy.DOMnode.getBoundingClientRect().top
+                            && missle.getBoundingClientRect().top  <= enemy.DOMnode.getBoundingClientRect().bottom
+                            && missle.getBoundingClientRect().left <= enemy.DOMnode.getBoundingClientRect().right
+                            && missle.getBoundingClientRect().right >= enemy.DOMnode.getBoundingClientRect().left
+                        
+                        ){
+                            //remove the obstacle and the missle if true
+                            enemy.DOMnode.style.display = 'none'
+                            enemy.DOMnode.remove()
+                            missle.remove()
+                            
+                        } 
+                    })
+
+                    
+                }
                 
                 
                
@@ -393,7 +457,11 @@ tank2.style.opacity = 1
                                 clearInterval(performanceEater)
                             }                            
                         
-                    
+                        //check if any enemy was hit
+                        checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+
+                        
+
                         //if trajector value happens to be bigger than map size,
                         //remove the missle - it hasn't hit anything
                         if(trajector >= 580){
@@ -445,6 +513,8 @@ tank2.style.opacity = 1
                             clearInterval(performanceEater)
                         }
                 
+                        //check if any enemy was hit
+                        checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
                 
                     if(trajector >= 580){
                         missle.remove()
@@ -491,6 +561,8 @@ tank2.style.opacity = 1
                             clearInterval(performanceEater)
                         }
                 
+                        //check if any enemy was hit
+                        checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
                 
                     if(trajector >= 580){
                         missle.remove()
@@ -535,6 +607,8 @@ tank2.style.opacity = 1
                             clearInterval(performanceEater)
                         }
                 
+                        //check if any enemy was hit
+                        checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
                 
                     if(trajector >= 580){
                         missle.remove()
@@ -1528,14 +1602,21 @@ class Enemy{
         //initialize shooting interval
         this.shootMissle(enemy)
     }
+
+
+
     //==============================================================================
     //================================== AI SHOOTING=================================
     //==============================================================================
     static shootMissle = function(whoIsShooting){
-        console.log(whoIsShooting, 'enemy');
+        // console.log(whoIsShooting.id, 'enemy');
         
 
-        setInterval(() => {
+        const shootingInterval = setInterval(() => {
+            if(whoIsShooting.style.display === 'none'){
+                
+                clearInterval(shootingInterval)
+            }
             createMissle(whoIsShooting, 'enemy')
         }, 2000);
     }
@@ -1597,11 +1678,17 @@ class Enemy{
         // option 3: simplest random with set interval
         // OLD, simple, more predictable
         // randomMove - parameter used to change direction randomly ALLWAYS after specified time
-        setInterval(() => {
+        
+        //name the interval so it can be removed if this enemy gets shot by player!!!
+        const randomMovementGenerator = setInterval(() => {
+            if(enemy.style.display === 'none'){
+                
+                clearInterval(randomMovementGenerator)
+            }
             randomMove = Math.floor(Math.random() * 4)   
         }, 4000);
            
-
+        
 
         //=========================MAIN AI MOVEMENT INTERVAL==============================
         //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
@@ -1617,7 +1704,10 @@ class Enemy{
             //of a single brick.
             //3 - all colliding bricks are pushed to newArr, but only FIRST ONE will be set
             //as value for obstacleDetection. rest is ignored.
-            
+            if(enemy.style.display === 'none'){
+                
+                clearInterval(enemyMovementInterval)
+            }
             
             obstacleDetection = Obstacle.getAll().reduce((newArr, element) =>{
                     if
@@ -1906,7 +1996,8 @@ class Enemy{
                 bottom: element.offsetTop + 40,
                 left: element.offsetLeft,
                 right: element.offsetLeft + 40,
-                node: element.id
+                node: element.id,
+                DOMnode: element
             }
 
             

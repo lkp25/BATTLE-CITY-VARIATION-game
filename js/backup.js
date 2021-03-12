@@ -143,6 +143,23 @@ tank2.style.opacity = 1
             //ENEMY was shooting
             if(which === 'enemy'){
                 
+                //function for checking if player was hit by enemy
+                function checkIfPlayerWasHit(which){
+                    if((missle.getBoundingClientRect().top) <= which.getBoundingClientRect().bottom
+                            && (missle.getBoundingClientRect().left) <= which.getBoundingClientRect().right
+                            && (missle.getBoundingClientRect().right) >= which.getBoundingClientRect().left
+                            && (missle.getBoundingClientRect().bottom) >= which.getBoundingClientRect().top
+                            ){
+                                
+                                
+                                missle.remove()
+                                which.style.opacity = `${((((which.style.opacity * 10) - 1) / 10))}`
+                                //stop the interval from running forever
+                                clearInterval(shootingInterval)
+                            }   
+                }
+
+
                 //calculate missle position based on tank-facing position
                 const enemyDirection = whoIsShooting.style.transform
                 let missleDirection
@@ -179,26 +196,84 @@ tank2.style.opacity = 1
                 let trajectorY = parseInt(whoIsShooting.style.top.slice(0, length -2)) + 15
                 let trajectorZ = parseInt(whoIsShooting.style.left.slice(0, length -2)) + 17
                
+
+
                 
                 //depending on the direction of shooting, check if any target was hit
                 if(missleFacing === 'down'){
+
+                    //declare interval name so it can be deleted later!
                     const shootingInterval = setInterval(() => {
+                        
+                        //NO TARGET WAS HIT
                         if(trajectorY > 600){
                             missle.remove()
                             clearInterval(shootingInterval)
                         }
+
+                        //keep the missle flying
                         trajectorY += 10
                         missle.style.top = `${trajectorY}px`
+
+
+                        //check if obstacle was hit by missle
+                        obstaclesPositions.forEach(obstacle =>{
+                            if(
+                               
+                                missle.getBoundingClientRect().bottom >= obstacle.top
+                                && missle.offsetTop  <= obstacle.bottom
+                                && missle.offsetLeft -2<= obstacle.right
+                                && missle.offsetLeft +8  >= obstacle.left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.remove()
+                                missle.remove()
+                                clearInterval(shootingInterval)
+                            } 
+                        })    
+                        
+                        //check if one of the players was hit
+                        checkIfPlayerWasHit(tank)
+                        checkIfPlayerWasHit(tank2)
+                        
                     }, 20);
                 }
+
+
+
                 if(missleFacing === 'up'){
                     const shootingInterval = setInterval(() => {
                         if(trajectorY < -20){
                             missle.remove()
                             clearInterval(shootingInterval)
                         }
+
+
                         trajectorY -= 10
                         missle.style.top = `${trajectorY}px`
+
+
+                        //check if obstacle was hit by missle
+                        obstaclesPositions.forEach(obstacle =>{
+                            if(
+                               
+                                missle.offsetTop > obstacle.top
+                                && missle.getBoundingClientRect().bottom  < obstacle.bottom
+                                && missle.offsetLeft - 2 < obstacle.right
+                                && missle.offsetLeft + 8  > obstacle.left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.remove()
+                                missle.remove()
+                                //stop the interval from running forever
+                                clearInterval(shootingInterval)
+                            } 
+                            //check if one of the players was hit
+                            checkIfPlayerWasHit(tank)
+                            checkIfPlayerWasHit(tank2)
+                        })    
                     }, 20);
                 }
                 if(missleFacing === 'left'){
@@ -207,8 +282,29 @@ tank2.style.opacity = 1
                             missle.remove()
                             clearInterval(shootingInterval)
                         }
+
                         trajectorZ -= 10
                         missle.style.left = `${trajectorZ}px`
+
+                        //check if obstacle was hit by missle
+                        obstaclesPositions.forEach(obstacle =>{
+                            if(
+                               
+                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.remove()
+                                missle.remove()
+                                clearInterval(shootingInterval)
+                            } 
+                            //check if one of the players was hit
+                            checkIfPlayerWasHit(tank)
+                            checkIfPlayerWasHit(tank2)
+                        })    
                     }, 20);
                 }
                 if(missleFacing === 'right'){
@@ -217,8 +313,31 @@ tank2.style.opacity = 1
                             missle.remove()
                             clearInterval(shootingInterval)
                         }
+
+
                         trajectorZ += 10
                         missle.style.left = `${trajectorZ}px`
+
+                        //check if obstacle was hit by missle
+                        obstaclesPositions.forEach(obstacle =>{
+                            if(
+                               
+                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.remove()
+                                missle.remove()
+                                
+                            } 
+                        })    
+                        //check if one of the players was hit
+                        checkIfPlayerWasHit(tank)
+                        checkIfPlayerWasHit(tank2)
+
                     }, 20);
                 }
             

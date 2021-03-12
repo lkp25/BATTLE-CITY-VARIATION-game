@@ -85,3 +85,6 @@ after many unsatisfactory trials finally decent solution that works every time w
 - optimized setFire function to only set fire in certain positions. 
 - prettyfied the missle appearance
 - added working logic for enemy-shot missles (set correct direction, speed, interval clearance)
+- added enemy missle vs obstacle interaction - when obstacle is hit, it disappears
+- added enemy missle vs player interaction - when player gets hit, his life is lowered
+- added player missle vs enemy interaction - enemy disappears when it gets hit, all Intervals attached to THIS SPECIFIC enemy are also cleared (very important for performance as well as gameplay - if only enemy was removed from the DOM, interval was still running 'ghost enemy' which was shooting missles!)
