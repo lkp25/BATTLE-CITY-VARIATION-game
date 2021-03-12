@@ -1732,12 +1732,24 @@ Enemy.create()
  
 
  
+
+
+
+
+
+
+
 //little extra - nearest obstacles detector
 
 function highlightClosestObstacles(){
     // return Obstacle.closest()
     const theClosest = Obstacle.closest()
+    //limit the array of all obstacles to 4. they are pre-sorted by closest() method
+    //from closest one to furthest.
     theClosest.length = 4
+    //each item is an array itself, index 0 being the DOM element, index 1 being the distance from player
+    
+    //toggle the class wich makes the obstacle blink 
     theClosest.forEach(theClosest =>{
         if(!theClosest[0].classList.contains('closest')){
 
@@ -1751,21 +1763,30 @@ function highlightClosestObstacles(){
 
     })
 }
- 
+//evry half a second check which obstacles are now closest ones 
 setInterval(() => {
     
     highlightClosestObstacles()
 }, 500);
 
 
-//fire!!
-let burning = false
-function setFire(where){
-    burning = true
-    const fire = document.createElement('div')
 
+
+//fire!!
+
+function setFire(where){
+    
+    const fire = document.createElement('div')
+    // getRandomNumberBetween(where.width)
+        
+    
     where.appendChild(fire)
-    fire.setAttribute('style', "top: 10px; left: 8px")
+    fire.setAttribute('style', `top: ${getRandomNumberBetween(1, where.getBoundingClientRect().height * 0.5)}px; left:${getRandomNumberBetween(0, where.getBoundingClientRect().width * 0.95)}px`)
     fire.classList.add('fire')
     
 }
+
+//useful function for getting random numbers between min and max value provided
+const getRandomNumberBetween = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };

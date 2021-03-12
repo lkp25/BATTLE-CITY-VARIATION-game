@@ -80,3 +80,7 @@ after many unsatisfactory trials finally decent solution that works every time w
 - added enemy-spawn monitoring function - if the spot where they spawn is currently occupied by already existing tank, a setTimeout is returned with recursion - after one second new tank will try to generate again if spawn is free. Players are not allowed to drive into the spawn - they will stop in front of it if they try. 
 
 - created setFire function to be used when tank gets hit - it will start burning (flame animation appended to tank)
+
+//12.03.2021
+- optimized setFire function to only set fire in certain positions. 
+- prettyfied the missle appearance
