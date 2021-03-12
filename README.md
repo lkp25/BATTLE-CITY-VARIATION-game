@@ -84,3 +84,4 @@ after many unsatisfactory trials finally decent solution that works every time w
 //12.03.2021
 - optimized setFire function to only set fire in certain positions. 
 - prettyfied the missle appearance
+- added working logic for enemy-shot missles (set correct direction, speed, interval clearance)

@@ -134,12 +134,104 @@ tank2.style.opacity = 1
 
 
 
-    function createMissle(position, which){
+    function createMissle(whoIsShooting, which){
         //GET ALL OBSTACLES' POSITIONS
         const obstaclesPositions = Obstacle.getAll()
         
 
         //check which tank was shooting:
+            //ENEMY was shooting
+            if(which === 'enemy'){
+                
+                //calculate missle position based on tank-facing position
+                const enemyDirection = whoIsShooting.style.transform
+                let missleDirection
+                let missleFacing
+                if(enemyDirection === 'rotateZ(90deg)'){
+                    missleDirection = 'rotateZ(180deg)'
+                    missleFacing = 'down'
+                }
+                else if(enemyDirection === 'rotateZ(270deg)'){
+                    missleDirection = 'rotateZ(0deg)'
+                    missleFacing = 'up'
+                }
+                else if(enemyDirection === 'rotateZ(0deg)'){
+                    missleDirection = 'rotateZ(90deg) '
+                    missleFacing = 'right'
+                
+                }else if(enemyDirection === 'rotateZ(180deg)'){
+                    missleDirection = 'rotateZ(270deg) '
+                    missleFacing = 'left'
+                }
+               
+                const missle = document.createElement('div')
+                missle.classList.add('missle')
+                missle.style.transform = missleDirection
+                //shoot a missle from tank center
+                missle.style.top = parseInt(whoIsShooting.style.top.slice(0, length -2)) + 15 + 'px'
+                missle.style.left = parseInt(whoIsShooting.style.left.slice(0, length -2)) + 17 + 'px'
+                //missle must be appended to MAP not to tank
+                map.appendChild(missle)
+                
+                
+                
+                //determine current missle position and speed
+                let trajectorY = parseInt(whoIsShooting.style.top.slice(0, length -2)) + 15
+                let trajectorZ = parseInt(whoIsShooting.style.left.slice(0, length -2)) + 17
+               
+                
+                //depending on the direction of shooting, check if any target was hit
+                if(missleFacing === 'down'){
+                    const shootingInterval = setInterval(() => {
+                        if(trajectorY > 600){
+                            missle.remove()
+                            clearInterval(shootingInterval)
+                        }
+                        trajectorY += 10
+                        missle.style.top = `${trajectorY}px`
+                    }, 20);
+                }
+                if(missleFacing === 'up'){
+                    const shootingInterval = setInterval(() => {
+                        if(trajectorY < -20){
+                            missle.remove()
+                            clearInterval(shootingInterval)
+                        }
+                        trajectorY -= 10
+                        missle.style.top = `${trajectorY}px`
+                    }, 20);
+                }
+                if(missleFacing === 'left'){
+                    const shootingInterval = setInterval(() => {
+                        if(trajectorZ < -20){
+                            missle.remove()
+                            clearInterval(shootingInterval)
+                        }
+                        trajectorZ -= 10
+                        missle.style.left = `${trajectorZ}px`
+                    }, 20);
+                }
+                if(missleFacing === 'right'){
+                    const shootingInterval = setInterval(() => {
+                        if(trajectorZ > 600){
+                            missle.remove()
+                            clearInterval(shootingInterval)
+                        }
+                        trajectorZ += 10
+                        missle.style.left = `${trajectorZ}px`
+                    }, 20);
+                }
+            
+                
+            }
+
+
+
+
+
+
+
+
 
             //PLAYER 1 WAS SHOOTING=============================================
             if(which === 1 && fire === true){
@@ -363,6 +455,9 @@ tank2.style.opacity = 1
                     }
             }, 20)}
         }
+
+
+
 
 
 
@@ -1342,9 +1437,20 @@ class Enemy{
         //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
         this.move(enemy)
         
+        //initialize shooting interval
+        this.shootMissle(enemy)
     }
-    
+    //==============================================================================
+    //================================== AI SHOOTING=================================
+    //==============================================================================
+    static shootMissle = function(whoIsShooting){
+        console.log(whoIsShooting, 'enemy');
+        
 
+        setInterval(() => {
+            createMissle(whoIsShooting, 'enemy')
+        }, 2000);
+    }
 
 
     //==============================================================================
@@ -1382,30 +1488,30 @@ class Enemy{
         
         
         // option 2: player pursuit
-        setInterval(() => {
-            if(tank1Position.top > enemy.offsetTop){
-                randomMove = 3
-                setTimeout(() => {
-                    if(tank1Position.left > enemy.offsetLeft){
-                        randomMove = 0
-                    }else{
-                        randomMove = 1
-        
-                    }
-                },250);
-
-            }else{
-                randomMove = 2
-
-            }
-        }, 1500);
-
-        //option 3: simplest random with set interval
-        //OLD, simple, more predictable
-        //randomMove - parameter used to change direction randomly ALLWAYS after specified time
         // setInterval(() => {
-            // randomMove = Math.floor(Math.random() * 4)   
-        // }, 4000);
+        //     if(tank1Position.top > enemy.offsetTop){
+        //         randomMove = 3
+        //         setTimeout(() => {
+        //             if(tank1Position.left > enemy.offsetLeft){
+        //                 randomMove = 0
+        //             }else{
+        //                 randomMove = 1
+        
+        //             }
+        //         },250);
+
+        //     }else{
+        //         randomMove = 2
+
+        //     }
+        // }, 1500);
+
+        // option 3: simplest random with set interval
+        // OLD, simple, more predictable
+        // randomMove - parameter used to change direction randomly ALLWAYS after specified time
+        setInterval(() => {
+            randomMove = Math.floor(Math.random() * 4)   
+        }, 4000);
            
 
 
@@ -1732,6 +1838,13 @@ Enemy.create()
  
 
  
+
+
+
+
+
+
+
 //little extra - nearest obstacles detector
 
 function highlightClosestObstacles(){
@@ -1774,7 +1887,7 @@ function setFire(where){
         
     
     where.appendChild(fire)
-    fire.setAttribute('style', `top: ${getRandomNumberBetween(where.height)}px; left:${getRandomNumberBetween(where.width)}px`)
+    fire.setAttribute('style', `top: ${getRandomNumberBetween(1, where.getBoundingClientRect().height * 0.5)}px; left:${getRandomNumberBetween(0, where.getBoundingClientRect().width * 0.95)}px`)
     fire.classList.add('fire')
     
 }
