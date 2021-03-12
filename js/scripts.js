@@ -179,26 +179,76 @@ tank2.style.opacity = 1
                 let trajectorY = parseInt(whoIsShooting.style.top.slice(0, length -2)) + 15
                 let trajectorZ = parseInt(whoIsShooting.style.left.slice(0, length -2)) + 17
                
+
+
                 
                 //depending on the direction of shooting, check if any target was hit
                 if(missleFacing === 'down'){
+
+                    //declare interval name so it can be deleted later!
                     const shootingInterval = setInterval(() => {
+                        
+                        //NO TARGET WAS HIT
                         if(trajectorY > 600){
                             missle.remove()
                             clearInterval(shootingInterval)
                         }
+
+                        //keep the missle flying
                         trajectorY += 10
                         missle.style.top = `${trajectorY}px`
+
+
+                        //check if obstacle was hit by missle
+                        obstaclesPositions.forEach(obstacle =>{
+                            if(
+                               
+                                missle.getBoundingClientRect().bottom >= obstacle.top
+                                && missle.offsetTop  <= obstacle.bottom
+                                && missle.offsetLeft -2<= obstacle.right
+                                && missle.offsetLeft +8  >= obstacle.left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.remove()
+                                missle.remove()
+                                clearInterval(shootingInterval)
+                            } 
+                        })    
                     }, 20);
                 }
+
+
+
                 if(missleFacing === 'up'){
                     const shootingInterval = setInterval(() => {
                         if(trajectorY < -20){
                             missle.remove()
                             clearInterval(shootingInterval)
                         }
+
+
                         trajectorY -= 10
                         missle.style.top = `${trajectorY}px`
+
+
+                        //check if obstacle was hit by missle
+                        obstaclesPositions.forEach(obstacle =>{
+                            if(
+                               
+                                missle.offsetTop > obstacle.top
+                                && missle.getBoundingClientRect().bottom  < obstacle.bottom
+                                && missle.offsetLeft - 2 < obstacle.right
+                                && missle.offsetLeft + 8  > obstacle.left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.remove()
+                                missle.remove()
+                                //stop the interval from running forever
+                                clearInterval(shootingInterval)
+                            } 
+                        })    
                     }, 20);
                 }
                 if(missleFacing === 'left'){
@@ -207,8 +257,26 @@ tank2.style.opacity = 1
                             missle.remove()
                             clearInterval(shootingInterval)
                         }
+
                         trajectorZ -= 10
                         missle.style.left = `${trajectorZ}px`
+
+                        //check if obstacle was hit by missle
+                        obstaclesPositions.forEach(obstacle =>{
+                            if(
+                               
+                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.remove()
+                                missle.remove()
+                                clearInterval(shootingInterval)
+                            } 
+                        })    
                     }, 20);
                 }
                 if(missleFacing === 'right'){
@@ -217,8 +285,28 @@ tank2.style.opacity = 1
                             missle.remove()
                             clearInterval(shootingInterval)
                         }
+
+
                         trajectorZ += 10
                         missle.style.left = `${trajectorZ}px`
+
+                        //check if obstacle was hit by missle
+                        obstaclesPositions.forEach(obstacle =>{
+                            if(
+                               
+                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                            
+                            ){
+                                //remove the obstacle and the missle if true
+                                obstacle.node.remove()
+                                missle.remove()
+                                clearInterval(shootingInterval)
+                            } 
+                        })    
+
                     }, 20);
                 }
             
