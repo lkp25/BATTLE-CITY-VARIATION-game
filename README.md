@@ -88,3 +88,11 @@ after many unsatisfactory trials finally decent solution that works every time w
 - added enemy missle vs obstacle interaction - when obstacle is hit, it disappears
 - added enemy missle vs player interaction - when player gets hit, his life is lowered
 - added player missle vs enemy interaction - enemy disappears when it gets hit, all Intervals attached to THIS SPECIFIC enemy are also cleared (very important for performance as well as gameplay - if only enemy was removed from the DOM, interval was still running 'ghost enemy' which was shooting missles!)
+- added side panel with stats: timer "how long can you hold" which will be main goal of the game, and also lifebars, ammo and frags counters for both players. Hard coded for now for styling purposes, functionality needs to be added.
+tank icon is also being displayed next to player name. If his life is very low, icon will start rotating.
+
+//13.03.2021
+- added timer object with functionality. 
+- added level changing logic that refreshes obstacles on the map every x minutes/seconds - thus generating 'new level'
+- added logic to count current number of enemies and obstacles on the map - no more than x enemies and y obstacles can be present at the same time
+- resolved issue with 'ghost shooting missles' - after enemy was destroyed one more missle was being generated at his death position. Not any more.

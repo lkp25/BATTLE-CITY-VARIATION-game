@@ -12,36 +12,35 @@ body{
     align-items: center;
     justify-content: center;
 }
+
+/* main game interface */
 .map{
     overflow: hidden;
     width: 620px;
     height: 620px;
     background: rgb(3, 0, 3);
     position: relative;
+    transition: 0.5s linear;
+    transform-origin: top left;
 }
-.enemy-spawn{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(45deg, rgba(35, 59, 10, 0.541) 48%, rgba(170,0,0,0.8575805322128851) 50%, rgba(111, 80, 18, 0.432) 52%),
-    linear-gradient(135deg, rgba(35, 59, 10, 0.582) 48%, rgba(170,0,0,0.8575805322128851) 50%, rgba(111, 80, 18, 0.582) 52%),
-    linear-gradient(90deg, rgb(35, 59, 10) 48%, rgba(170,0,0,0.8575805322128851) 50%, rgb(111, 80, 18) 52%);;
+.change-level{
+    transform:rotateY(180deg);
 }
-.fire{
-    position: absolute;
-    /* top: 0;
-    left: 0; */
-    width: 6px;
-    height: 12px;
-    background: url(../images/fire.gif) center/cover;
-    -webkit-clip-path: polygon(32% 34%, 21% 11%, 35% 17%, 38% 3%, 50% 20%, 57% 2%, 62% 19%, 75% 4%, 75% 12%, 79% 20%, 74% 41%, 84% 42%, 84% 64%, 85% 79%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 21% 56%, 19% 38%, 14% 27%);
-    clip-path: polygon(32% 34%, 21% 11%, 35% 17%, 38% 3%, 50% 20%, 57% 2%, 62% 19%, 75% 4%, 75% 12%, 79% 20%, 74% 41%, 84% 42%, 84% 64%, 85% 79%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 21% 56%, 19% 38%, 14% 27%);
 
-    /* -webkit-clip-path: polygon(17% 18%, 21% 11%, 30% 6%, 38% 3%, 49% 5%, 57% 2%, 64% 5%, 75% 4%, 84% 12%, 90% 16%, 91% 28%, 95% 39%, 94% 66%, 90% 83%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 15% 56%, 12% 39%, 14% 27%);
-    clip-path: polygon(17% 18%, 21% 11%, 30% 6%, 38% 3%, 49% 5%, 57% 2%, 64% 5%, 75% 4%, 84% 12%, 90% 16%, 91% 28%, 95% 39%, 94% 66%, 90% 83%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 15% 56%, 12% 39%, 14% 27%); */
+aside{
+    overflow: hidden;
+    height: 620px;
+    width: 200px;
+    background: rgba(5, 92, 92, 0.226);
+    position: relative;
+    text-align: center;
+    border: 2px solid black;
 }
+
+
+
+
+/* player tanks */
 .tank{
     position: absolute;
     width: 40px;
@@ -58,7 +57,6 @@ body{
     background:linear-gradient(180deg, rgba(232,22,48,0.7707457983193278) 0%, rgba(255, 1, 1, 0.747) 0%, rgba(67, 51, 131, 0) 10%), url(../images/fastest.webp) center/cover;
    
 }
-
 
 .tank2{
     position: absolute;
@@ -77,6 +75,21 @@ body{
     background:linear-gradient(180deg, rgba(19, 56, 160, 0.771) 0%, rgba(1, 39, 255, 0.747) 0%, rgba(67, 51, 131, 0) 10%), url(../images/fastest.webp) center/cover;
    
 }
+
+
+/* ENEMY TANKS AND SPAWN */
+
+.enemy-spawn{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, rgba(35, 59, 10, 0.541) 48%, rgba(170,0,0,0.8575805322128851) 50%, rgba(111, 80, 18, 0.432) 52%),
+    linear-gradient(135deg, rgba(35, 59, 10, 0.582) 48%, rgba(170,0,0,0.8575805322128851) 50%, rgba(111, 80, 18, 0.582) 52%),
+    linear-gradient(90deg, rgb(35, 59, 10) 48%, rgba(170,0,0,0.8575805322128851) 50%, rgb(111, 80, 18) 52%);;
+}
+
 .enemy-tank{
     border-radius: 4px;
     position: absolute;
@@ -90,6 +103,11 @@ body{
   clip-path: polygon(0 0, 43% 2%, 89% 2%, 91% 24%, 79% 24%, 79% 41%, 100% 41%, 100% 59%, 78% 59%, 78% 74%, 92% 74%, 90% 98%, 44% 98%, 0 100%, 0 82%, 4% 65%, 2% 50%, 3% 34%, 0 22%);
 }
 
+
+
+
+
+/* MISSLES */
 .missle{
     /* background: rgb(85, 85, 82); */
     background: linear-gradient(0deg, rgba(231,238,40,0.5102415966386555) 1%, rgba(207,186,23,0.9136029411764706) 5%, rgba(207,131,23,0.9136029411764706) 9%, rgba(232,22,48,1) 13%, rgba(6,6,3,1) 15%, rgba(77,74,88,1) 19%, rgba(97,93,112,1) 71%, rgba(170,113,0,1) 97%, rgba(170,0,0,1) 100%);
@@ -121,6 +139,11 @@ body{
 }
 
 
+
+
+
+/* OBSTACLES */
+
 .brick{
     
         position: absolute;
@@ -129,6 +152,16 @@ body{
         background: url(../images/bricks2.png) center/cover;
         background-color:  rgba(247, 244, 244, 0.295);
       z-index: 3;
+      
+    }
+.rock{
+    
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        background: gray;
+        background-color:  rgba(247, 244, 244, 0.295);
+        z-index: 3;
       
     }
 .closest{
@@ -142,5 +175,76 @@ body{
 }
 
 
+
+
+/* DAMAGE ANIMATIONS */
+.fire{
+    position: absolute;
+    /* top: 0;
+    left: 0; */
+    width: 6px;
+    height: 12px;
+    background: url(../images/fire.gif) center/cover;
+    -webkit-clip-path: polygon(32% 34%, 21% 11%, 35% 17%, 38% 3%, 50% 20%, 57% 2%, 62% 19%, 75% 4%, 75% 12%, 79% 20%, 74% 41%, 84% 42%, 84% 64%, 85% 79%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 21% 56%, 19% 38%, 14% 27%);
+    clip-path: polygon(32% 34%, 21% 11%, 35% 17%, 38% 3%, 50% 20%, 57% 2%, 62% 19%, 75% 4%, 75% 12%, 79% 20%, 74% 41%, 84% 42%, 84% 64%, 85% 79%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 21% 56%, 19% 38%, 14% 27%);
+
+    /* -webkit-clip-path: polygon(17% 18%, 21% 11%, 30% 6%, 38% 3%, 49% 5%, 57% 2%, 64% 5%, 75% 4%, 84% 12%, 90% 16%, 91% 28%, 95% 39%, 94% 66%, 90% 83%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 15% 56%, 12% 39%, 14% 27%);
+    clip-path: polygon(17% 18%, 21% 11%, 30% 6%, 38% 3%, 49% 5%, 57% 2%, 64% 5%, 75% 4%, 84% 12%, 90% 16%, 91% 28%, 95% 39%, 94% 66%, 90% 83%, 81% 90%, 71% 98%, 44% 100%, 18% 94%, 11% 85%, 13% 70%, 15% 56%, 12% 39%, 14% 27%); */
+}
+
+
+
+
+
+/* STATISTICS PANNEL */
+.player-one-stats, .player-two-stats{
+    position: relative;
+    text-align: center;
+}
+
+.player-one-stats h2::after, .player-two-stats h2::after{
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 3%;
+    /* background:linear-gradient(0deg, rgba(232,22,48,0.7707457983193278) 0%, rgba(255,201,1,1) 0%, rgba(191,4,4,1) 20%); */
+    background: linear-gradient(180deg, rgba(232,22,48,0.7707457983193278) 0%, rgba(255, 1, 1, 0.747) 0%, rgba(67, 51, 131, 0) 10%), url(../images/player-tank-static.gif) center/cover;
+    clip-path: polygon(60% 7%, 40% 7%, 30% 0, 0 0, 0 100%, 30% 100%, 33% 73%, 43% 73%, 45% 100%, 54% 100%, 57% 73%, 67% 73%, 70% 100%, 100% 100%, 100% 0, 70% 0);
+    overflow: visible;
+    border-radius: 3px;
+    width: 30px;
+    height: 30px;
+  z-index: 3;
+  animation: lowlife 2s linear infinite;
+}
+.player-two-stats h2::after{
+    background: linear-gradient(180deg, rgba(19, 56, 160, 0.771) 0%, rgba(1, 39, 255, 0.747) 0%, rgba(67, 51, 131, 0) 10%), url(../images/player-tank-static.gif) center/cover;
+
+}
+@keyframes lowlife {
+    0%{transform: rotateZ(0deg);}
+    100%{transform: rotateZ(360deg);}
+}
+
+.player-one-lifebar-frame, .player-two-lifebar-frame{
+    margin: 0 auto;
+    position: relative;
+    width: 90%;
+
+    height:10px;
+    background: rgba(255, 123, 0, 0.226);
+    border-radius: 5px;
+    border: 2px solid black;
+}
+.player-one-lifebar{
+    position: absolute;
+    width: 90%;
+    height: 6px;
+    background: green;
+    border-radius: 5px;
+    transition: 500ms ease-out;
+    
+}
 
 

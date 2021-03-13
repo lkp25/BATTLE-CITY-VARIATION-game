@@ -1,6 +1,8 @@
 //hide scrollbars
 document.body.style.overflow = 'hidden'
 
+
+
 //=======================================================================
 //===================MAIN VARIABLES, CREATING PLAYERS====================
 //=======================================================================
@@ -52,7 +54,58 @@ tank2.style.opacity = 1
 
 
 
+//=======================================================================
+//===================TIME COUNTER AND STATISTICS=========================
+//=======================================================================
+class Timer{
+    constructor(){}
+        static seconds = 0
+        static minutes = 0
+        static hours = 0
+        
+        static secondsField = document.querySelector('.seconds')
+        static minutesField = document.querySelector('.minutes')
+        static hoursField = document.querySelector('.hours')
 
+        static timer = setInterval(()=>{
+            this.seconds ++
+            this.secondsField.innerText = this.seconds
+            if(this.seconds === 60){
+                this.seconds = 0
+                this.secondsField.innerText = this.seconds
+                this.minutes++
+                this.minutesField.innerText = this.minutes
+            }
+            if(this.minutes === 60){
+                this.minutes = 0
+                this.minutesField.innerText = this.minutes
+                this.hours++
+                this.hoursField.innerText = this.hours
+            }
+            // if(this.minutes === 1 && this.seconds === 1){
+            if( this.seconds === 30){
+               
+               //throw out old map
+                map.style.transform = `rotateX(180deg) scaleX(0) skewX(20deg)`
+                
+                //REFRESH THE OBSTACLES - GENERATE NEW LEVEL
+                Obstacle.generateNewLevel()
+                
+                Obstacle.getAll().forEach(obstacle =>{
+                    obstacle.node.classList = 'rock'
+            
+                }
+                )
+                //present the new map
+                setTimeout(() => {
+                    map.style.transform = 'rotateX(0deg) scaleX(1) skewX(0deg)'
+                    
+                }, 700);
+               
+            }
+        },1000)
+    
+}
 
 
 
@@ -141,11 +194,17 @@ tank2.style.opacity = 1
         const allCurrentEnemyPositions = Enemy.getAllEnemies()
 
 
-        
+       
         //CHECK WHO WAS SHOOTING:
             //ENEMY was shooting
             if(which === 'enemy'){
                 
+                //resolve the issue with enemy being able to shot for the last time after it was destroyed-
+                //before the interval stopped create misle function was being called. now there is
+                //a condition to break out of the function and not generate the last 'ghost missle'
+                if(whoIsShooting.display === 'none'){
+                    return
+                }
                 //function for checking if player was hit by enemy
                 function checkIfPlayerWasHit(which){
                     if((missle.getBoundingClientRect().top) <= which.getBoundingClientRect().bottom
@@ -233,6 +292,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 clearInterval(shootingInterval)
                             } 
@@ -271,6 +331,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 //stop the interval from running forever
                                 clearInterval(shootingInterval)
@@ -303,6 +364,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 clearInterval(shootingInterval)
                             } 
@@ -335,6 +397,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 clearInterval(shootingInterval)
 
@@ -374,8 +437,10 @@ tank2.style.opacity = 1
                     ){
                         //remove the obstacle and the missle if true
                         enemy.DOMnode.style.display = 'none'
+                        
                         enemy.DOMnode.remove()
                         missle.remove()
+                        
                         
                     } 
                 })
@@ -439,6 +504,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 //stop the interval from running forever
                                 clearInterval(performanceEater)
@@ -498,6 +564,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -547,6 +614,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -593,6 +661,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -665,6 +734,7 @@ tank2.style.opacity = 1
                                 ){
                                     //remove the obstacle and the missle if true
                                     obstacle.node.remove()
+                                    Obstacle.number --
                                     missle.remove()
                                     clearInterval(performanceEater)
                                 } 
@@ -713,6 +783,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -761,6 +832,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -806,6 +878,7 @@ tank2.style.opacity = 1
                             ){
                                 //remove the obstacle and the missle if true
                                 obstacle.node.remove()
+                                Obstacle.number --
                                 missle.remove()
                                 clearInterval(performanceEater)
                             } 
@@ -1528,14 +1601,18 @@ class Obstacle{
             return a[1] - b[1]}) //returns array of all obstacles with their distance from player 1
     }
     
+
+    static generateNewLevel = function(){
+        for(let x = 0; x < numberOfObstacles; x++){
+            Obstacle.create()
+        }
+    }
    
 }
 
 
-//Create initial obstacles, as many as allowed
-for(let x = 0; x < numberOfObstacles; x++){
-    Obstacle.create()
-}
+
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -1629,8 +1706,10 @@ class Enemy{
             if(whoIsShooting.style.display === 'none'){
                 
                 clearInterval(shootingInterval)
+            }else{
+
+                createMissle(whoIsShooting, 'enemy')
             }
-            createMissle(whoIsShooting, 'enemy')
         }, 2000);
     }
 
@@ -2022,6 +2101,9 @@ class Enemy{
 }
 
 
+
+//initialize game:
+Obstacle.generateNewLevel()
 
 // enemy creator interval
 Enemy.create()
