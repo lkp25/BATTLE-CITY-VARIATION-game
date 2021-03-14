@@ -83,7 +83,7 @@ class Timer{
                 this.hoursField.innerText = this.hours
             }
             // if(this.minutes === 1 && this.seconds === 1){
-            if( this.seconds === 30){
+            if( this.seconds === 10){
                
                //throw out old map
                 map.style.transform = `rotateX(180deg) scaleX(0) skewX(20deg)`
@@ -91,11 +91,11 @@ class Timer{
                 //REFRESH THE OBSTACLES - GENERATE NEW LEVEL
                 Obstacle.generateNewLevel()
                 
-                Obstacle.getAll().forEach(obstacle =>{
-                    obstacle.node.classList = 'rock'
+                
+                
             
-                }
-                )
+                
+                
                 //present the new map
                 setTimeout(() => {
                     map.style.transform = 'rotateX(0deg) scaleX(1) skewX(0deg)'
@@ -107,7 +107,12 @@ class Timer{
     
 }
 
+class player1Stats{
+    constructor(){}
 
+    static life = 100
+    static 
+}
 
 
 
@@ -192,7 +197,7 @@ class Timer{
         const obstaclesPositions = Obstacle.getAll()
         //GET ALL ENEMIES' POSITIONS
         const allCurrentEnemyPositions = Enemy.getAllEnemies()
-
+        Enemy.number = Enemy.getAllEnemies().length
 
        
         //CHECK WHO WAS SHOOTING:
@@ -1499,9 +1504,9 @@ setInterval(()=>{
 
 
 //=======================================================================================
-//======================THE MAIN OBSTACLE CONSTRUCTOR - brick walls=======================
+//======================THE MAIN OBSTACLE CONSTRUCTOR - =======================
 //=======================================================================================
-let numberOfObstacles = 100
+let numberOfObstacles = 500
 class Obstacle{
     constructor(){
         
@@ -1520,29 +1525,52 @@ class Obstacle{
         //positions available for generated obstacles
         const positionsArray = [46,69,92,115,138,161,184,207,230,253,276,299, 322,345,368,391,414,437,460,483,506,529,552,575,598,0,23]
         
-        const alreadyCreated = [...document.querySelectorAll('.brick')]
+        const alreadyCreated = [...document.querySelectorAll('.obstacle')]
         
         //create new  obstacle
         const obstacle = document.createElement('div')                
-        obstacle.classList.add('brick')
+        const randomObstacle = Math.floor(Math.random() * 7)
+        obstacle.classList.add('obstacle')
+
+        if(randomObstacle === 0){
+            obstacle.classList.add('forest')
+            
+
+        }
+        else if(randomObstacle === 1){
+
+            obstacle.classList.add('rock')
+        }
+        
+        else if(randomObstacle === 3){
+
+            obstacle.classList.add('water')
+        }
+        else{
+
+            obstacle.classList.add('brick')
+        }
+
+
+
         //position it randomly using positionsArray
         let top = positionsArray[Math.floor(Math.random() * 26)]
         let left = positionsArray[Math.floor(Math.random() * 23)]
-        map.appendChild(obstacle)
-
+        
         //add an id using it's generated positions so that
         // if a duplicate occurs it will be identified
-
+        
         obstacle.id = `t${top}l${left}`
         obstacle.setAttribute('style', `top: ${top}px; left: ${left}px`)
         // obstacle.style.top = `${top}`
         // obstacle.style.left = `${left}`
+        map.appendChild(obstacle)
         
         //search the entire array of already created obstacles to check
         //if one with same position already exists. If it does - remove the duplicate.
         alreadyCreated.forEach((element)=>{
             if(element.id === obstacle.id){
-                obstacle.remove();
+                obstacle.remove()
             }
                 
             
@@ -1601,8 +1629,13 @@ class Obstacle{
             return a[1] - b[1]}) //returns array of all obstacles with their distance from player 1
     }
     
-
+    //generate new random level
     static generateNewLevel = function(){
+        //remove all current obstacles
+        [...document.querySelectorAll('.obstacle')].forEach(obstacle => obstacle.remove())
+        //set number to 0 so that they can regenerate in a loop
+        Obstacle.number = 0
+        //regenerate obstacles
         for(let x = 0; x < numberOfObstacles; x++){
             Obstacle.create()
         }
@@ -1646,7 +1679,7 @@ class Obstacle{
 class Enemy{
     constructor(){}
     //current number of enemies
-    static number = 0    
+    static number = 0 
 
 
 
@@ -1659,7 +1692,7 @@ class Enemy{
             return
         }   
         let spawnStatus
-        this.getAllEnemies().forEach((element) =>{
+        Enemy.getAllEnemies().forEach((element) =>{
             if(element.top <= 40 && element.left <= 40){
                 spawnStatus = 'occupied'
             }else{
@@ -1680,17 +1713,17 @@ class Enemy{
                 //add initial position
                 enemy.setAttribute('style', "top: 0px; left: 0px")
                 //add ID in case it is needed
-                enemy.setAttribute('id', `enemy${this.number}`) 
+                enemy.setAttribute('id', `enemy${Enemy.number}`) 
                 //append it to map
                 map.appendChild(enemy)
                 //increase current number of enemies
-                this.number ++
+                Enemy.number ++
 
         //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
-        this.move(enemy)
+        Enemy.move(enemy)
         
         //initialize shooting interval
-        this.shootMissle(enemy)
+        Enemy.shootMissle(enemy)
     }
 
 
@@ -1703,6 +1736,7 @@ class Enemy{
         
 
         const shootingInterval = setInterval(() => {
+            //don't create a ghost-missle if enemy was just destroyed!
             if(whoIsShooting.style.display === 'none'){
                 
                 clearInterval(shootingInterval)
@@ -2170,3 +2204,8 @@ function setFire(where){
 const getRandomNumberBetween = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
+
+
+
+  //misc
+  const enemyGen = document.querySelector('.enemy-generator').addEventListener('click', Enemy.create)

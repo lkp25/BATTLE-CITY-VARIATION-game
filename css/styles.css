@@ -164,6 +164,26 @@ aside{
         z-index: 3;
       
     }
+.forest{
+    
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        background: rgb(17, 133, 7);
+        /* background-color:  rgba(247, 244, 244, 0.295); */
+        z-index: 5;
+      
+    }
+.water{
+    
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        background: rgb(8, 33, 172);
+        /* background-color:  rgba(247, 244, 244, 0.295); */
+        z-index: 1;
+      
+    }
 .closest{
     
     outline: 2px solid rgb(150, 29, 29);
