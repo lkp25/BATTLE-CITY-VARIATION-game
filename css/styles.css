@@ -118,7 +118,7 @@ aside{
     position: absolute;
     /* top:38%;
     left:38%; */
-    z-index: 2;
+    z-index: 4;
     opacity: 0;
     animation: shot 150ms linear forwards;
 }
@@ -132,7 +132,7 @@ aside{
     position: absolute;
     top:100%;
     left:0%;
-    z-index: 2;
+    z-index: 4;
     opacity: 0;
     animation: shot 150ms linear forwards;
     clip-path: polygon(50% 100%, 0 0, 100% 0);

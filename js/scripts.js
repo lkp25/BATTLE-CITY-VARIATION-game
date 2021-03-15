@@ -292,18 +292,21 @@ class player1Stats{
                         //check if obstacle was hit by missle
                         obstaclesPositions.find(obstacle =>{
                             if(
-                               
-                                missle.offsetTop + 10 >= obstacle.top
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water')
+                                && missle.offsetTop + 10 >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft -2<= obstacle.right
                                 && missle.offsetLeft +8  >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
                                 clearInterval(shootingInterval)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                         })    
                         
@@ -331,19 +334,21 @@ class player1Stats{
                         //check if obstacle was hit by missle
                         obstaclesPositions.find(obstacle =>{
                             if(
-                               
-                                missle.offsetTop > obstacle.top
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water')
+                                && missle.offsetTop > obstacle.top
                                 && missle.offsetTop + 10  < obstacle.bottom
                                 && missle.offsetLeft - 2 < obstacle.right
                                 && missle.offsetLeft + 8  > obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
-                                //stop the interval from running forever
                                 clearInterval(shootingInterval)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                             //check if one of the players was hit
                         })    
@@ -364,18 +369,21 @@ class player1Stats{
                         //check if obstacle was hit by missle
                         obstaclesPositions.find(obstacle =>{
                             if(
-                               
-                                missle.offsetTop + 10 >= obstacle.top
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water')
+                                && missle.offsetTop + 10 >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft <= obstacle.right
                                 && missle.offsetLeft + 6 >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
                                 clearInterval(shootingInterval)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                             //check if one of the players was hit
                             checkIfPlayerWasHit(tank)
@@ -397,18 +405,21 @@ class player1Stats{
                         //check if obstacle was hit by missle
                         obstaclesPositions.find(obstacle =>{
                             if(
-                               
-                                missle.offsetTop + 10 >= obstacle.top
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water')
+                                && missle.offsetTop + 10 >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft <= obstacle.right
                                 && missle.offsetLeft + 6 >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
                                 clearInterval(shootingInterval)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
 
                             } 
                         })    
@@ -504,7 +515,8 @@ class player1Stats{
                         obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
-                               
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water') &&
                                 missle.offsetTop > obstacle.top
                                 && missle.getBoundingClientRect().bottom  < obstacle.bottom
                                 && missle.offsetLeft - 2 < obstacle.right
@@ -512,11 +524,12 @@ class player1Stats{
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
-                                //stop the interval from running forever
                                 clearInterval(performanceEater)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                         })    
                             
@@ -564,7 +577,8 @@ class player1Stats{
                         obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
-                               
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft -2<= obstacle.right
@@ -572,10 +586,12 @@ class player1Stats{
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
                                 clearInterval(performanceEater)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                         })    
 
@@ -614,7 +630,8 @@ class player1Stats{
                         obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
-                               
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
                                 && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
                                 && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
@@ -622,10 +639,12 @@ class player1Stats{
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
                                 clearInterval(performanceEater)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                         })    
 
@@ -661,7 +680,8 @@ class player1Stats{
                         obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
-                               
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
                                 && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
                                 && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
@@ -669,10 +689,12 @@ class player1Stats{
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
                                 clearInterval(performanceEater)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                         })    
 
@@ -734,7 +756,8 @@ class player1Stats{
                             obstaclesPositions.find(obstacle =>{
                                 //check if obstacle was hit by missle
                                 if(
-                                   
+                                    !obstacle.node.classList.contains('forest')
+                                    && !obstacle.node.classList.contains('water') &&
                                     missle.offsetTop > obstacle.top
                                     && missle.getBoundingClientRect().bottom  < obstacle.bottom
                                     && missle.offsetLeft - 2< obstacle.right
@@ -742,10 +765,12 @@ class player1Stats{
                                 
                                 ){
                                     //remove the obstacle and the missle if true
-                                    obstacle.node.remove()
-                                    Obstacle.number --
-                                    missle.remove()
                                     clearInterval(performanceEater)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                                 } 
                             })    
 
@@ -783,7 +808,8 @@ class player1Stats{
                         obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
-                               
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft -2<= obstacle.right
@@ -791,10 +817,12 @@ class player1Stats{
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
                                 clearInterval(performanceEater)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                         })    
 
@@ -832,7 +860,8 @@ class player1Stats{
                         obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
-                               
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
                                 && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
                                 && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
@@ -840,10 +869,12 @@ class player1Stats{
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
                                 clearInterval(performanceEater)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                         })    
 
@@ -878,7 +909,8 @@ class player1Stats{
                         obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
-                               
+                                !obstacle.node.classList.contains('forest')
+                                && !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
                                 && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
                                 && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
@@ -886,10 +918,12 @@ class player1Stats{
                             
                             ){
                                 //remove the obstacle and the missle if true
-                                obstacle.node.remove()
-                                Obstacle.number --
-                                missle.remove()
                                 clearInterval(performanceEater)
+                                missle.remove()
+                                if(!obstacle.node.classList.contains('rock')){
+
+                                    obstacle.node.remove()
+                                }
                             } 
                         })    
 
@@ -1104,10 +1138,10 @@ document.addEventListener('keyup', ((e) =>{
             allObstaclePositions.find(element =>{
                 if
                 (element.top -1<= tank1Position.bottom 
+                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank1Position.top 
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left
-                &&!element.node.classList.contains('forest')
                 ){
                     yPos -= 2   }
                 })
@@ -1146,10 +1180,10 @@ document.addEventListener('keyup', ((e) =>{
             allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
+                    &&!element.node.classList.contains('forest')
                 &&element.bottom +1>=tank1Position.top 
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left 
-                &&!element.node.classList.contains('forest')
                 ){
                     yPos += 2   }
                 })
@@ -1193,10 +1227,10 @@ document.addEventListener('keyup', ((e) =>{
             allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
+                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank1Position.top 
                 &&element.left <= tank1Position.right 
                 &&element.right +1>=tank1Position.left 
-                &&!element.node.classList.contains('forest')
                 ){
                     xPos += 2   }
             })
@@ -1233,10 +1267,10 @@ document.addEventListener('keyup', ((e) =>{
             allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
+                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank1Position.top 
                 &&element.left -1<= tank1Position.right 
                 &&element.right>=tank1Position.left 
-                &&!element.node.classList.contains('forest')
                 ){
                     xPos -= 2   }
             })
@@ -1301,10 +1335,10 @@ document.addEventListener('keyup', ((e) =>{
             allObstaclePositions.find(element =>{
                 if
                 (element.top -1<= tank2Position.bottom 
+                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank2Position.top 
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
-                &&!element.node.classList.contains('forest')
                 ){
                     yPos -= 2   }
             })
@@ -1340,10 +1374,10 @@ document.addEventListener('keyup', ((e) =>{
             allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
+                    &&!element.node.classList.contains('forest')
                 &&element.bottom +1>=tank2Position.top 
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
-                &&!element.node.classList.contains('forest')
                 ){
                     yPos += 2   }
             })
@@ -1382,10 +1416,10 @@ document.addEventListener('keyup', ((e) =>{
             allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
+                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank2Position.top 
                 &&element.left <= tank2Position.right 
                 &&element.right +1>=tank2Position.left 
-                &&!element.node.classList.contains('forest')
                 ){
                     xPos += 2   }
             })
@@ -1420,10 +1454,10 @@ document.addEventListener('keyup', ((e) =>{
             allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
+                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank2Position.top 
                 &&element.left -1<= tank2Position.right 
                 &&element.right>=tank2Position.left 
-                &&!element.node.classList.contains('forest')
                 ){
                     xPos -= 2   }
             })
