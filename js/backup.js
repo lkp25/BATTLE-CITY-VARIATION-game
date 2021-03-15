@@ -1099,7 +1099,7 @@ document.addEventListener('keyup', ((e) =>{
                 yPos -= 1
             }
             //Check for crash with any obstacle
-            Obstacle.getAll().find(element =>{
+            allObstaclePositions.find(element =>{
                 if
                 (element.top -1<= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
@@ -1110,7 +1110,7 @@ document.addEventListener('keyup', ((e) =>{
                     yPos -= 2   }
                 })
             //check for crash with AI-enemies
-           Enemy.getAllEnemies().find(element =>{
+            allEnemyPositions.find(element =>{
             if
             (element.top -1<= tank1Position.bottom 
             &&element.bottom >=tank1Position.top 
@@ -1141,7 +1141,7 @@ document.addEventListener('keyup', ((e) =>{
                 yPos += 1
             }
             //Check for crash with any obstacle
-            Obstacle.getAll().find(element =>{
+            allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom +1>=tank1Position.top 
@@ -1153,7 +1153,7 @@ document.addEventListener('keyup', ((e) =>{
                 })
 
                 //Check for crash with enemy AI
-            Enemy.getAllEnemies().find(element =>{
+                allEnemyPositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom +1>=tank1Position.top 
@@ -1188,7 +1188,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos += 1
             }
             
-            Obstacle.getAll().find(element =>{
+            allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
@@ -1199,7 +1199,7 @@ document.addEventListener('keyup', ((e) =>{
                     xPos += 2   }
             })
 
-            Enemy.getAllEnemies().find(element =>{
+            allEnemyPositions.find(element =>{
                  if
                  (element.top <= tank1Position.bottom 
                     &&element.bottom >=tank1Position.top 
@@ -1228,7 +1228,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos -= 1
             }
             
-            Obstacle.getAll().find(element =>{
+            allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
@@ -1238,7 +1238,7 @@ document.addEventListener('keyup', ((e) =>{
                 ){
                     xPos -= 2   }
             })
-            Enemy.getAllEnemies().find(element =>{
+            allEnemyPositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
@@ -1293,7 +1293,7 @@ document.addEventListener('keyup', ((e) =>{
             }
 
             //Check for crash with any obstacle
-            Obstacle.getAll().find(element =>{
+            allObstaclePositions.find(element =>{
                 if
                 (element.top -1<= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
@@ -1303,7 +1303,7 @@ document.addEventListener('keyup', ((e) =>{
                 ){
                     yPos -= 2   }
             })
-            Enemy.getAllEnemies().find(element =>{
+            allEnemyPositions.find(element =>{
                 if
                 (element.top -1<= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
@@ -1332,7 +1332,7 @@ document.addEventListener('keyup', ((e) =>{
             }
 
             //Check for crash with any obstacle
-            Obstacle.getAll().find(element =>{
+            allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom +1>=tank2Position.top 
@@ -1342,7 +1342,7 @@ document.addEventListener('keyup', ((e) =>{
                 ){
                     yPos += 2   }
             })
-            Enemy.getAllEnemies().find(element =>{
+            allEnemyPositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom +1>=tank2Position.top 
@@ -1374,7 +1374,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos += 1
             }
 
-            Obstacle.getAll().find(element =>{
+            allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
@@ -1384,7 +1384,7 @@ document.addEventListener('keyup', ((e) =>{
                 ){
                     xPos += 2   }
             })
-            Enemy.getAllEnemies().find(element =>{
+            allEnemyPositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
@@ -1412,7 +1412,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos -= 1
             }
 
-            Obstacle.getAll().find(element =>{
+            allObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
@@ -1422,7 +1422,7 @@ document.addEventListener('keyup', ((e) =>{
                 ){
                     xPos -= 2   }
             })
-            Enemy.getAllEnemies().find(element =>{
+            allEnemyPositions.find(element =>{
                 if
                     (element.top <= tank2Position.bottom 
                     &&element.bottom >=tank2Position.top 
@@ -1492,7 +1492,7 @@ setInterval(()=>{
     allEnemyPositions = Enemy.getAllEnemies()
 
     // highlightClosestObstacles()
-},15)
+},20)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -1706,7 +1706,7 @@ class Enemy{
             return
         }   
         let spawnStatus
-        Enemy.getAllEnemies().find((element) =>{
+        Enemy.getAllEnemies().forEach((element) =>{
             if(element.top <= 40 && element.left <= 40){
                 spawnStatus = 'occupied'
             }else{
@@ -1758,7 +1758,7 @@ class Enemy{
 
                 createMissle(whoIsShooting, 'enemy')
             }
-        }, 2000);
+        }, 2500);
     }
 
 
@@ -2226,3 +2226,4 @@ const getRandomNumberBetween = (min, max) => {
 
   //misc
   const enemyGen = document.querySelector('.enemy-generator').addEventListener('click', Enemy.create)
+
