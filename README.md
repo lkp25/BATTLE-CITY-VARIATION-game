@@ -96,3 +96,11 @@ tank icon is also being displayed next to player name. If his life is very low, 
 - added level changing logic that refreshes obstacles on the map every x minutes/seconds - thus generating 'new level'
 - added logic to count current number of enemies and obstacles on the map - no more than x enemies and y obstacles can be present at the same time
 - resolved issue with 'ghost shooting missles' - after enemy was destroyed one more missle was being generated at his death position. Not any more.
+
+//15.03.2021 PERFORMANCE CHECKS
+- resolving performance issue - replaced all getBoundingClientRect() with offsetLeft & offsetTop - huge performance boost.
+- established references for Enemy.getAllEnemies() and Obstacle.getAllObstacles() in the main executor interval - now only there these methods are called, and a reference variable is used to serve produced arrays to intervals in movement and create missle functions. 
+Up to this point preformance was increased 4 times, but it is still too low. 
+App works smooth with 7 enemies running and around 320 obstacles generated. 
+With 8 enemies FPS drops below acceptable.
+- by replacing complex .reduce() call in enemy movement function with a for-loop with finish-early-if-condition met solution, game now runs smoothly even if 15 enemies are alive at the same time.

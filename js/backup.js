@@ -1629,7 +1629,7 @@ class Obstacle{
     // }, [])
     //for finding closest obstacles - used lower in the
     static closest = function(){
-        return  [...document.querySelectorAll('.brick')].map(element => {
+        return  document.querySelectorAll('.brick').forEach(element => {
             return [
                 element,
                 Math.abs(element.offsetLeft - 9 - tank.offsetLeft) ** 2 + Math.abs(element.offsetTop - 9 - tank.offsetTop) ** 2
@@ -1849,63 +1849,86 @@ class Enemy{
                 clearInterval(enemyMovementInterval)
             }
             
-            obstacleDetection = allObstaclePositions.reduce((newArr, element) =>{
-                    if
-                    (element.top <= enemy.offsetTop + 40
-                    &&element.bottom >=enemy.offsetTop
-                    &&element.left<= enemy.offsetLeft + 40
-                    &&element.right >=enemy.offsetLeft 
-                    &&!element.node.classList.contains('forest')
-                    ){
-                        //and change direction for further movement
-                        newArr.push(element)                                                 
-                    }
-                    return newArr
-                    },[])[0] //ONLY first item is needed, 
+           let i = 0
+           let massive = allObstaclePositions.length
+           
+           for(i = 0; i < massive; i++){
+                if
+                (
+                !allObstaclePositions[i].node.classList.contains('forest')
+                &&allObstaclePositions[i].top <= enemy.offsetTop + 40
+                &&allObstaclePositions[i].bottom >=enemy.offsetTop
+                &&allObstaclePositions[i].left<= enemy.offsetLeft + 40
+                &&allObstaclePositions[i].right >=enemy.offsetLeft 
+                ){
+                                               
+                    if(enemyFacing === 'right'){
+               
+                        //make it reverse (go left)
+                         randomMove = 1
+                         //BUT ONLY A LITTLE BIT - after 50ms GET ANOTHER direction TO THE SIDE,
+                         //don't approach the obstacle again and don't keep going back, try to omit it.
+                         setTimeout(() => {
+                            let helpingFactor = Math.floor(Math.random() * 2)
+                            if(helpingFactor === 0){
+                                randomMove = 3
+                            }else{
+                                randomMove = 2
+                            }
+                        }, 50);
+                    }    
+                    else if(enemyFacing === 'left'){
+                        randomMove = 0
+                        setTimeout(() => {
+                            let helpingFactor = Math.floor(Math.random() * 2)
+                            if(helpingFactor === 0){
+                                randomMove = 3
+                            }else{
+                                randomMove = 2
+                            }
+                        }, 50);
+                    }    
+                    else if(enemyFacing === 'up'){
+                        randomMove = 3
+                        setTimeout(() => {
+                            randomMove = Math.floor(Math.random() * 2)
+                           
+                        }, 50);
+                    }    
+                    else if(enemyFacing === 'down'){
+                        randomMove = 2
+                        setTimeout(() => {
+                            randomMove = Math.floor(Math.random() * 2)
+                            
+                        }, 50);
+                    }    
+                    i = massive - 2
+
+                }            
+            
+           }
+           
+           //////////////old method, less performant than simple for loop
+            // obstacleDetection = allObstaclePositions.reduce((newArr, element) =>{
+            //         if
+            //         (
+            //         !element.node.classList.contains('forest')
+            //         &&element.top <= enemy.offsetTop + 40
+            //         &&element.bottom >=enemy.offsetTop
+            //         &&element.left<= enemy.offsetLeft + 40
+            //         &&element.right >=enemy.offsetLeft 
+            //         ){
+            //             //and change direction for further movement
+            //             newArr.push(element)                                                 
+            //         }
+                   
+            //         return newArr
+            //         },[])[0] //ONLY first item is needed, 
                     //rest must be discarded not to interfere with changing movement direction.
 
             //4 - obstacleDetection is only true in the moment of collision. 
             //so if there was a collision and tank approached obstacle from the right: 
-            if(obstacleDetection && enemyFacing === 'right'){
-               
-                //make it reverse (go left)
-                 randomMove = 1
-                 //BUT ONLY A LITTLE BIT - after 50ms GET ANOTHER direction TO THE SIDE,
-                 //don't approach the obstacle again and don't keep going back, try to omit it.
-                 setTimeout(() => {
-                    let helpingFactor = Math.floor(Math.random() * 2)
-                    if(helpingFactor === 0){
-                        randomMove = 3
-                    }else{
-                        randomMove = 2
-                    }
-                }, 50);
-            }    
-            else if(obstacleDetection && enemyFacing === 'left'){
-                randomMove = 0
-                setTimeout(() => {
-                    let helpingFactor = Math.floor(Math.random() * 2)
-                    if(helpingFactor === 0){
-                        randomMove = 3
-                    }else{
-                        randomMove = 2
-                    }
-                }, 50);
-            }    
-            else if(obstacleDetection && enemyFacing === 'up'){
-                randomMove = 3
-                setTimeout(() => {
-                    randomMove = Math.floor(Math.random() * 2)
-                   
-                }, 50);
-            }    
-            else if(obstacleDetection && enemyFacing === 'down'){
-                randomMove = 2
-                setTimeout(() => {
-                    randomMove = Math.floor(Math.random() * 2)
-                    
-                }, 50);
-            }    
+            
 
 
 

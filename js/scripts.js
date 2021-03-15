@@ -1934,6 +1934,7 @@ class Enemy{
                         randomMove = Math.floor(Math.random() * 4)
                     }
 
+                    
                 }
                 //crashes with another enemy tank - change direction
                 allCurrentEnemyPositions.find(element =>{
