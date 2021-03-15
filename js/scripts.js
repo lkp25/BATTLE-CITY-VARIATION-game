@@ -34,6 +34,10 @@ let left2 = false
 let fire2 = false
 let facing2 = 'down'
 
+//main executor constantly sets all positions, here they are just declared
+let allObstaclePositions
+let allEnemyPositions
+
 //create player1 tank:  
 const tank = document.createElement('div')
 // .setAttribute('style', "top: 0px; left: 360px")
@@ -89,7 +93,7 @@ class Timer{
                 map.style.transform = `rotateX(180deg) scaleX(0) skewX(20deg)`
                 
                 //REFRESH THE OBSTACLES - GENERATE NEW LEVEL
-                Obstacle.generateNewLevel()
+                // Obstacle.generateNewLevel()
                 
                 
                 
@@ -194,10 +198,10 @@ class player1Stats{
 
     function createMissle(whoIsShooting, which){
         //GET ALL OBSTACLES' POSITIONS
-        const obstaclesPositions = Obstacle.getAll()
+        const obstaclesPositions = allObstaclePositions
         //GET ALL ENEMIES' POSITIONS
-        const allCurrentEnemyPositions = Enemy.getAllEnemies()
-        Enemy.number = Enemy.getAllEnemies().length
+        const allCurrentEnemyPositions = allEnemyPositions
+        Enemy.number = allEnemyPositions.length
 
        
         //CHECK WHO WAS SHOOTING:
@@ -212,10 +216,10 @@ class player1Stats{
                 }
                 //function for checking if player was hit by enemy
                 function checkIfPlayerWasHit(which){
-                    if((missle.getBoundingClientRect().top) <= which.getBoundingClientRect().bottom
-                            && (missle.getBoundingClientRect().left) <= which.getBoundingClientRect().right
-                            && (missle.getBoundingClientRect().right) >= which.getBoundingClientRect().left
-                            && (missle.getBoundingClientRect().bottom) >= which.getBoundingClientRect().top
+                    if((missle.offsetTop) <= which.offsetTop + 40
+                            && (missle.offsetLeft) <= which.offsetLeft + 40
+                            && (missle.offsetLeft + 6) >= which.offsetLeft
+                            && (missle.offsetTop + 10) >= which.offsetTop
                             ){
                                 
                                 
@@ -286,10 +290,10 @@ class player1Stats{
 
 
                         //check if obstacle was hit by missle
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             if(
                                
-                                missle.getBoundingClientRect().bottom >= obstacle.top
+                                missle.offsetTop + 10 >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft -2<= obstacle.right
                                 && missle.offsetLeft +8  >= obstacle.left
@@ -325,11 +329,11 @@ class player1Stats{
 
 
                         //check if obstacle was hit by missle
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             if(
                                
                                 missle.offsetTop > obstacle.top
-                                && missle.getBoundingClientRect().bottom  < obstacle.bottom
+                                && missle.offsetTop + 10  < obstacle.bottom
                                 && missle.offsetLeft - 2 < obstacle.right
                                 && missle.offsetLeft + 8  > obstacle.left
                             
@@ -358,13 +362,13 @@ class player1Stats{
                         missle.style.left = `${trajectorZ}px`
 
                         //check if obstacle was hit by missle
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             if(
                                
-                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                                missle.offsetTop + 10 >= obstacle.top
+                                && missle.offsetTop  <= obstacle.bottom
+                                && missle.offsetLeft <= obstacle.right
+                                && missle.offsetLeft + 6 >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
@@ -391,13 +395,13 @@ class player1Stats{
                         missle.style.left = `${trajectorZ}px`
 
                         //check if obstacle was hit by missle
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             if(
                                
-                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                                missle.offsetTop + 10 >= obstacle.top
+                                && missle.offsetTop  <= obstacle.bottom
+                                && missle.offsetLeft <= obstacle.right
+                                && missle.offsetLeft + 6 >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
@@ -429,7 +433,7 @@ class player1Stats{
 
             function checkIfEnemyWasHit(missle, allCurrentEnemyPositions){
 
-                allCurrentEnemyPositions.forEach((enemy)=>{
+                allCurrentEnemyPositions.find((enemy)=>{
                   
                     
                     if(
@@ -497,7 +501,7 @@ class player1Stats{
                         //move the missle upwards by current trajector value
                         missle.style.transform = `translateY(-${trajector}px)`
                         
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
@@ -557,7 +561,7 @@ class player1Stats{
                 
                         missle.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
                         
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
@@ -607,7 +611,7 @@ class player1Stats{
                 
                         missle.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
                     
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
@@ -654,7 +658,7 @@ class player1Stats{
                         missle.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
                     
 
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
@@ -727,7 +731,7 @@ class player1Stats{
                         
                             missle.style.transform = `translateY(-${trajector}px)`
                             
-                            obstaclesPositions.forEach(obstacle =>{
+                            obstaclesPositions.find(obstacle =>{
                                 //check if obstacle was hit by missle
                                 if(
                                    
@@ -776,7 +780,7 @@ class player1Stats{
                 
                         missle.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
 
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
@@ -825,7 +829,7 @@ class player1Stats{
                 
                         missle.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
                     
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
@@ -871,7 +875,7 @@ class player1Stats{
                
                         missle.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
                     
-                        obstaclesPositions.forEach(obstacle =>{
+                        obstaclesPositions.find(obstacle =>{
                             //check if obstacle was hit by missle
                             if(
                                
@@ -1063,7 +1067,7 @@ document.addEventListener('keyup', ((e) =>{
 //======================================================================================
 
 
-    function movement(tank1Position, tank2Position){
+    function movement(tank1Position, tank2Position, which){
        
         //dont let player take position of enemy spawn
 
@@ -1095,17 +1099,18 @@ document.addEventListener('keyup', ((e) =>{
                 yPos -= 1
             }
             //Check for crash with any obstacle
-            Obstacle.getAll().forEach(element =>{
+            Obstacle.getAll().find(element =>{
                 if
                 (element.top -1<= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
                 &&element.left <= tank1Position.right 
-                &&element.right >=tank1Position.left 
+                &&element.right >=tank1Position.left
+                &&!element.node.classList.contains('forest')
                 ){
                     yPos -= 2   }
                 })
             //check for crash with AI-enemies
-           Enemy.getAllEnemies().forEach(element =>{
+           Enemy.getAllEnemies().find(element =>{
             if
             (element.top -1<= tank1Position.bottom 
             &&element.bottom >=tank1Position.top 
@@ -1136,18 +1141,19 @@ document.addEventListener('keyup', ((e) =>{
                 yPos += 1
             }
             //Check for crash with any obstacle
-            Obstacle.getAll().forEach(element =>{
+            Obstacle.getAll().find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom +1>=tank1Position.top 
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left 
+                &&!element.node.classList.contains('forest')
                 ){
                     yPos += 2   }
                 })
 
                 //Check for crash with enemy AI
-            Enemy.getAllEnemies().forEach(element =>{
+            Enemy.getAllEnemies().find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom +1>=tank1Position.top 
@@ -1182,17 +1188,18 @@ document.addEventListener('keyup', ((e) =>{
                 xPos += 1
             }
             
-            Obstacle.getAll().forEach(element =>{
+            Obstacle.getAll().find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
                 &&element.left <= tank1Position.right 
                 &&element.right +1>=tank1Position.left 
+                &&!element.node.classList.contains('forest')
                 ){
                     xPos += 2   }
             })
 
-            Enemy.getAllEnemies().forEach(element =>{
+            Enemy.getAllEnemies().find(element =>{
                  if
                  (element.top <= tank1Position.bottom 
                     &&element.bottom >=tank1Position.top 
@@ -1221,16 +1228,17 @@ document.addEventListener('keyup', ((e) =>{
                 xPos -= 1
             }
             
-            Obstacle.getAll().forEach(element =>{
+            Obstacle.getAll().find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
                 &&element.left -1<= tank1Position.right 
                 &&element.right>=tank1Position.left 
+                &&!element.node.classList.contains('forest')
                 ){
                     xPos -= 2   }
             })
-            Enemy.getAllEnemies().forEach(element =>{
+            Enemy.getAllEnemies().find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
@@ -1285,16 +1293,17 @@ document.addEventListener('keyup', ((e) =>{
             }
 
             //Check for crash with any obstacle
-            Obstacle.getAll().forEach(element =>{
+            Obstacle.getAll().find(element =>{
                 if
                 (element.top -1<= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
+                &&!element.node.classList.contains('forest')
                 ){
                     yPos -= 2   }
             })
-            Enemy.getAllEnemies().forEach(element =>{
+            Enemy.getAllEnemies().find(element =>{
                 if
                 (element.top -1<= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
@@ -1323,16 +1332,17 @@ document.addEventListener('keyup', ((e) =>{
             }
 
             //Check for crash with any obstacle
-            Obstacle.getAll().forEach(element =>{
+            Obstacle.getAll().find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom +1>=tank2Position.top 
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
+                &&!element.node.classList.contains('forest')
                 ){
                     yPos += 2   }
             })
-            Enemy.getAllEnemies().forEach(element =>{
+            Enemy.getAllEnemies().find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom +1>=tank2Position.top 
@@ -1364,16 +1374,17 @@ document.addEventListener('keyup', ((e) =>{
                 xPos += 1
             }
 
-            Obstacle.getAll().forEach(element =>{
+            Obstacle.getAll().find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
                 &&element.left <= tank2Position.right 
                 &&element.right +1>=tank2Position.left 
+                &&!element.node.classList.contains('forest')
                 ){
                     xPos += 2   }
             })
-            Enemy.getAllEnemies().forEach(element =>{
+            Enemy.getAllEnemies().find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
@@ -1401,16 +1412,17 @@ document.addEventListener('keyup', ((e) =>{
                 xPos -= 1
             }
 
-            Obstacle.getAll().forEach(element =>{
+            Obstacle.getAll().find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
                 &&element.left -1<= tank2Position.right 
                 &&element.right>=tank2Position.left 
+                &&!element.node.classList.contains('forest')
                 ){
                     xPos -= 2   }
             })
-            Enemy.getAllEnemies().forEach(element =>{
+            Enemy.getAllEnemies().find(element =>{
                 if
                     (element.top <= tank2Position.bottom 
                     &&element.bottom >=tank2Position.top 
@@ -1473,10 +1485,12 @@ setInterval(()=>{
     movement(tank1Position, tank2Position)
     movement2(tank1Position, tank2Position)
     
+    //constantly check position of each obstacle for collision with tanks or missles
+    allObstaclePositions = Obstacle.getAll()
+    
+    //constantly check position of each enemy for collision with tanks or missles or obstacles
+    allEnemyPositions = Enemy.getAllEnemies()
 
-    //constantly check position of each obstacle for collision
-    //with player tanks
-    // Obstacle.checkCrash()
     // highlightClosestObstacles()
 },15)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1568,7 +1582,7 @@ class Obstacle{
         
         //search the entire array of already created obstacles to check
         //if one with same position already exists. If it does - remove the duplicate.
-        alreadyCreated.forEach((element)=>{
+        alreadyCreated.find((element)=>{
             if(element.id === obstacle.id){
                 obstacle.remove()
             }
@@ -1583,14 +1597,14 @@ class Obstacle{
 
     //function to get all positions of all obstacles
     static getAll = function(){
-        return  [...document.querySelectorAll('.obstacle')].map((element, index) => {
+        return  [...document.querySelectorAll('.obstacle')].map((element) => {
             return {
                 top: element.offsetTop,
                 bottom: element.offsetTop + 22,
                 left: element.offsetLeft,
                 right: element.offsetLeft + 22,
-                node: element,
-                index
+                node: element
+                
             }
 
             
@@ -1618,7 +1632,7 @@ class Obstacle{
         return  [...document.querySelectorAll('.brick')].map(element => {
             return [
                 element,
-                Math.abs(element.getBoundingClientRect().left - 9 - tank.getBoundingClientRect().left) ** 2 + Math.abs(element.getBoundingClientRect().top - 9 - tank.getBoundingClientRect().top) ** 2
+                Math.abs(element.offsetLeft - 9 - tank.offsetLeft) ** 2 + Math.abs(element.offsetTop - 9 - tank.offsetTop) ** 2
                 // (((Math.abs(element.offsetLeft - tank.offsetLeft)) * (Math.abs(element.offsetLeft - tank.offsetLeft)))    
                 // +    ((Math.abs(element.offsetTop - tank.offsetTop)) *  (Math.abs(element.offsetTop - tank.offsetTop))))
 
@@ -1692,7 +1706,7 @@ class Enemy{
             return
         }   
         let spawnStatus
-        Enemy.getAllEnemies().forEach((element) =>{
+        Enemy.getAllEnemies().find((element) =>{
             if(element.top <= 40 && element.left <= 40){
                 spawnStatus = 'occupied'
             }else{
@@ -1835,13 +1849,13 @@ class Enemy{
                 clearInterval(enemyMovementInterval)
             }
             
-            obstacleDetection = Obstacle.getAll().reduce((newArr, element) =>{
+            obstacleDetection = allObstaclePositions.reduce((newArr, element) =>{
                     if
                     (element.top <= enemy.offsetTop + 40
                     &&element.bottom >=enemy.offsetTop
                     &&element.left<= enemy.offsetLeft + 40
                     &&element.right >=enemy.offsetLeft 
-                    
+                    &&!element.node.classList.contains('forest')
                     ){
                         //and change direction for further movement
                         newArr.push(element)                                                 
@@ -1897,7 +1911,7 @@ class Enemy{
 
 
             //get all positions of all alive enemies
-            const allCurrentEnemyPositions = Enemy.getAllEnemies()
+            const allCurrentEnemyPositions = allEnemyPositions
                         
             //force enemy movement  according to random number:================            
             //DOWN DOWN DOWN DOWN DOWN -if 3
@@ -1916,7 +1930,7 @@ class Enemy{
 
                 }
                 //crashes with another enemy tank - change direction
-                allCurrentEnemyPositions.forEach(element =>{
+                allCurrentEnemyPositions.find(element =>{
                     if
                     (element.top -1<= enemy.offsetTop + 40
                     &&element.bottom >=enemy.offsetTop
@@ -1958,7 +1972,7 @@ class Enemy{
                         randomMove = Math.floor(Math.random() * 4)
                     }
                  }
-                 allCurrentEnemyPositions.forEach(element =>{
+                 allCurrentEnemyPositions.find(element =>{
                     if
                     (element.top <= enemy.offsetTop + 40
                         &&element.bottom +1 >=enemy.offsetTop
@@ -2003,7 +2017,7 @@ class Enemy{
                     }
                                    
                  }
-                 allCurrentEnemyPositions.forEach(element =>{
+                 allCurrentEnemyPositions.find(element =>{
                     if
                     (element.top <= enemy.offsetTop + 40
                         &&element.bottom >=enemy.offsetTop
@@ -2045,7 +2059,7 @@ class Enemy{
                         randomMove = Math.floor(Math.random() * 4)
                     }
                 }
-                allCurrentEnemyPositions.forEach(element =>{
+                allCurrentEnemyPositions.find(element =>{
                     if
                     (element.top <= enemy.offsetTop + 40
                         &&element.bottom >=enemy.offsetTop
@@ -2076,7 +2090,7 @@ class Enemy{
             }
                         
            
-        },20)      
+        },30)      
         //*end of interval++++++++++++++++++++++++++
 
 
@@ -2155,33 +2169,36 @@ Enemy.create()
 
 //little extra - nearest obstacles detector
 
-function highlightClosestObstacles(){
-    // return Obstacle.closest()
-    const theClosest = Obstacle.closest()
-    //limit the array of all obstacles to 4. they are pre-sorted by closest() method
-    //from closest one to furthest.
-    theClosest.length = 4
-    //each item is an array itself, index 0 being the DOM element, index 1 being the distance from player
+// function highlightClosestObstacles(){
+//     // return Obstacle.closest()
+//     const theClosest = Obstacle.closest()
+//     //limit the array of all obstacles to 4. they are pre-sorted by closest() method
+//     //from closest one to furthest.
+//     theClosest.length = 4
+//     //each item is an array itself, index 0 being the DOM element, index 1 being the distance from player
     
-    //toggle the class wich makes the obstacle blink 
-    theClosest.forEach(theClosest =>{
-        if(!theClosest[0].classList.contains('closest')){
+//     //toggle the class wich makes the obstacle blink 
+//     theClosest.forEach(theClosest =>{
+//         if(!theClosest[0].classList.contains('closest')){
 
-            theClosest[0].classList.add('closest')
-        }
+//             theClosest[0].classList.add('closest')
+//         }
         
-        setTimeout(() => {
-            theClosest[0].classList.remove('closest')
-        }, 250);
+//         setTimeout(() => {
+//             theClosest[0].classList.remove('closest')
+//         }, 250);
         
 
-    })
-}
-//evry half a second check which obstacles are now closest ones 
-setInterval(() => {
+//     })
+// }
+// //evry half a second check which obstacles are now closest ones 
+// setInterval(() => {
     
-    highlightClosestObstacles()
-}, 500);
+//     highlightClosestObstacles()
+// }, 500);
+
+
+
 
 
 
