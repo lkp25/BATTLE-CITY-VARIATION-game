@@ -155,31 +155,35 @@ aside{
       
     }
 .rock{
-    
+        border-radius: 5px;
         position: absolute;
         width: 22px;
         height: 22px;
-        background: gray;
+        background: url(../images/rocks.png) center/cover;
         background-color:  rgba(247, 244, 244, 0.295);
         z-index: 3;
-      
+        transform: scale(1);
+        clip-path: polygon(68% 0, 100% 19%, 100% 43%, 100% 79%, 83% 100%, 23% 100%, 0 84%, 0 30%, 14% 0);
     }
 .forest{
-    
+    transform: scale(1.8);
         position: absolute;
         width: 22px;
         height: 22px;
-        background: rgb(17, 133, 7);
+        background: url(../images/forest.png) center/cover;
         /* background-color:  rgba(247, 244, 244, 0.295); */
         z-index: 5;
-      
+        border-radius: 5px;
+        clip-path: polygon(45% 100%, 100% 34%, 8% 7%, 100% 64%, 0 99%, 74% 0, 0 62%, 100% 100%, 0 32%, 96% 7%);
+        /* clip-path: polygon(11% 97%, 100% 37%, 13% 2%, 100% 60%, 38% 100%, 52% 0, 0 78%, 100% 92%, 0 21%, 100% 0); */
     }
 .water{
-    
+    border-radius: 5px/2px;
+    transform: scale(1.08);
         position: absolute;
         width: 22px;
         height: 22px;
-        background: rgb(8, 33, 172);
+        background: linear-gradient(to bottom, rgba(0, 0, 255, 0.459), rgba(0, 0, 255, 0.39)), url(../images/water.png) center/cover;
         /* background-color:  rgba(247, 244, 244, 0.295); */
         z-index: 1;
       

@@ -8,6 +8,10 @@ document.body.style.overflow = 'hidden'
 //=======================================================================
 //define game area
 const map = document.querySelector('.map')
+const player1Life = document.querySelector('.player-one-lifebar')
+const player2Life = document.querySelector('.player-two-lifebar')
+const player1Killed = document.querySelector('.player-one-enemies-destroyed')
+const player2Killed = document.querySelector('.player-two-enemies-destroyed')
 //map size
 let mapHeight = 580
 let mapWidth = 580
@@ -111,12 +115,7 @@ class Timer{
     
 }
 
-class player1Stats{
-    constructor(){}
 
-    static life = 100
-    static 
-}
 
 
 
@@ -193,8 +192,57 @@ class player1Stats{
 //==========================SHOOTING MISSLES FUNCTIONALITY===============================
 //=======================================================================================
 
+//function used to check if player missle hit any enemy
+                //function used to check if player missle hit any enemy
 
+                //function used to check if player missle hit any enemy
+                //for both player one and two!
 
+                function checkIfEnemyWasHit(missle, allCurrentEnemyPositions){
+
+                    allCurrentEnemyPositions.find((enemy)=>{
+                      
+                        
+                        if(
+                            
+                            missle.getBoundingClientRect().bottom >= enemy.DOMnode.getBoundingClientRect().top
+                            && missle.getBoundingClientRect().top  <= enemy.DOMnode.getBoundingClientRect().bottom
+                            && missle.getBoundingClientRect().left <= enemy.DOMnode.getBoundingClientRect().right
+                            && missle.getBoundingClientRect().right >= enemy.DOMnode.getBoundingClientRect().left
+                        
+                        ){
+                            //remove the obstacle and the missle if true
+                            enemy.DOMnode.style.display = 'none'
+                            
+                            enemy.DOMnode.remove()
+                            missle.remove()
+                            
+                            
+                        } 
+                    })
+    
+                    
+                }
+
+                //function for checking if player was hit by enemy
+                function checkIfPlayerWasHit(which, missle){
+                    if((missle.offsetTop) <= which.offsetTop + 40
+                            && (missle.offsetLeft) <= which.offsetLeft + 40
+                            && (missle.offsetLeft + 6) >= which.offsetLeft
+                            && (missle.offsetTop + 10) >= which.offsetTop
+                            ){
+                                
+                                
+                                missle.remove()
+                                which.style.opacity = `${((((which.style.opacity * 10) - 1) / 10))}`
+                                
+                                
+                            }   
+                }
+
+    //MAIN SHOOTING FUNCTION
+    //MAIN SHOOTING FUNCTION
+    //MAIN SHOOTING FUNCTION
 
     function createMissle(whoIsShooting, which){
         //GET ALL OBSTACLES' POSITIONS
@@ -214,21 +262,7 @@ class player1Stats{
                 if(whoIsShooting.display === 'none'){
                     return
                 }
-                //function for checking if player was hit by enemy
-                function checkIfPlayerWasHit(which){
-                    if((missle.offsetTop) <= which.offsetTop + 40
-                            && (missle.offsetLeft) <= which.offsetLeft + 40
-                            && (missle.offsetLeft + 6) >= which.offsetLeft
-                            && (missle.offsetTop + 10) >= which.offsetTop
-                            ){
-                                
-                                
-                                missle.remove()
-                                which.style.opacity = `${((((which.style.opacity * 10) - 1) / 10))}`
-                                
-                                
-                            }   
-                }
+                
 
                
 
@@ -311,8 +345,8 @@ class player1Stats{
                         })    
                         
                         //check if one of the players was hit
-                        checkIfPlayerWasHit(tank)
-                        checkIfPlayerWasHit(tank2)
+                        checkIfPlayerWasHit(tank, missle)
+                        checkIfPlayerWasHit(tank2, missle)
                         
                     }, 20);
                 }
@@ -386,8 +420,8 @@ class player1Stats{
                                 }
                             } 
                             //check if one of the players was hit
-                            checkIfPlayerWasHit(tank)
-                            checkIfPlayerWasHit(tank2)
+                            checkIfPlayerWasHit(tank, missle)
+                            checkIfPlayerWasHit(tank2, missle)
                         })    
                     }, 20);
                 }
@@ -424,8 +458,8 @@ class player1Stats{
                             } 
                         })    
                         //check if one of the players was hit
-                        checkIfPlayerWasHit(tank)
-                        checkIfPlayerWasHit(tank2)
+                        checkIfPlayerWasHit(tank, missle)
+                        checkIfPlayerWasHit(tank2, missle)
 
                     }, 20);
                 }
@@ -436,37 +470,7 @@ class player1Stats{
 
 
 
-                //function used to check if player missle hit any enemy
-                //function used to check if player missle hit any enemy
-
-                //function used to check if player missle hit any enemy
-                //for both player one and two!
-
-            function checkIfEnemyWasHit(missle, allCurrentEnemyPositions){
-
-                allCurrentEnemyPositions.find((enemy)=>{
-                  
-                    
-                    if(
-                        
-                        missle.getBoundingClientRect().bottom >= enemy.DOMnode.getBoundingClientRect().top
-                        && missle.getBoundingClientRect().top  <= enemy.DOMnode.getBoundingClientRect().bottom
-                        && missle.getBoundingClientRect().left <= enemy.DOMnode.getBoundingClientRect().right
-                        && missle.getBoundingClientRect().right >= enemy.DOMnode.getBoundingClientRect().left
-                    
-                    ){
-                        //remove the obstacle and the missle if true
-                        enemy.DOMnode.style.display = 'none'
-                        
-                        enemy.DOMnode.remove()
-                        missle.remove()
-                        
-                        
-                    } 
-                })
-
                 
-            }
 
 
 
@@ -535,19 +539,19 @@ class player1Stats{
                             
                             
                             
-                            //check if other player was hit by missle
-                            if((missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
-                            && (missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
-                            && (missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
-                            && (missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
-                            ){
+                            //check if other player was hit by missle - not used currently
+                            // if((missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
+                            // && (missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
+                            // && (missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
+                            // && (missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
+                            // ){
                                 
                                 
-                                missle.remove()
-                                tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
-                                //stop the interval from running forever
-                                clearInterval(performanceEater)
-                            }                            
+                            //     missle.remove()
+                            //     tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
+                            //     //stop the interval from running forever
+                            //     clearInterval(performanceEater)
+                            // }                            
                         
                         //check if any enemy was hit
                         checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
@@ -595,19 +599,7 @@ class player1Stats{
                             } 
                         })    
 
-                        //check if missle hit other player's tank
-                        if((missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
-                        && (missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
-                        && (missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
-                        && (missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
-                        ){
-                            
-                         
-                            
-                            missle.remove()
-                            tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
-                            clearInterval(performanceEater)
-                        }
+                        
                 
                         //check if any enemy was hit
                         checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
@@ -648,18 +640,7 @@ class player1Stats{
                             } 
                         })    
 
-                        if((missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
-                        && (missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
-                        && (missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
-                        && (missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
-                        ){
-                            
-                          
-                            
-                            missle.remove()
-                            tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
-                            clearInterval(performanceEater)
-                        }
+                      
                 
                         //check if any enemy was hit
                         checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
@@ -698,18 +679,7 @@ class player1Stats{
                             } 
                         })    
 
-                        if((missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
-                        && (missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
-                        && (missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
-                        && (missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
-                        ){
-                            
-                         
-                            
-                            missle.remove()
-                            tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
-                            clearInterval(performanceEater)
-                        }
+                      
                 
                         //check if any enemy was hit
                         checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
@@ -774,16 +744,7 @@ class player1Stats{
                                 } 
                             })    
 
-                            if((missle.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
-                            && (missle.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
-                            && (missle.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
-                            && (missle.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
-                            ){
-                                
-                                tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
-                                missle.remove()
-                                clearInterval(performanceEater)
-                            }    
+                           
                         
                       //check if any enemy was hit
                       checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
@@ -826,18 +787,7 @@ class player1Stats{
                             } 
                         })    
 
-                        if((missle.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
-                        && (missle.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
-                        && (missle.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
-                        && (missle.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
-                        ){
-                            
-                            
-                            
-                            missle.remove()
-                            tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
-                            clearInterval(performanceEater)
-                        }
+                       
                 
                           //check if any enemy was hit
                           checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
@@ -878,18 +828,7 @@ class player1Stats{
                             } 
                         })    
 
-                        if((missle.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
-                        && (missle.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
-                        && (missle.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
-                        && (missle.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
-                        ){
-                            
-                            
-                            missle.remove()
-                            tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
-                            clearInterval(performanceEater)
-                        }
-                
+                       
                           //check if any enemy was hit
                           checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
                 
@@ -927,19 +866,7 @@ class player1Stats{
                             } 
                         })    
 
-                        if((missle.getBoundingClientRect().right) >= tank.getBoundingClientRect().left
-                        && (missle.getBoundingClientRect().bottom) >= tank.getBoundingClientRect().top
-                        && (missle.getBoundingClientRect().top) <= tank.getBoundingClientRect().bottom
-                        && (missle.getBoundingClientRect().left) <= tank.getBoundingClientRect().right
-                        
-                        ){
-                            
-                           
-                            
-                            missle.remove()
-                            tank.style.opacity = `${((((tank.style.opacity * 10) - 1) / 10))}`
-                            clearInterval(performanceEater)
-                        }
+                      
                 
                   //check if any enemy was hit
                   checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)

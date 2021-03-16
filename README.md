@@ -103,4 +103,10 @@ tank icon is also being displayed next to player name. If his life is very low, 
 Up to this point preformance was increased 4 times, but it is still too low. 
 App works smooth with 7 enemies running and around 320 obstacles generated. 
 With 8 enemies FPS drops below acceptable.
-- by replacing complex .reduce() call in enemy movement function with a for-loop with finish-early-if-condition met solution, game now runs smoothly even if 15 enemies are alive at the same time.
+
+------ replacing complex .reduce() call in enemy movement function with a for-loop with finish-early-if-condition met solution, game was running smoothly even if 15 enemies were alive at the same time ------- UNFORTUNATELY this change resulted in other critical error - browser was quickly out of memory for unnknown reason and caused everything to freeze.
+After returning to reduce, problem is gone, but performance is still less than enough.
+
+- changed player movement function to return instantly if no arrow is pressed. 
+- added complete functionality for different obstacles - trees dont interact with tanks, water stops movement but not missles, rocks stop movement and missles but they don't disappear like brick walls.
+- removed player missle vs player intercation - players fight enemies, not each other
