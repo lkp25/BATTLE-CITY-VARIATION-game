@@ -249,7 +249,7 @@ class Timer{
         const obstaclesPositions = allObstaclePositions
         //GET ALL ENEMIES' POSITIONS
         const allCurrentEnemyPositions = allEnemyPositions
-        Enemy.number = allEnemyPositions.length
+        
 
        
         //CHECK WHO WAS SHOOTING:
@@ -316,6 +316,7 @@ class Timer{
                         if(trajectorY > 600){
                             missle.remove()
                             clearInterval(shootingInterval)
+                            return
                         }
 
                         //keep the missle flying
@@ -340,6 +341,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                         })    
@@ -358,6 +360,7 @@ class Timer{
                         if(trajectorY < -20){
                             missle.remove()
                             clearInterval(shootingInterval)
+                            return
                         }
 
 
@@ -382,12 +385,13 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                             //check if one of the players was hit
                         })    
-                        checkIfPlayerWasHit(tank)
-                        checkIfPlayerWasHit(tank2)
+                        checkIfPlayerWasHit(tank, missle)
+                        checkIfPlayerWasHit(tank2, missle)
                     }, 20);
                 }
                 if(missleFacing === 'left'){
@@ -395,6 +399,7 @@ class Timer{
                         if(trajectorZ < -20){
                             missle.remove()
                             clearInterval(shootingInterval)
+                            return
                         }
 
                         trajectorZ -= 10
@@ -417,6 +422,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                             //check if one of the players was hit
@@ -430,6 +436,7 @@ class Timer{
                         if(trajectorZ > 600){
                             missle.remove()
                             clearInterval(shootingInterval)
+                            return
                         }
 
 
@@ -453,6 +460,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
 
                             } 
@@ -533,6 +541,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                         })    
@@ -564,7 +573,7 @@ class Timer{
                             missle.remove()
                             //stop the interval from running forever
                             clearInterval(performanceEater)
-                            
+                            return
                         }
                 }, 20)
             }
@@ -595,6 +604,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                         })    
@@ -607,7 +617,7 @@ class Timer{
                     if(trajector >= 580){
                         missle.remove()
                         clearInterval(performanceEater)
-                        
+                        return
                     }
             }, 20)}
             if(facing === 'left'){
@@ -636,6 +646,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                         })    
@@ -648,7 +659,7 @@ class Timer{
                     if(trajector >= 580){
                         missle.remove()
                         clearInterval(performanceEater)
-                        
+                        return
                     }
             }, 20)}
             if(facing === 'right'){
@@ -675,6 +686,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                         })    
@@ -687,7 +699,7 @@ class Timer{
                     if(trajector >= 580){
                         missle.remove()
                         clearInterval(performanceEater)
-                        
+                        return
                     }
             }, 20)}
         }
@@ -740,6 +752,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                                 } 
                             })    
@@ -752,7 +765,7 @@ class Timer{
                         if(trajector >= 580){
                             missle.remove()
                             clearInterval(performanceEater)
-                            
+                            return
                         }
                 }, 20)
             }
@@ -783,6 +796,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                         })    
@@ -795,7 +809,7 @@ class Timer{
                     if(trajector >= 580){
                         missle.remove()
                         clearInterval(performanceEater)
-                        
+                        return
                     }
             }, 20)}
             if(facing2 === 'left'){
@@ -824,6 +838,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                         })    
@@ -835,7 +850,7 @@ class Timer{
                     if(trajector >= 580){
                         missle.remove()
                         clearInterval(performanceEater)
-                        
+                        return
                     }
             }, 20)}
             if(facing2 === 'right'){
@@ -862,6 +877,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    return
                                 }
                             } 
                         })    
@@ -874,7 +890,7 @@ class Timer{
                     if(trajector >= 580){
                         missle.remove()
                         clearInterval(performanceEater)
-                        
+                        return
                     }
             }, 20)}
         }
@@ -906,28 +922,28 @@ class Timer{
 document.addEventListener('keydown', ((e) =>{
     //player 1
     if(e.key === 'ArrowDown'){
-        tank.classList.add('tank-move')
+        // tank.classList.add('tank-move')
         down = true
         right = false
         up = false
         left = false
     }
     else if(e.key === 'ArrowUp'){
-        tank.classList.add('tank-move')
+        // tank.classList.add('tank-move')
         up = true
         right = false
         down = false
         left = false
     }
     else if(e.key === 'ArrowRight'){
-        tank.classList.add('tank-move')
+        // tank.classList.add('tank-move')
         right = true
         down = false
         up = false
         left = false
     }
     else if(e.key === 'ArrowLeft'){
-        tank.classList.add('tank-move')
+        // tank.classList.add('tank-move')
         left = true
         right = false
         up = false
@@ -935,14 +951,14 @@ document.addEventListener('keydown', ((e) =>{
     }
     //player 2
     if(e.key === 's'){
-        tank2.classList.add('tank2-move')
+        // tank2.classList.add('tank2-move')
         down2 = true
         right2 = false
         up2 = false
         left2 = false
     }
     else if(e.key === 'w'){
-        tank2.classList.add('tank2-move')
+        // tank2.classList.add('tank2-move')
         up2 = true
         right2 = false
         down2 = false
@@ -950,14 +966,14 @@ document.addEventListener('keydown', ((e) =>{
         
     }
     else if(e.key === 'd'){
-        tank2.classList.add('tank2-move')
+        // tank2.classList.add('tank2-move')
         right2 = true
         down2 = false
         up2 = false
         left2 = false
     }
     else if(e.key === 'a'){
-        tank2.classList.add('tank2-move')
+        // tank2.classList.add('tank2-move')
         left2 = true
         right2 = false
         up2 = false
@@ -967,8 +983,8 @@ document.addEventListener('keydown', ((e) =>{
 //key up - change to FALSE
 document.addEventListener('keyup', ((e) =>{
     //player 1
-    tank.classList.remove('tank-move')
-    tank2.classList.remove('tank2-move')
+    // tank.classList.remove('tank-move')
+    // tank2.classList.remove('tank2-move')
     if(e.key === 'ArrowDown'){
         down = false
     }
@@ -1041,6 +1057,7 @@ document.addEventListener('keyup', ((e) =>{
             if(facing === 'up'){
                 tank.style.top = '42px'
             }
+            return
         }
         //=============VERTICAL MOVEMENT====================
         //access tank Y position on map
@@ -1070,7 +1087,8 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left
                 ){
-                    yPos -= 2   }
+                    yPos -= 2   
+                    return}
                 })
             //check for crash with AI-enemies
             allEnemyPositions.find(element =>{
@@ -1080,15 +1098,18 @@ document.addEventListener('keyup', ((e) =>{
             &&element.left <= tank1Position.right 
             &&element.right >=tank1Position.left 
             ){
-                yPos -= 5   }
+                yPos -= 5   
+                return}
            })
             
             
                 //STOP when it reaches MAP-BOTTOM
             if(yPos >= mapHeight){  
                 tank.style.top = `${mapHeight}px`
+                return
             }else{  //keep going down if there is space
                 tank.style.top = `${yPos}px`
+                return
             }
         }
         //go up
@@ -1112,7 +1133,8 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left 
                 ){
-                    yPos += 2   }
+                    yPos += 2   
+                    return}
                 })
 
                 //Check for crash with enemy AI
@@ -1123,13 +1145,16 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left 
                 ){
-                    yPos += 5  }
+                    yPos += 5  
+                    return}
                 })
 
             if(yPos <= 0){  //STOP when it reaches MAP-TOP
                 tank.style.top = `${0}px`
+                return
             }else{  //keep going up if there is space
                 tank.style.top = `${yPos}px`
+                return
             }
         }
         //+++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1159,7 +1184,9 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank1Position.right 
                 &&element.right +1>=tank1Position.left 
                 ){
-                    xPos += 2   }
+                    xPos += 2   
+                    return
+                }
             })
 
             allEnemyPositions.find(element =>{
@@ -1169,13 +1196,16 @@ document.addEventListener('keyup', ((e) =>{
                     &&element.left <= tank1Position.right 
                     &&element.right +1>=tank1Position.left 
                  ){
-                        xPos += 5   }
+                        xPos += 5
+                        return   }
             })
             
             if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
                 tank.style.left = `${0}px`
+                return
             }else{  //keep going left if there is space
                 tank.style.left = `${xPos}px`
+                return
             }
         }
         //go right
@@ -1199,7 +1229,8 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left -1<= tank1Position.right 
                 &&element.right>=tank1Position.left 
                 ){
-                    xPos -= 2   }
+                    xPos -= 2   
+                    return}
             })
             allEnemyPositions.find(element =>{
                 if
@@ -1208,13 +1239,16 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left -1<= tank1Position.right 
                 &&element.right>=tank1Position.left 
                 ){
-                    xPos -= 5   }
+                    xPos -= 5 
+                    return  }
                 })
 
             if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
                 tank.style.left = `${mapWidth}px`
+                return
             }else{  //keep going right if there is space
                 tank.style.left = `${xPos}px`
+                return
             }
         }
     
@@ -1241,6 +1275,7 @@ document.addEventListener('keyup', ((e) =>{
             if(facing2 === 'up'){
                 tank2.style.top = '42px'
             }
+            return
         }
         //=============VERTICAL MOVEMENT===================
         //access tank Y position on map
@@ -1267,7 +1302,8 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
                 ){
-                    yPos -= 2   }
+                    yPos -= 2  
+                    return }
             })
             allEnemyPositions.find(element =>{
                 if
@@ -1276,13 +1312,16 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
                 ){
-                    yPos -= 5   }
+                    yPos -= 5 
+                    return  }
             })
 
             if(yPos >= mapHeight){  //STOP when it reaches MAP-BOTTOM
                 tank2.style.top = `${mapHeight}px`
+                return
             }else{  //keep going down if there is space
                 tank2.style.top = `${yPos}px`
+                return
             }
         }
         //go up
@@ -1306,7 +1345,8 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
                 ){
-                    yPos += 2   }
+                    yPos += 2  
+                    return }
             })
             allEnemyPositions.find(element =>{
                 if
@@ -1315,13 +1355,16 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
                 ){
-                    yPos += 5   }
+                    yPos += 5  
+                    return }
             })
 
             if(yPos <= 0){  //STOP when it reaches MAP-TOP
                 tank2.style.top = `${0}px`
+                return
             }else{  //keep going up if there is space
                 tank2.style.top = `${yPos}px`
+                return
             }
         }
         //+++++++++++++++++++++++++++++++++++++++++++++++
@@ -1348,7 +1391,8 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right +1>=tank2Position.left 
                 ){
-                    xPos += 2   }
+                    xPos += 2   
+                    return}
             })
             allEnemyPositions.find(element =>{
                 if
@@ -1357,13 +1401,17 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left <= tank2Position.right 
                 &&element.right +1>=tank2Position.left 
                 ){
-                    xPos += 5   }
+                    xPos += 5   
+                    return
+                }
             })
 
             if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
                 tank2.style.left = `${0}px`
+                return
             }else{  //keep going left if there is space
                 tank2.style.left = `${xPos}px`
+                return
             }
         }
         //go right
@@ -1386,7 +1434,8 @@ document.addEventListener('keyup', ((e) =>{
                 &&element.left -1<= tank2Position.right 
                 &&element.right>=tank2Position.left 
                 ){
-                    xPos -= 2   }
+                    xPos -= 2   
+                    return}
             })
             allEnemyPositions.find(element =>{
                 if
@@ -1395,12 +1444,15 @@ document.addEventListener('keyup', ((e) =>{
                     &&element.left -1<= tank2Position.right 
                     &&element.right>=tank2Position.left 
                 ){
-                    xPos -= 5   }
+                    xPos -= 5   
+                    return}
             })
             if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
                 tank2.style.left = `${mapWidth}px`
+                return
             }else{  //keep going right if there is space
                 tank2.style.left = `${xPos}px`
+                return
             }
         }
     
