@@ -1,7 +1,8 @@
 //hide scrollbars
 document.body.style.overflow = 'hidden'
 
-
+let allTankObstaclePositions
+let allMissleObstaclePositions 
 
 //=======================================================================
 //===================MAIN VARIABLES, CREATING PLAYERS====================
@@ -246,7 +247,7 @@ class Timer{
 
     function createMissle(whoIsShooting, which){
         //GET ALL OBSTACLES' POSITIONS
-        const obstaclesPositions = allObstaclePositions
+        
         //GET ALL ENEMIES' POSITIONS
         const allCurrentEnemyPositions = allEnemyPositions
         
@@ -325,10 +326,10 @@ class Timer{
 
 
                         //check if obstacle was hit by missle
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water')
+                                
+                                !obstacle.node.classList.contains('water')
                                 && missle.offsetTop + 10 >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft -2<= obstacle.right
@@ -341,6 +342,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -369,10 +371,9 @@ class Timer{
 
 
                         //check if obstacle was hit by missle
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water')
+                                 !obstacle.node.classList.contains('water')
                                 && missle.offsetTop > obstacle.top
                                 && missle.offsetTop + 10  < obstacle.bottom
                                 && missle.offsetLeft - 2 < obstacle.right
@@ -385,6 +386,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -406,10 +408,9 @@ class Timer{
                         missle.style.left = `${trajectorZ}px`
 
                         //check if obstacle was hit by missle
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water')
+                               !obstacle.node.classList.contains('water')
                                 && missle.offsetTop + 10 >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft <= obstacle.right
@@ -422,6 +423,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -444,10 +446,9 @@ class Timer{
                         missle.style.left = `${trajectorZ}px`
 
                         //check if obstacle was hit by missle
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water')
+                               !obstacle.node.classList.contains('water')
                                 && missle.offsetTop + 10 >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft <= obstacle.right
@@ -460,6 +461,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
 
@@ -524,11 +526,10 @@ class Timer{
                         //move the missle upwards by current trajector value
                         missle.style.transform = `translateY(-${trajector}px)`
                         
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water') &&
+                               !obstacle.node.classList.contains('water') &&
                                 missle.offsetTop > obstacle.top
                                 && missle.getBoundingClientRect().bottom  < obstacle.bottom
                                 && missle.offsetLeft - 2 < obstacle.right
@@ -541,6 +542,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -587,11 +589,10 @@ class Timer{
                 
                         missle.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
                         
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water') &&
+                               !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft -2<= obstacle.right
@@ -604,6 +605,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -629,11 +631,10 @@ class Timer{
                 
                         missle.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
                     
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water') &&
+                                !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
                                 && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
                                 && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
@@ -646,6 +647,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -669,7 +671,7 @@ class Timer{
                         missle.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
                     
 
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
                                 !obstacle.node.classList.contains('forest')
@@ -686,6 +688,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -735,7 +738,7 @@ class Timer{
                         
                             missle.style.transform = `translateY(-${trajector}px)`
                             
-                            obstaclesPositions.find(obstacle =>{
+                            allTankObstaclePositions.find((obstacle, index) =>{
                                 //check if obstacle was hit by missle
                                 if(
                                     !obstacle.node.classList.contains('forest')
@@ -752,6 +755,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                                 } 
@@ -779,7 +783,7 @@ class Timer{
                 
                         missle.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
 
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
                                 !obstacle.node.classList.contains('forest')
@@ -796,6 +800,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -821,7 +826,7 @@ class Timer{
                 
                         missle.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
                     
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
                                 !obstacle.node.classList.contains('forest')
@@ -838,6 +843,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -860,7 +866,7 @@ class Timer{
                
                         missle.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
                     
-                        obstaclesPositions.find(obstacle =>{
+                        allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
                                 !obstacle.node.classList.contains('forest')
@@ -877,6 +883,7 @@ class Timer{
                                 if(!obstacle.node.classList.contains('rock')){
 
                                     obstacle.node.remove()
+                                    allTankObstaclePositions.splice(index,1)
                                     return
                                 }
                             } 
@@ -1079,7 +1086,7 @@ document.addEventListener('keyup', ((e) =>{
                 yPos -= 1
             }
             //Check for crash with any obstacle
-            allObstaclePositions.find(element =>{
+            allTankObstaclePositions.find(element =>{
                 if
                 (element.top -1<= tank1Position.bottom 
                     &&!element.node.classList.contains('forest')
@@ -1125,7 +1132,7 @@ document.addEventListener('keyup', ((e) =>{
                 yPos += 1
             }
             //Check for crash with any obstacle
-            allObstaclePositions.find(element =>{
+            allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                     &&!element.node.classList.contains('forest')
@@ -1176,7 +1183,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos += 1
             }
             
-            allObstaclePositions.find(element =>{
+            allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                     &&!element.node.classList.contains('forest')
@@ -1221,7 +1228,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos -= 1
             }
             
-            allObstaclePositions.find(element =>{
+            allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                     &&!element.node.classList.contains('forest')
@@ -1294,7 +1301,7 @@ document.addEventListener('keyup', ((e) =>{
             }
 
             //Check for crash with any obstacle
-            allObstaclePositions.find(element =>{
+            allTankObstaclePositions.find(element =>{
                 if
                 (element.top -1<= tank2Position.bottom 
                     &&!element.node.classList.contains('forest')
@@ -1337,7 +1344,7 @@ document.addEventListener('keyup', ((e) =>{
             }
 
             //Check for crash with any obstacle
-            allObstaclePositions.find(element =>{
+            allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                     &&!element.node.classList.contains('forest')
@@ -1383,7 +1390,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos += 1
             }
 
-            allObstaclePositions.find(element =>{
+            allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                     &&!element.node.classList.contains('forest')
@@ -1426,7 +1433,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos -= 1
             }
 
-            allObstaclePositions.find(element =>{
+            allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                     &&!element.node.classList.contains('forest')
@@ -1504,7 +1511,7 @@ setInterval(()=>{
     movement2()
     
     //constantly check position of each obstacle for collision with tanks or missles
-    allObstaclePositions = Obstacle.getAll()
+    // allTankObstaclePositions = Obstacle.getAll()
     
     //constantly check position of each enemy for collision with tanks or missles or obstacles
     allEnemyPositions = Enemy.getAllEnemies()
@@ -1671,6 +1678,30 @@ class Obstacle{
         for(let x = 0; x < numberOfObstacles; x++){
             Obstacle.create()
         }
+        allTankObstaclePositions = [...document.querySelectorAll('.brick'), ...document.querySelectorAll('.rock'), ...document.querySelectorAll('.water')].map((element) => {
+            return {
+                top: element.offsetTop,
+                bottom: element.offsetTop + 22,
+                left: element.offsetLeft,
+                right: element.offsetLeft + 22,
+                node: element
+                
+            }
+
+            
+        })
+        allMissleObstaclePositions = [...document.querySelectorAll('.brick'), ...document.querySelectorAll('.rock')].map((element) => {
+            return {
+                top: element.offsetTop,
+                bottom: element.offsetTop + 22,
+                left: element.offsetLeft,
+                right: element.offsetLeft + 22,
+                node: element
+                
+            }
+
+            
+        })
     }
    
 }
@@ -1867,7 +1898,7 @@ class Enemy{
                 clearInterval(enemyMovementInterval)
             }
             
-            obstacleDetection = allObstaclePositions.reduce((newArr, element) =>{
+            obstacleDetection = allTankObstaclePositions.reduce((newArr, element) =>{
                     if
                     (
                     !element.node.classList.contains('forest')
