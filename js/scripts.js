@@ -147,13 +147,13 @@ class Timer{
          if(e.key === 'p' && missle1Num < 1){                 
             missle1Num ++        
             fire = true
-            createMissle(tank1Position, 1)              
+            createMissle(tank1Position, 1, allEnemyPositions)              
                     
         }      
         else if(e.key === 'q' && missle2Num < 1){                 
             missle2Num ++        
             fire2 = true
-            createMissle(tank2Position, 2)              
+            createMissle(tank2Position, 2, allEnemyPositions)              
                     
         }      
           
@@ -199,9 +199,9 @@ class Timer{
                 //function used to check if player missle hit any enemy
                 //for both player one and two!
 
-                function checkIfEnemyWasHit(missle, allCurrentEnemyPositions){
+                function checkIfEnemyWasHit(missle, allEnemyPositions){
 
-                    allCurrentEnemyPositions.find((enemy)=>{
+                    allEnemyPositions.find((enemy)=>{
                       
                         
                         if(
@@ -246,11 +246,7 @@ class Timer{
     //MAIN SHOOTING FUNCTION
 
     function createMissle(whoIsShooting, which){
-        //GET ALL OBSTACLES' POSITIONS
-        
-        //GET ALL ENEMIES' POSITIONS
-        const allCurrentEnemyPositions = allEnemyPositions
-        
+       
 
        
         //CHECK WHO WAS SHOOTING:
@@ -565,7 +561,7 @@ class Timer{
                             // }                            
                         
                         //check if any enemy was hit
-                        checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+                        checkIfEnemyWasHit(missle ,allEnemyPositions)
 
                         
 
@@ -614,7 +610,7 @@ class Timer{
                         
                 
                         //check if any enemy was hit
-                        checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+                        checkIfEnemyWasHit(missle ,allEnemyPositions)
                 
                     if(trajector >= 580){
                         missle.remove()
@@ -656,7 +652,7 @@ class Timer{
                       
                 
                         //check if any enemy was hit
-                        checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+                        checkIfEnemyWasHit(missle ,allEnemyPositions)
                 
                     if(trajector >= 580){
                         missle.remove()
@@ -697,7 +693,7 @@ class Timer{
                       
                 
                         //check if any enemy was hit
-                        checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+                        checkIfEnemyWasHit(missle ,allEnemyPositions)
                 
                     if(trajector >= 580){
                         missle.remove()
@@ -764,7 +760,7 @@ class Timer{
                            
                         
                       //check if any enemy was hit
-                      checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+                      checkIfEnemyWasHit(missle ,allEnemyPositions)
                     
                         if(trajector >= 580){
                             missle.remove()
@@ -809,7 +805,7 @@ class Timer{
                        
                 
                           //check if any enemy was hit
-                          checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+                          checkIfEnemyWasHit(missle ,allEnemyPositions)
                 
                     if(trajector >= 580){
                         missle.remove()
@@ -851,7 +847,7 @@ class Timer{
 
                        
                           //check if any enemy was hit
-                          checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+                          checkIfEnemyWasHit(missle ,allEnemyPositions)
                 
                     if(trajector >= 580){
                         missle.remove()
@@ -892,7 +888,7 @@ class Timer{
                       
                 
                   //check if any enemy was hit
-                  checkIfEnemyWasHit(missle ,allCurrentEnemyPositions)
+                  checkIfEnemyWasHit(missle ,allEnemyPositions)
 
                     if(trajector >= 580){
                         missle.remove()
@@ -1805,7 +1801,7 @@ class Enemy{
                 clearInterval(shootingInterval)
             }else{
 
-                createMissle(whoIsShooting, 'enemy')
+                createMissle(whoIsShooting, 'enemy', allEnemyPositions)
             }
         }, 2500);
     }
@@ -1898,7 +1894,7 @@ class Enemy{
                 clearInterval(enemyMovementInterval)
             }
             
-            obstacleDetection = allTankObstaclePositions.reduce((newArr, element) =>{
+            obstacleDetection = allTankObstaclePositions.find( element =>{
                     if
                     (
                     !element.node.classList.contains('forest')
@@ -1908,10 +1904,10 @@ class Enemy{
                     &&element.right >=enemy.offsetLeft 
                     ){
                         //and change direction for further movement
-                        newArr.push(element)                                                 
+                        return element
+                                                                      
                     }
-                    return newArr
-                    },[])[0] //ONLY first item is needed, 
+                    })//ONLY first item is needed, 
                     //rest must be discarded not to interfere with changing movement direction.
 
             //4 - obstacleDetection is only true in the moment of collision. 
@@ -1960,8 +1956,6 @@ class Enemy{
 
 
 
-            //get all positions of all alive enemies
-            const allCurrentEnemyPositions = allEnemyPositions
                         
             //force enemy movement  according to random number:================            
             //DOWN DOWN DOWN DOWN DOWN -if 3
@@ -1981,7 +1975,7 @@ class Enemy{
                     
                 }
                 //crashes with another enemy tank - change direction
-                allCurrentEnemyPositions.find(element =>{
+                allEnemyPositions.find(element =>{
                     if
                     (element.top -1<= enemy.offsetTop + 40
                     &&element.bottom >=enemy.offsetTop
@@ -2023,7 +2017,7 @@ class Enemy{
                         randomMove = Math.floor(Math.random() * 4)
                     }
                  }
-                 allCurrentEnemyPositions.find(element =>{
+                 allEnemyPositions.find(element =>{
                     if
                     (element.top <= enemy.offsetTop + 40
                         &&element.bottom +1 >=enemy.offsetTop
@@ -2068,7 +2062,7 @@ class Enemy{
                     }
                                    
                  }
-                 allCurrentEnemyPositions.find(element =>{
+                 allEnemyPositions.find(element =>{
                     if
                     (element.top <= enemy.offsetTop + 40
                         &&element.bottom >=enemy.offsetTop
@@ -2110,7 +2104,7 @@ class Enemy{
                         randomMove = Math.floor(Math.random() * 4)
                     }
                 }
-                allCurrentEnemyPositions.find(element =>{
+                allEnemyPositions.find(element =>{
                     if
                     (element.top <= enemy.offsetTop + 40
                         &&element.bottom >=enemy.offsetTop
