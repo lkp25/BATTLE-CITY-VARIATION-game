@@ -1,6 +1,6 @@
 //hide scrollbars
 document.body.style.overflow = 'hidden'
-
+const boom = document.getElementById('explo')
 let allTankObstaclePositions
 let allMissleObstaclePositions 
 
@@ -184,7 +184,15 @@ class Timer{
 
 
 
+    function explode(enemy){
+        const huj = document.createElement('div')
+        map.appendChild(huj)
+        huj.style.left = `${enemy.left + 10}px`
+        huj.style.top = `${enemy.top + 10}px`
+        boom.play()
+        huj.classList.add('explo')
 
+    }
 
 
 
@@ -215,6 +223,11 @@ class Timer{
                             //remove the obstacle and the missle if true
                             enemy.DOMnode.style.display = 'none'
                             
+                         
+                            setTimeout(() => {
+                                explode(enemy)
+                                
+                            }, 10);
                             enemy.DOMnode.remove()
                             missle.remove()
                             
@@ -1085,7 +1098,6 @@ document.addEventListener('keyup', ((e) =>{
             allTankObstaclePositions.find(element =>{
                 if
                 (element.top -1<= tank1Position.bottom 
-                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank1Position.top 
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left
@@ -1131,7 +1143,6 @@ document.addEventListener('keyup', ((e) =>{
             allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
-                    &&!element.node.classList.contains('forest')
                 &&element.bottom +1>=tank1Position.top 
                 &&element.left <= tank1Position.right 
                 &&element.right >=tank1Position.left 
@@ -1182,7 +1193,6 @@ document.addEventListener('keyup', ((e) =>{
             allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
-                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank1Position.top 
                 &&element.left <= tank1Position.right 
                 &&element.right +1>=tank1Position.left 
@@ -1227,7 +1237,6 @@ document.addEventListener('keyup', ((e) =>{
             allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank1Position.bottom 
-                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank1Position.top 
                 &&element.left -1<= tank1Position.right 
                 &&element.right>=tank1Position.left 
@@ -1300,7 +1309,6 @@ document.addEventListener('keyup', ((e) =>{
             allTankObstaclePositions.find(element =>{
                 if
                 (element.top -1<= tank2Position.bottom 
-                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank2Position.top 
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
@@ -1343,7 +1351,6 @@ document.addEventListener('keyup', ((e) =>{
             allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
-                    &&!element.node.classList.contains('forest')
                 &&element.bottom +1>=tank2Position.top 
                 &&element.left <= tank2Position.right 
                 &&element.right >=tank2Position.left 
@@ -1389,7 +1396,6 @@ document.addEventListener('keyup', ((e) =>{
             allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
-                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank2Position.top 
                 &&element.left <= tank2Position.right 
                 &&element.right +1>=tank2Position.left 
@@ -1432,7 +1438,6 @@ document.addEventListener('keyup', ((e) =>{
             allTankObstaclePositions.find(element =>{
                 if
                 (element.top <= tank2Position.bottom 
-                    &&!element.node.classList.contains('forest')
                 &&element.bottom >=tank2Position.top 
                 &&element.left -1<= tank2Position.right 
                 &&element.right>=tank2Position.left 
@@ -1897,8 +1902,8 @@ class Enemy{
             obstacleDetection = allTankObstaclePositions.find( element =>{
                     if
                     (
-                    !element.node.classList.contains('forest')
-                    &&element.top <= enemy.offsetTop + 40
+                    
+                    element.top <= enemy.offsetTop + 40
                     &&element.bottom >=enemy.offsetTop
                     &&element.left<= enemy.offsetLeft + 40
                     &&element.right >=enemy.offsetLeft 

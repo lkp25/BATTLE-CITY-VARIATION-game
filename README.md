@@ -110,3 +110,10 @@ After returning to reduce, problem is gone, but performance is still less than e
 - changed player movement function to return instantly if no arrow is pressed. 
 - added complete functionality for different obstacles - trees dont interact with tanks, water stops movement but not missles, rocks stop movement and missles but they don't disappear like brick walls.
 - removed player missle vs player intercation - players fight enemies, not each other
+
+17.03,2021
+- further performance adjustments - created 'static' array containing positions of all obstacles after they are generated. tanks now refer to this instead of the one generated in interval every 20ms. 
+- forest obstacles are removed from the obstacles array right before game starts - less obstacles to iterate. in create missle function, missle first checks if iterated obstacle is of class water. if so, it skips to the next iteration saving time.
+- added many 'return' conditions to finish early function execution so it does not perfor unnecessary action after certain condition is met (for example if missle hits obstacle, it will return without further checking if it also hit enemy)
+- added tank explosion animation and sound effect when enemy gets hit by player missle.
+- the game has now decent performance with 12 enemy Tanks moving at one time.
