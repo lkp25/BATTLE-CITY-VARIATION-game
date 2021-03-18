@@ -147,13 +147,13 @@ class Timer{
          if(e.key === 'p' && missle1Num < 1){                 
             missle1Num ++        
             fire = true
-            createMissle(tank1Position, 1, allEnemyPositions)              
+            createMissle(tank, 1)              
                     
         }      
         else if(e.key === 'q' && missle2Num < 1){                 
             missle2Num ++        
             fire2 = true
-            createMissle(tank2Position, 2, allEnemyPositions)              
+            createMissle(tank2, 2)              
                     
         }      
           
@@ -185,12 +185,17 @@ class Timer{
 
 
     function explode(enemy){
-        const huj = document.createElement('div')
-        map.appendChild(huj)
-        huj.style.left = `${enemy.left + 10}px`
-        huj.style.top = `${enemy.top + 10}px`
+        let explosion = document.createElement('div')
+        map.appendChild(explosion)
+        explosion.style.left = `${enemy.left + 10}px`
+        explosion.style.top = `${enemy.top + 10}px`
         boom.play()
-        huj.classList.add('explo')
+        explosion.classList.add('explo')
+        setTimeout(() => {
+            
+            explosion.remove()
+            explosion = null
+        }, 1000);
 
     }
 
@@ -221,16 +226,16 @@ class Timer{
                         
                         ){
                             //remove the obstacle and the missle if true
+                            explode(enemy)
                             enemy.DOMnode.style.display = 'none'
                             
                          
-                            setTimeout(() => {
-                                explode(enemy)
+                           
                                 
-                            }, 10);
+                            
                             enemy.DOMnode.remove()
                             missle.remove()
-                            
+                            // missle = null
                             
                         } 
                     })
@@ -239,19 +244,20 @@ class Timer{
                 }
 
                 //function for checking if player was hit by enemy
-                function checkIfPlayerWasHit(which, missle){
-                    if((missle.offsetTop) <= which.offsetTop + 40
-                            && (missle.offsetLeft) <= which.offsetLeft + 40
-                            && (missle.offsetLeft + 6) >= which.offsetLeft
-                            && (missle.offsetTop + 10) >= which.offsetTop
-                            ){
+                function checkIfPlayerWasHit(which, missle, missleLeft, missleTop){
+                        if(
+                            (missleTop) <= which.offsetTop + 40
+                            && (missleTop + 10) >= which.offsetTop
+                            && (missleLeft) <= which.offsetLeft + 40
+                            && (missleLeft + 6) >= which.offsetLeft
+                        ){
                                 
                                 
                                 missle.remove()
                                 which.style.opacity = `${((((which.style.opacity * 10) - 1) / 10))}`
+                                // missle = null
                                 
-                                
-                            }   
+                        }   
                 }
 
     //MAIN SHOOTING FUNCTION
@@ -322,9 +328,16 @@ class Timer{
                     //declare interval name so it can be deleted later!
                     const shootingInterval = setInterval(() => {
                         
+                        //only one offsetTop & offsetLeft DOM style request per interval cycle
+                        // instead of on for every loop iteration inside the interval cycle --
+                        // cache the values and use them only in this cycle.
+                        let missleTop = missle.offsetTop
+                        let missleLeft = missle.offsetLeft
+                        
                         //NO TARGET WAS HIT
                         if(trajectorY > 600){
                             missle.remove()
+                            // missle = null
                             clearInterval(shootingInterval)
                             return
                         }
@@ -338,11 +351,12 @@ class Timer{
                         allTankObstaclePositions.find((obstacle, index) =>{
                             if(
                                 
+                                //all values cached, no DOM requests inside find loop.
                                 !obstacle.node.classList.contains('water')
-                                && missle.offsetTop + 10 >= obstacle.top
-                                && missle.offsetTop  <= obstacle.bottom
-                                && missle.offsetLeft -2<= obstacle.right
-                                && missle.offsetLeft +8  >= obstacle.left
+                                && missleTop + 10 >= obstacle.top
+                                && missleTop  <= obstacle.bottom
+                                && missleLeft -2<= obstacle.right
+                                && missleLeft +8  >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
@@ -358,9 +372,12 @@ class Timer{
                         })    
                         
                         //check if one of the players was hit
-                        checkIfPlayerWasHit(tank, missle)
-                        checkIfPlayerWasHit(tank2, missle)
-                        
+                        checkIfPlayerWasHit(tank, missle, missleLeft, missleTop)
+                        checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop)
+
+                        //no longer needed - set to null so they can be cleared faster from memory
+                        missleTop = null
+                        missleLeft = null
                     }, 20);
                 }
 
@@ -368,6 +385,9 @@ class Timer{
 
                 if(missleFacing === 'up'){
                     const shootingInterval = setInterval(() => {
+                        let missleTop = missle.offsetTop
+                        let missleLeft = missle.offsetLeft
+                        
                         if(trajectorY < -20){
                             missle.remove()
                             clearInterval(shootingInterval)
@@ -383,10 +403,10 @@ class Timer{
                         allTankObstaclePositions.find((obstacle, index) =>{
                             if(
                                  !obstacle.node.classList.contains('water')
-                                && missle.offsetTop > obstacle.top
-                                && missle.offsetTop + 10  < obstacle.bottom
-                                && missle.offsetLeft - 2 < obstacle.right
-                                && missle.offsetLeft + 8  > obstacle.left
+                                && missleTop > obstacle.top
+                                && missleTop + 10  < obstacle.bottom
+                                && missleLeft - 2 < obstacle.right
+                                && missleLeft + 8  > obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
@@ -401,12 +421,17 @@ class Timer{
                             } 
                             //check if one of the players was hit
                         })    
-                        checkIfPlayerWasHit(tank, missle)
-                        checkIfPlayerWasHit(tank2, missle)
+                        checkIfPlayerWasHit(tank, missle, missleLeft, missleTop)
+                        checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop)
+                        missleTop = null
+                        missleLeft = null
                     }, 20);
                 }
                 if(missleFacing === 'left'){
                     const shootingInterval = setInterval(() => {
+                        let missleTop = missle.offsetTop
+                        let missleLeft = missle.offsetLeft
+                        
                         if(trajectorZ < -20){
                             missle.remove()
                             clearInterval(shootingInterval)
@@ -420,10 +445,10 @@ class Timer{
                         allTankObstaclePositions.find((obstacle, index) =>{
                             if(
                                !obstacle.node.classList.contains('water')
-                                && missle.offsetTop + 10 >= obstacle.top
-                                && missle.offsetTop  <= obstacle.bottom
-                                && missle.offsetLeft <= obstacle.right
-                                && missle.offsetLeft + 6 >= obstacle.left
+                                && missleTop + 10 >= obstacle.top
+                                && missleTop  <= obstacle.bottom
+                                && missleLeft <= obstacle.right
+                                && missleLeft + 6 >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
@@ -437,13 +462,18 @@ class Timer{
                                 }
                             } 
                             //check if one of the players was hit
-                            checkIfPlayerWasHit(tank, missle)
-                            checkIfPlayerWasHit(tank2, missle)
+                            checkIfPlayerWasHit(tank, missle, missleLeft, missleTop)
+                            checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop)
+                            missleTop = null
+                            missleLeft = null
                         })    
                     }, 20);
                 }
                 if(missleFacing === 'right'){
                     const shootingInterval = setInterval(() => {
+                        let missleTop = missle.offsetTop
+                        let missleLeft = missle.offsetLeft
+                        
                         if(trajectorZ > 600){
                             missle.remove()
                             clearInterval(shootingInterval)
@@ -458,10 +488,10 @@ class Timer{
                         allTankObstaclePositions.find((obstacle, index) =>{
                             if(
                                !obstacle.node.classList.contains('water')
-                                && missle.offsetTop + 10 >= obstacle.top
-                                && missle.offsetTop  <= obstacle.bottom
-                                && missle.offsetLeft <= obstacle.right
-                                && missle.offsetLeft + 6 >= obstacle.left
+                                && missleTop + 10 >= obstacle.top
+                                && missleTop  <= obstacle.bottom
+                                && missleLeft <= obstacle.right
+                                && missleLeft + 6 >= obstacle.left
                             
                             ){
                                 //remove the obstacle and the missle if true
@@ -477,9 +507,10 @@ class Timer{
                             } 
                         })    
                         //check if one of the players was hit
-                        checkIfPlayerWasHit(tank, missle)
-                        checkIfPlayerWasHit(tank2, missle)
-
+                        checkIfPlayerWasHit(tank, missle, missleLeft, missleTop)
+                        checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop)
+                        missleTop = null
+                        missleLeft = null
                     }, 20);
                 }
             
@@ -489,7 +520,41 @@ class Timer{
 
 
 
+
+
+
+
+//PLAYER
+//PLAYER
+//PLAYER
+//PLAYER
+//PLAYER
+//PLAYER
+            function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater){
+                allTankObstaclePositions.find((obstacle, index) =>{
+                    //check if obstacle was hit by missle
+                    if(
+                       !obstacle.node.classList.contains('water') 
+                       && missleTop + 10 >= obstacle.top
+                       && missleTop  <= obstacle.bottom
+                       && missleLeft <= obstacle.right
+                       && missleLeft + 6 >= obstacle.left
+                    
+                    ){
+                        //remove the obstacle and the missle if true
+                        clearInterval(performanceEater)
+                        missle.remove()
+                        if(!obstacle.node.classList.contains('rock')){
+
+                            obstacle.node.remove()
+                            allTankObstaclePositions.splice(index,1)
+                            return
+                        }
+                    } 
+                })    
+            }
                 
+
 
 
 
@@ -508,8 +573,8 @@ class Timer{
                 map.appendChild(missle)                
                 //variable used to control the life-span of a missle
                 let trajector = 0
-                
-
+                let trajectorX = parseInt(whoIsShooting.style.left.slice(0, length -2)) + 17
+                let trajectorY = parseInt(whoIsShooting.style.top.slice(0, length -2)) + 15
 
 
                 
@@ -523,39 +588,23 @@ class Timer{
 
             if(facing === 'up'){
                 //new interval is being called every time a missle is fired.
-                //i needs to be assigne to a variable so that it can be cleared
+                //it needs to be assigned to a variable so that it can be cleared
                 //when the missle disappears! otherwise it runs forever
                 // feeding on the app's performance!
                 let performanceEater = setInterval( ()=>{
                     //increase the value 
-                    trajector += 10
-                    
+                    trajectorY -= 10
+                    let missleTop = missle.offsetTop
+                    let missleLeft = missle.offsetLeft
                     
                     
                         //move the missle upwards by current trajector value
-                        missle.style.transform = `translateY(-${trajector}px)`
-                        
-                        allTankObstaclePositions.find((obstacle, index) =>{
-                            //check if obstacle was hit by missle
-                            if(
-                               !obstacle.node.classList.contains('water') &&
-                                missle.offsetTop > obstacle.top
-                                && missle.getBoundingClientRect().bottom  < obstacle.bottom
-                                && missle.offsetLeft - 2 < obstacle.right
-                                && missle.offsetLeft + 8  > obstacle.left
-                            
-                            ){
-                                //remove the obstacle and the missle if true
-                                clearInterval(performanceEater)
-                                missle.remove()
-                                if(!obstacle.node.classList.contains('rock')){
+                        // missle.style.transform = `translateY(-${trajector}px)`
+                        missle.style.top = `${trajectorY}px`
 
-                                    obstacle.node.remove()
-                                    allTankObstaclePositions.splice(index,1)
-                                    return
-                                }
-                            } 
-                        })    
+                        checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                        
+                        
                             
                             
                             
@@ -586,39 +635,43 @@ class Timer{
                             clearInterval(performanceEater)
                             return
                         }
+                        missleTop = null
+                        missleLeft = null
                 }, 20)
             }
             
             
             if(facing === 'down'){
                 let performanceEater = setInterval( ()=>{
-                trajector += 10
-             
+                trajectorY += 10
+                let missleTop = missle.offsetTop
+                let missleLeft = missle.offsetLeft
                 
                 
-                        missle.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
-                        
-                        allTankObstaclePositions.find((obstacle, index) =>{
-                            //check if obstacle was hit by missle
-                            if(
-                               !obstacle.node.classList.contains('water') &&
-                                missle.getBoundingClientRect().bottom >= obstacle.top
-                                && missle.offsetTop  <= obstacle.bottom
-                                && missle.offsetLeft -2<= obstacle.right
-                                && missle.offsetLeft +8  >= obstacle.left
+                        missle.style.transform = `rotateZ(180deg)`
+                        missle.style.top = `${trajectorY}px`
+                        checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                        // allTankObstaclePositions.find((obstacle, index) =>{
+                        //     //check if obstacle was hit by missle
+                        //     if(
+                        //        !obstacle.node.classList.contains('water') &&
+                        //         missle.getBoundingClientRect().bottom >= obstacle.top
+                        //         && missle.offsetTop  <= obstacle.bottom
+                        //         && missle.offsetLeft -2<= obstacle.right
+                        //         && missle.offsetLeft +8  >= obstacle.left
                             
-                            ){
-                                //remove the obstacle and the missle if true
-                                clearInterval(performanceEater)
-                                missle.remove()
-                                if(!obstacle.node.classList.contains('rock')){
+                        //     ){
+                        //         //remove the obstacle and the missle if true
+                        //         clearInterval(performanceEater)
+                        //         missle.remove()
+                        //         if(!obstacle.node.classList.contains('rock')){
 
-                                    obstacle.node.remove()
-                                    allTankObstaclePositions.splice(index,1)
-                                    return
-                                }
-                            } 
-                        })    
+                        //             obstacle.node.remove()
+                        //             allTankObstaclePositions.splice(index,1)
+                        //             return
+                        //         }
+                        //     } 
+                        // })    
 
                         
                 
@@ -630,37 +683,43 @@ class Timer{
                         clearInterval(performanceEater)
                         return
                     }
+                    missleTop = null
+                        missleLeft = null
             }, 20)}
+
+
             if(facing === 'left'){
                 let performanceEater = setInterval( ()=>{
-                trajector += 10
+                trajectorX -= 10
                 
-               
+                let missleTop = missle.offsetTop
+                let missleLeft = missle.offsetLeft
                    
                 
-                        missle.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
-                    
-                        allTankObstaclePositions.find((obstacle, index) =>{
-                            //check if obstacle was hit by missle
-                            if(
-                                !obstacle.node.classList.contains('water') &&
-                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                        missle.style.transform = `rotateZ(270deg)`
+                        missle.style.left = `${trajectorX}px`
+                        checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                        // allTankObstaclePositions.find((obstacle, index) =>{
+                        //     //check if obstacle was hit by missle
+                        //     if(
+                        //         !obstacle.node.classList.contains('water') &&
+                        //         missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                        //         && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                        //         && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                        //         && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
                             
-                            ){
-                                //remove the obstacle and the missle if true
-                                clearInterval(performanceEater)
-                                missle.remove()
-                                if(!obstacle.node.classList.contains('rock')){
+                        //     ){
+                        //         //remove the obstacle and the missle if true
+                        //         clearInterval(performanceEater)
+                        //         missle.remove()
+                        //         if(!obstacle.node.classList.contains('rock')){
 
-                                    obstacle.node.remove()
-                                    allTankObstaclePositions.splice(index,1)
-                                    return
-                                }
-                            } 
-                        })    
+                        //             obstacle.node.remove()
+                        //             allTankObstaclePositions.splice(index,1)
+                        //             return
+                        //         }
+                        //     } 
+                        // })    
 
                       
                 
@@ -672,36 +731,41 @@ class Timer{
                         clearInterval(performanceEater)
                         return
                     }
+                    missleTop = null
+                    missleLeft = null
             }, 20)}
+
+
             if(facing === 'right'){
                 let performanceEater = setInterval( ()=>{
-                trajector += 10
+                trajectorX += 10
             
-                        missle.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
-                    
-
-                        allTankObstaclePositions.find((obstacle, index) =>{
-                            //check if obstacle was hit by missle
-                            if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water') &&
-                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
+                let missleTop = missle.offsetTop
+                let missleLeft = missle.offsetLeft
+                        missle.style.transform = `rotateZ(90deg)`
+                        missle.style.left = `${trajectorX}px`
+                        checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                        // allTankObstaclePositions.find((obstacle, index) =>{
+                        //     //check if obstacle was hit by missle
+                        //     if(
+                        //         !obstacle.node.classList.contains('water') &&
+                        //         missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
+                        //         && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
+                        //         && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
+                        //         && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
                             
-                            ){
-                                //remove the obstacle and the missle if true
-                                clearInterval(performanceEater)
-                                missle.remove()
-                                if(!obstacle.node.classList.contains('rock')){
+                        //     ){
+                        //         //remove the obstacle and the missle if true
+                        //         clearInterval(performanceEater)
+                        //         missle.remove()
+                        //         if(!obstacle.node.classList.contains('rock')){
 
-                                    obstacle.node.remove()
-                                    allTankObstaclePositions.splice(index,1)
-                                    return
-                                }
-                            } 
-                        })    
+                        //             obstacle.node.remove()
+                        //             allTankObstaclePositions.splice(index,1)
+                        //             return
+                        //         }
+                        //     } 
+                        // })    
 
                       
                 
@@ -713,6 +777,8 @@ class Timer{
                         clearInterval(performanceEater)
                         return
                     }
+                    missleTop = null
+                    missleLeft = null
             }, 20)}
         }
 
@@ -750,8 +816,8 @@ class Timer{
                             allTankObstaclePositions.find((obstacle, index) =>{
                                 //check if obstacle was hit by missle
                                 if(
-                                    !obstacle.node.classList.contains('forest')
-                                    && !obstacle.node.classList.contains('water') &&
+                                   
+                                   !obstacle.node.classList.contains('water') &&
                                     missle.offsetTop > obstacle.top
                                     && missle.getBoundingClientRect().bottom  < obstacle.bottom
                                     && missle.offsetLeft - 2< obstacle.right
@@ -795,8 +861,7 @@ class Timer{
                         allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water') &&
+                               !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.top
                                 && missle.offsetTop  <= obstacle.bottom
                                 && missle.offsetLeft -2<= obstacle.right
@@ -838,8 +903,7 @@ class Timer{
                         allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water') &&
+                                !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
                                 && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
                                 && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
@@ -878,8 +942,7 @@ class Timer{
                         allTankObstaclePositions.find((obstacle, index) =>{
                             //check if obstacle was hit by missle
                             if(
-                                !obstacle.node.classList.contains('forest')
-                                && !obstacle.node.classList.contains('water') &&
+                                 !obstacle.node.classList.contains('water') &&
                                 missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
                                 && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
                                 && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
@@ -1515,15 +1578,17 @@ setInterval(()=>{
     // allTankObstaclePositions = Obstacle.getAll()
     
     //constantly check position of each enemy for collision with tanks or missles or obstacles
-    allEnemyPositions = Enemy.getAllEnemies()
+    
 
     // highlightClosestObstacles()
 },20)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-
-
+setInterval(() => {
+    
+    allEnemyPositions = Enemy.getAllEnemies()
+}, 30);
 
 
 
@@ -1690,19 +1755,9 @@ class Obstacle{
             }
 
             
-        })
-        allMissleObstaclePositions = [...document.querySelectorAll('.brick'), ...document.querySelectorAll('.rock')].map((element) => {
-            return {
-                top: element.offsetTop,
-                bottom: element.offsetTop + 22,
-                left: element.offsetLeft,
-                right: element.offsetLeft + 22,
-                node: element
-                
-            }
-
-            
-        })
+        }).sort((a, b) => a.top - b.top).sort((a, b) => a.left - b.left)
+        
+       
     }
    
 }
@@ -1808,7 +1863,7 @@ class Enemy{
 
                 createMissle(whoIsShooting, 'enemy', allEnemyPositions)
             }
-        }, 2500);
+        }, 1000);
     }
 
 
@@ -1898,22 +1953,28 @@ class Enemy{
                 
                 clearInterval(enemyMovementInterval)
             }
+            let enemyLeft = enemy.offsetLeft
+            let enemyTop = enemy.offsetTop
             
+
             obstacleDetection = allTankObstaclePositions.find( element =>{
                     if
                     (
                     
-                    element.top <= enemy.offsetTop + 40
-                    &&element.bottom >=enemy.offsetTop
-                    &&element.left<= enemy.offsetLeft + 40
-                    &&element.right >=enemy.offsetLeft 
+                    element.top <= enemyTop + 40
+                    &&element.left<= enemyLeft + 40
+                    &&element.bottom >=enemyTop
+                    &&element.right >=enemyLeft
                     ){
                         //and change direction for further movement
                         return element
                                                                       
                     }
-                    })//ONLY first item is needed, 
+            })//ONLY first item is needed, 
                     //rest must be discarded not to interfere with changing movement direction.
+            
+            enemyLeft = null
+            enemyTop = null
 
             //4 - obstacleDetection is only true in the moment of collision. 
             //so if there was a collision and tank approached obstacle from the right: 
