@@ -1022,7 +1022,9 @@ document.addEventListener('keyup', ((e) =>{
                 yPos -= 1
             }
             //Check for crash with any obstacle
-            allTankObstaclePositions.find(element =>{
+            //here actually for each is necessary instead of find, 
+            //tank can crash more than one obstacle at the same time
+            allTankObstaclePositions.forEach(element =>{
                 if
                 (element.top -1<= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
@@ -1067,7 +1069,7 @@ document.addEventListener('keyup', ((e) =>{
                 yPos += 1
             }
             //Check for crash with any obstacle
-            allTankObstaclePositions.find(element =>{
+            allTankObstaclePositions.forEach(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom +1>=tank1Position.top 
@@ -1117,7 +1119,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos += 1
             }
             
-            allTankObstaclePositions.find(element =>{
+            allTankObstaclePositions.forEach(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
@@ -1161,7 +1163,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos -= 1
             }
             
-            allTankObstaclePositions.find(element =>{
+            allTankObstaclePositions.forEach(element =>{
                 if
                 (element.top <= tank1Position.bottom 
                 &&element.bottom >=tank1Position.top 
@@ -1233,7 +1235,7 @@ document.addEventListener('keyup', ((e) =>{
             }
 
             //Check for crash with any obstacle
-            allTankObstaclePositions.find(element =>{
+            allTankObstaclePositions.forEach(element =>{
                 if
                 (element.top -1<= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
@@ -1275,7 +1277,7 @@ document.addEventListener('keyup', ((e) =>{
             }
 
             //Check for crash with any obstacle
-            allTankObstaclePositions.find(element =>{
+            allTankObstaclePositions.forEach(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom +1>=tank2Position.top 
@@ -1320,7 +1322,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos += 1
             }
 
-            allTankObstaclePositions.find(element =>{
+            allTankObstaclePositions.forEach(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
@@ -1362,7 +1364,7 @@ document.addEventListener('keyup', ((e) =>{
                 xPos -= 1
             }
 
-            allTankObstaclePositions.find(element =>{
+            allTankObstaclePositions.forEach(element =>{
                 if
                 (element.top <= tank2Position.bottom 
                 &&element.bottom >=tank2Position.top 
