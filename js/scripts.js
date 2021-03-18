@@ -524,12 +524,8 @@ class Timer{
 
 
 
-//PLAYER
-//PLAYER
-//PLAYER
-//PLAYER
-//PLAYER
-//PLAYER
+//PLAYER SHOOTING section
+//function checking if player shot the obstacle
             function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater){
                 allTankObstaclePositions.find((obstacle, index) =>{
                     //check if obstacle was hit by missle
@@ -572,21 +568,15 @@ class Timer{
                 //missle must be appended to MAP not to tank
                 map.appendChild(missle)                
                 //variable used to control the life-span of a missle
-                let trajector = 0
+                
                 let trajectorX = parseInt(whoIsShooting.style.left.slice(0, length -2)) + 17
                 let trajectorY = parseInt(whoIsShooting.style.top.slice(0, length -2)) + 15
 
 
-                
-                
-                
-                
-               
 
-               
-
-
+            //determine missle shooting direction and make it move
             if(facing === 'up'){
+
                 //new interval is being called every time a missle is fired.
                 //it needs to be assigned to a variable so that it can be cleared
                 //when the missle disappears! otherwise it runs forever
@@ -606,22 +596,22 @@ class Timer{
                         
                         
                             
-                            
+                            //OLD FUNCTIONALITY - NOT CURRENTLY USED
                             
                             //check if other player was hit by missle - not used currently
                             // if((missle.getBoundingClientRect().top) <= tank2.getBoundingClientRect().bottom
                             // && (missle.getBoundingClientRect().left) <= tank2.getBoundingClientRect().right
                             // && (missle.getBoundingClientRect().right) >= tank2.getBoundingClientRect().left
                             // && (missle.getBoundingClientRect().bottom) >= tank2.getBoundingClientRect().top
-                            // ){
-                                
-                                
+                            // ){           
                             //     missle.remove()
                             //     tank2.style.opacity = `${((((tank2.style.opacity * 10) - 1) / 10))}`
                             //     //stop the interval from running forever
                             //     clearInterval(performanceEater)
                             // }                            
                         
+
+
                         //check if any enemy was hit
                         checkIfEnemyWasHit(missle ,allEnemyPositions)
 
@@ -629,7 +619,7 @@ class Timer{
 
                         //if trajector value happens to be bigger than map size,
                         //remove the missle - it hasn't hit anything
-                        if(trajector >= 580){
+                        if(trajectorY < -10){
                             missle.remove()
                             //stop the interval from running forever
                             clearInterval(performanceEater)
@@ -643,42 +633,19 @@ class Timer{
             
             if(facing === 'down'){
                 let performanceEater = setInterval( ()=>{
-                trajectorY += 10
-                let missleTop = missle.offsetTop
-                let missleLeft = missle.offsetLeft
+                    trajectorY += 10
+                    let missleTop = missle.offsetTop
+                    let missleLeft = missle.offsetLeft
+                    
                 
+                    missle.style.transform = `rotateZ(180deg)`
+                    missle.style.top = `${trajectorY}px`
+                    checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                         
+                    //check if any enemy was hit
+                    checkIfEnemyWasHit(missle ,allEnemyPositions)
                 
-                        missle.style.transform = `rotateZ(180deg)`
-                        missle.style.top = `${trajectorY}px`
-                        checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
-                        // allTankObstaclePositions.find((obstacle, index) =>{
-                        //     //check if obstacle was hit by missle
-                        //     if(
-                        //        !obstacle.node.classList.contains('water') &&
-                        //         missle.getBoundingClientRect().bottom >= obstacle.top
-                        //         && missle.offsetTop  <= obstacle.bottom
-                        //         && missle.offsetLeft -2<= obstacle.right
-                        //         && missle.offsetLeft +8  >= obstacle.left
-                            
-                        //     ){
-                        //         //remove the obstacle and the missle if true
-                        //         clearInterval(performanceEater)
-                        //         missle.remove()
-                        //         if(!obstacle.node.classList.contains('rock')){
-
-                        //             obstacle.node.remove()
-                        //             allTankObstaclePositions.splice(index,1)
-                        //             return
-                        //         }
-                        //     } 
-                        // })    
-
-                        
-                
-                        //check if any enemy was hit
-                        checkIfEnemyWasHit(missle ,allEnemyPositions)
-                
-                    if(trajector >= 580){
+                    if(trajectorY > mapHeight){
                         missle.remove()
                         clearInterval(performanceEater)
                         return
@@ -690,43 +657,22 @@ class Timer{
 
             if(facing === 'left'){
                 let performanceEater = setInterval( ()=>{
-                trajectorX -= 10
-                
-                let missleTop = missle.offsetTop
-                let missleLeft = missle.offsetLeft
+                    trajectorX -= 10
+                    
+                    let missleTop = missle.offsetTop
+                    let missleLeft = missle.offsetLeft
                    
                 
-                        missle.style.transform = `rotateZ(270deg)`
-                        missle.style.left = `${trajectorX}px`
-                        checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
-                        // allTankObstaclePositions.find((obstacle, index) =>{
-                        //     //check if obstacle was hit by missle
-                        //     if(
-                        //         !obstacle.node.classList.contains('water') &&
-                        //         missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                        //         && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                        //         && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                        //         && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
-                            
-                        //     ){
-                        //         //remove the obstacle and the missle if true
-                        //         clearInterval(performanceEater)
-                        //         missle.remove()
-                        //         if(!obstacle.node.classList.contains('rock')){
-
-                        //             obstacle.node.remove()
-                        //             allTankObstaclePositions.splice(index,1)
-                        //             return
-                        //         }
-                        //     } 
-                        // })    
-
+                    missle.style.transform = `rotateZ(270deg)`
+                    missle.style.left = `${trajectorX}px`
+                    checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                        
                       
                 
                         //check if any enemy was hit
-                        checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    checkIfEnemyWasHit(missle ,allEnemyPositions)
                 
-                    if(trajector >= 580){
+                    if(trajectorX < -10){
                         missle.remove()
                         clearInterval(performanceEater)
                         return
@@ -738,41 +684,19 @@ class Timer{
 
             if(facing === 'right'){
                 let performanceEater = setInterval( ()=>{
-                trajectorX += 10
-            
-                let missleTop = missle.offsetTop
-                let missleLeft = missle.offsetLeft
-                        missle.style.transform = `rotateZ(90deg)`
-                        missle.style.left = `${trajectorX}px`
-                        checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
-                        // allTankObstaclePositions.find((obstacle, index) =>{
-                        //     //check if obstacle was hit by missle
-                        //     if(
-                        //         !obstacle.node.classList.contains('water') &&
-                        //         missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                        //         && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                        //         && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                        //         && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
-                            
-                        //     ){
-                        //         //remove the obstacle and the missle if true
-                        //         clearInterval(performanceEater)
-                        //         missle.remove()
-                        //         if(!obstacle.node.classList.contains('rock')){
-
-                        //             obstacle.node.remove()
-                        //             allTankObstaclePositions.splice(index,1)
-                        //             return
-                        //         }
-                        //     } 
-                        // })    
-
+                    trajectorX += 10
+                
+                    let missleTop = missle.offsetTop
+                    let missleLeft = missle.offsetLeft
+                    missle.style.transform = `rotateZ(90deg)`
+                    missle.style.left = `${trajectorX}px`
+                    checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
                       
                 
-                        //check if any enemy was hit
-                        checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    //check if any enemy was hit
+                    checkIfEnemyWasHit(missle ,allEnemyPositions)
                 
-                    if(trajector >= 580){
+                    if(trajectorX >= mapWidth){
                         missle.remove()
                         clearInterval(performanceEater)
                         return
@@ -801,177 +725,116 @@ class Timer{
                
                 //missle must be appended to MAP not to tank
                 map.appendChild(missle)
-                let trajector = 0
+                let trajectorX = parseInt(whoIsShooting.style.left.slice(0, length -2)) + 17
+                let trajectorY = parseInt(whoIsShooting.style.top.slice(0, length -2)) + 15
             
             
+
+
                 if(facing2 === 'up'){
                 let performanceEater = setInterval( ()=>{
-                    trajector += 10
-                   
+                    trajectorY -= 10
+                    let missleTop = missle.offsetTop
+                    let missleLeft = missle.offsetLeft
                     
                     
                         
-                            missle.style.transform = `translateY(-${trajector}px)`
-                            
-                            allTankObstaclePositions.find((obstacle, index) =>{
-                                //check if obstacle was hit by missle
-                                if(
-                                   
-                                   !obstacle.node.classList.contains('water') &&
-                                    missle.offsetTop > obstacle.top
-                                    && missle.getBoundingClientRect().bottom  < obstacle.bottom
-                                    && missle.offsetLeft - 2< obstacle.right
-                                    && missle.offsetLeft +8  > obstacle.left
-                                
-                                ){
-                                    //remove the obstacle and the missle if true
-                                    clearInterval(performanceEater)
-                                missle.remove()
-                                if(!obstacle.node.classList.contains('rock')){
-
-                                    obstacle.node.remove()
-                                    allTankObstaclePositions.splice(index,1)
-                                    return
-                                }
-                                } 
-                            })    
-
-                           
-                        
-                      //check if any enemy was hit
-                      checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    missle.style.top = `${trajectorY}px`
+                    checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                     
+                    //check if any enemy was hit
+                    checkIfEnemyWasHit(missle ,allEnemyPositions)
                     
-                        if(trajector >= 580){
+                        if(trajectorY < -10){
                             missle.remove()
                             clearInterval(performanceEater)
                             return
                         }
+                        missleTop = null
+                        missleLeft = null
                 }, 20)
             }
             
             if(facing2 === 'down'){
                 let performanceEater = setInterval( ()=>{
-                trajector += 10
-                
+                trajectorY += 10
+                let missleTop = missle.offsetTop
+                let missleLeft = missle.offsetLeft
                 
                     
                 
-                        missle.style.transform = `translateY(${trajector}px) rotateZ(180deg)`
-
-                        allTankObstaclePositions.find((obstacle, index) =>{
-                            //check if obstacle was hit by missle
-                            if(
-                               !obstacle.node.classList.contains('water') &&
-                                missle.getBoundingClientRect().bottom >= obstacle.top
-                                && missle.offsetTop  <= obstacle.bottom
-                                && missle.offsetLeft -2<= obstacle.right
-                                && missle.offsetLeft +8  >= obstacle.left
-                            
-                            ){
-                                //remove the obstacle and the missle if true
-                                clearInterval(performanceEater)
-                                missle.remove()
-                                if(!obstacle.node.classList.contains('rock')){
-
-                                    obstacle.node.remove()
-                                    allTankObstaclePositions.splice(index,1)
-                                    return
-                                }
-                            } 
-                        })    
-
+                missle.style.transform = `rotateZ(180deg)`
+                missle.style.top = `${trajectorY}px`
+                       
+                checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                        
                        
                 
                           //check if any enemy was hit
                           checkIfEnemyWasHit(missle ,allEnemyPositions)
                 
-                    if(trajector >= 580){
+                    if(trajectorY > mapHeight){
                         missle.remove()
                         clearInterval(performanceEater)
                         return
                     }
-            }, 20)}
-            if(facing2 === 'left'){
-                let performanceEater = setInterval( ()=>{
-                trajector += 10
-                
-                
-                
-                
-                        missle.style.transform = `translateX(-${trajector}px) rotateZ(270deg)`
+                    missleTop = null
+                    missleLeft = null
+            }, 20)
+        }
+
+        if(facing2 === 'left'){
+            let performanceEater = setInterval( ()=>{
+                    trajectorX -= 10
+                    let missleTop = missle.offsetTop
+                    let missleLeft = missle.offsetLeft
                     
-                        allTankObstaclePositions.find((obstacle, index) =>{
-                            //check if obstacle was hit by missle
-                            if(
-                                !obstacle.node.classList.contains('water') &&
-                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
-                            
-                            ){
-                                //remove the obstacle and the missle if true
-                                clearInterval(performanceEater)
-                                missle.remove()
-                                if(!obstacle.node.classList.contains('rock')){
-
-                                    obstacle.node.remove()
-                                    allTankObstaclePositions.splice(index,1)
-                                    return
-                                }
-                            } 
-                        })    
-
-                       
-                          //check if any enemy was hit
-                          checkIfEnemyWasHit(missle ,allEnemyPositions)
-                
-                    if(trajector >= 580){
+                    
+                    
+                    missle.style.transform = `rotateZ(270deg)`
+                    missle.style.left = `${trajectorX}px`
+                        
+                    checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                    
+                    checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    
+                    if(trajectorX < -10 ){
                         missle.remove()
                         clearInterval(performanceEater)
                         return
                     }
-            }, 20)}
+                    missleTop = null
+                    missleLeft = null
+
+                }, 20)
+            }
+
             if(facing2 === 'right'){
                 let performanceEater = setInterval( ()=>{
-                trajector += 10
+                    trajectorX += 10
+                    let missleTop = missle.offsetTop
+                    let missleLeft = missle.offsetLeft
                 
-               
-                        missle.style.transform = `translateX(${trajector}px) rotateZ(90deg)`
+                    missle.style.transform = `rotateZ(90deg)`
+                    missle.style.left = `${trajectorX}px`
+                        
+                    checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
+                        
+
+                        
                     
-                        allTankObstaclePositions.find((obstacle, index) =>{
-                            //check if obstacle was hit by missle
-                            if(
-                                 !obstacle.node.classList.contains('water') &&
-                                missle.getBoundingClientRect().bottom >= obstacle.node.getBoundingClientRect().top
-                                && missle.getBoundingClientRect().top  <= obstacle.node.getBoundingClientRect().bottom
-                                && missle.getBoundingClientRect().left <= obstacle.node.getBoundingClientRect().right
-                                && missle.getBoundingClientRect().right >= obstacle.node.getBoundingClientRect().left
-                            
-                            ){
-                                //remove the obstacle and the missle if true
-                                clearInterval(performanceEater)
-                                missle.remove()
-                                if(!obstacle.node.classList.contains('rock')){
+                    //check if any enemy was hit
+                    checkIfEnemyWasHit(missle ,allEnemyPositions)
 
-                                    obstacle.node.remove()
-                                    allTankObstaclePositions.splice(index,1)
-                                    return
-                                }
-                            } 
-                        })    
-
-                      
-                
-                  //check if any enemy was hit
-                  checkIfEnemyWasHit(missle ,allEnemyPositions)
-
-                    if(trajector >= 580){
-                        missle.remove()
-                        clearInterval(performanceEater)
-                        return
-                    }
-            }, 20)}
+                        if(trajectorX >= mapWidth){
+                            missle.remove()
+                            clearInterval(performanceEater)
+                            return
+                        }
+                        missleTop = null
+                        missleLeft = null
+                }, 20)
+            }
         }
         
     }
