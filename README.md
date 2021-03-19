@@ -117,3 +117,11 @@ After returning to reduce, problem is gone, but performance is still less than e
 - added many 'return' conditions to finish early function execution so it does not perfor unnecessary action after certain condition is met (for example if missle hits obstacle, it will return without further checking if it also hit enemy)
 - added tank explosion animation and sound effect when enemy gets hit by player missle.
 - the game has now decent performance with 12 enemy Tanks moving at one time.
+
+18.03.2021
+- MAJOR PERFORMANCE CHANGES to find loops responsible for scanning tanks vs obstacle collisions and missle vs obstacle hits - current position of tank and missle (offsetTo and offsetLeft) is now cached in let variable in every interval cycle (at the beginning) and then used throughout the 'find' loop, so only two DOM style requests are being made per interval cycle instead of two per every loop iteration inside each interval cycle - this resulted in performance being raise DRASTICALLY. Now 20 enemies can run the map in one time and the game runs smoothly. Main performance goal achieved.
+- refactored some repeatable code in shooting missles functionality - dressed it up in a function and applied function calls.
+- refactored the entire player movement functions - merged two separate functions for player 1 and player 2 into one with parameters and conditional checks.
+
+19.03.2021
+reversed movement function changes - separated again into two functions, it proven to be interfering with another players movement, too complex...

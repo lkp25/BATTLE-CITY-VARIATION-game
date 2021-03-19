@@ -987,44 +987,35 @@ document.addEventListener('keyup', ((e) =>{
 //======================================================================================
 
 
-    function playerMovement(DOMplayer, thisPlayerPosition, otherPlayerPosition){
-       
-        //break out of the function immidiately if none of the players is pressing any 
-        //movement-generating key
-        if(DOMplayer === tank && !left && !right && !up && !down){
-            return
-        }
-        else if(DOMplayer === tank2 && !left2 && !right2 && !up2 && !down2){
-            return
-        }
-        
-        
+    function movement(){
+       if(!left && !right && !up && !down){
+           return
+       }
         //dont let player take position of enemy spawn
-        if(thisPlayerPosition.left <= 40 && thisPlayerPosition.top <= 40){
+
+        if(tank1Position.left <= 40 && tank1Position.top <= 40){
             if(facing === 'left'){
-                DOMplayer.style.left = '42px'
+                tank.style.left = '42px'
             }
             if(facing === 'up'){
-                DOMplayer.style.top = '42px'
+                tank.style.top = '42px'
             }
             return
         }
         //=============VERTICAL MOVEMENT====================
         //access tank Y position on map
        
-        let yPos = parseInt(DOMplayer.style.top.slice(0, length -2)) 
+        let yPos = parseInt(tank.style.top.slice(0, length -2)) 
         //go down
-        if(down || down2){
+        if(down){
             
            
             //set tank facing
-            DOMplayer.style.transform = `rotateZ(0deg)`
+            tank.style.transform = `rotateZ(0deg)`
             facing = 'down'
-            if(down2){
-                facing2 = 'down'
-            }
+            
             //stop tank1 if it crashes tank2 from the top
-            if(!(thisPlayerPosition.bottom + 2 >= otherPlayerPosition.top && thisPlayerPosition.left <= otherPlayerPosition.right && thisPlayerPosition.right >= otherPlayerPosition.left && thisPlayerPosition.top <= otherPlayerPosition.bottom)){
+            if(!(tank1Position.bottom + 2 >= tank2Position.top && tank1Position.left <= tank2Position.right && tank1Position.right >= tank2Position.left && tank1Position.top <= tank2Position.bottom)){
                
                 yPos += 1
             }else{
@@ -1035,10 +1026,10 @@ document.addEventListener('keyup', ((e) =>{
             //tank can crash more than one obstacle at the same time
             allTankObstaclePositions.forEach(element =>{
                 if
-                (element.top -1<= thisPlayerPosition.bottom 
-                &&element.bottom >=thisPlayerPosition.top 
-                &&element.left <= thisPlayerPosition.right 
-                &&element.right >=thisPlayerPosition.left
+                (element.top -1<= tank1Position.bottom 
+                &&element.bottom >=tank1Position.top 
+                &&element.left <= tank1Position.right 
+                &&element.right >=tank1Position.left
                 ){
                     yPos -= 2   
                     return}
@@ -1046,10 +1037,10 @@ document.addEventListener('keyup', ((e) =>{
             //check for crash with AI-enemies
             allEnemyPositions.find(element =>{
             if
-            (element.top -1<= thisPlayerPosition.bottom 
-            &&element.bottom >=thisPlayerPosition.top 
-            &&element.left <= thisPlayerPosition.right 
-            &&element.right >=thisPlayerPosition.left 
+            (element.top -1<= tank1Position.bottom 
+            &&element.bottom >=tank1Position.top 
+            &&element.left <= tank1Position.right 
+            &&element.right >=tank1Position.left 
             ){
                 yPos -= 5   
                 return}
@@ -1058,22 +1049,20 @@ document.addEventListener('keyup', ((e) =>{
             
                 //STOP when it reaches MAP-BOTTOM
             if(yPos >= mapHeight){  
-                DOMplayer.style.top = `${mapHeight}px`
+                tank.style.top = `${mapHeight}px`
                 return
             }else{  //keep going down if there is space
-                DOMplayer.style.top = `${yPos}px`
+                tank.style.top = `${yPos}px`
                 return
             }
         }
         //go up
-        if(up || up2){
+        if(up){
            
-            DOMplayer.style.transform = `rotateZ(180deg)`
+            tank.style.transform = `rotateZ(180deg)`
             facing = 'up'
-            if(up2){
-                facing2 = 'up'
-            }
-            if(!(thisPlayerPosition.top - 2 <= otherPlayerPosition.bottom && thisPlayerPosition.left <= otherPlayerPosition.right && thisPlayerPosition.right >= otherPlayerPosition.left && thisPlayerPosition.bottom > otherPlayerPosition.top)){
+
+            if(!(tank1Position.top - 2 <= tank2Position.bottom && tank1Position.left <= tank2Position.right && tank1Position.right >= tank2Position.left && tank1Position.bottom > tank2Position.top)){
 
                 yPos -= 1
             }else{
@@ -1082,10 +1071,10 @@ document.addEventListener('keyup', ((e) =>{
             //Check for crash with any obstacle
             allTankObstaclePositions.forEach(element =>{
                 if
-                (element.top <= thisPlayerPosition.bottom 
-                &&element.bottom +1>=thisPlayerPosition.top 
-                &&element.left <= thisPlayerPosition.right 
-                &&element.right >=thisPlayerPosition.left 
+                (element.top <= tank1Position.bottom 
+                &&element.bottom +1>=tank1Position.top 
+                &&element.left <= tank1Position.right 
+                &&element.right >=tank1Position.left 
                 ){
                     yPos += 2   
                     return}
@@ -1094,20 +1083,20 @@ document.addEventListener('keyup', ((e) =>{
                 //Check for crash with enemy AI
                 allEnemyPositions.find(element =>{
                 if
-                (element.top <= thisPlayerPosition.bottom 
-                &&element.bottom +1>=thisPlayerPosition.top 
-                &&element.left <= thisPlayerPosition.right 
-                &&element.right >=thisPlayerPosition.left 
+                (element.top <= tank1Position.bottom 
+                &&element.bottom +1>=tank1Position.top 
+                &&element.left <= tank1Position.right 
+                &&element.right >=tank1Position.left 
                 ){
                     yPos += 5  
                     return}
                 })
 
             if(yPos <= 0){  //STOP when it reaches MAP-TOP
-                DOMplayer.style.top = `${0}px`
+                tank.style.top = `${0}px`
                 return
             }else{  //keep going up if there is space
-                DOMplayer.style.top = `${yPos}px`
+                tank.style.top = `${yPos}px`
                 return
             }
         }
@@ -1115,17 +1104,15 @@ document.addEventListener('keyup', ((e) =>{
     
         //=============HORIZONTAL MOVEMENT===================
         //access tank X position on map
-        let xPos = parseInt(DOMplayer.style.left.slice(0, length -2))
+        let xPos = parseInt(tank.style.left.slice(0, length -2))
         //go left
-        if(left || left2){
+        if(left){
            
 
-            DOMplayer.style.transform = `rotateZ(90deg)`
+            tank.style.transform = `rotateZ(90deg)`
             facing = 'left'
-            if(left2){
-                facing2 = 'left'
-            }
-            if(!(thisPlayerPosition.left -2  <= otherPlayerPosition.right && thisPlayerPosition.bottom >= otherPlayerPosition.top && thisPlayerPosition.top <= otherPlayerPosition.bottom && thisPlayerPosition.right >= otherPlayerPosition.left) ){
+
+            if(!(tank1Position.left -2  <= tank2Position.right && tank1Position.bottom >= tank2Position.top && tank1Position.top <= tank2Position.bottom && tank1Position.right >= tank2Position.left) ){
                 
                 xPos -= 1
             }else{
@@ -1134,10 +1121,10 @@ document.addEventListener('keyup', ((e) =>{
             
             allTankObstaclePositions.forEach(element =>{
                 if
-                (element.top <= thisPlayerPosition.bottom 
-                &&element.bottom >=thisPlayerPosition.top 
-                &&element.left <= thisPlayerPosition.right 
-                &&element.right +1>=thisPlayerPosition.left 
+                (element.top <= tank1Position.bottom 
+                &&element.bottom >=tank1Position.top 
+                &&element.left <= tank1Position.right 
+                &&element.right +1>=tank1Position.left 
                 ){
                     xPos += 2   
                     return
@@ -1146,33 +1133,30 @@ document.addEventListener('keyup', ((e) =>{
 
             allEnemyPositions.find(element =>{
                  if
-                 (element.top <= thisPlayerPosition.bottom 
-                    &&element.bottom >=thisPlayerPosition.top 
-                    &&element.left <= thisPlayerPosition.right 
-                    &&element.right +1>=thisPlayerPosition.left 
+                 (element.top <= tank1Position.bottom 
+                    &&element.bottom >=tank1Position.top 
+                    &&element.left <= tank1Position.right 
+                    &&element.right +1>=tank1Position.left 
                  ){
                         xPos += 5
                         return   }
             })
             
             if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
-                DOMplayer.style.left = `${0}px`
+                tank.style.left = `${0}px`
                 return
             }else{  //keep going left if there is space
-                DOMplayer.style.left = `${xPos}px`
+                tank.style.left = `${xPos}px`
                 return
             }
         }
         //go right
-        if(right || right2){
+        if(right){
            
-            DOMplayer.style.transform = `rotateZ(-90deg)`
+            tank.style.transform = `rotateZ(-90deg)`
             facing = 'right'
-            if(right2){
-                facing2 = 'right'
-            }
 
-            if(!(thisPlayerPosition.right +2 >= otherPlayerPosition.left && thisPlayerPosition.bottom >= otherPlayerPosition.top && thisPlayerPosition.top <= otherPlayerPosition.bottom && thisPlayerPosition.left <= otherPlayerPosition.right)){
+            if(!(tank1Position.right +2 >= tank2Position.left && tank1Position.bottom >= tank2Position.top && tank1Position.top <= tank2Position.bottom && tank1Position.left <= tank2Position.right)){
                
                 xPos += 1
             }else{
@@ -1181,37 +1165,236 @@ document.addEventListener('keyup', ((e) =>{
             
             allTankObstaclePositions.forEach(element =>{
                 if
-                (element.top <= thisPlayerPosition.bottom 
-                &&element.bottom >=thisPlayerPosition.top 
-                &&element.left -1<= thisPlayerPosition.right 
-                &&element.right>=thisPlayerPosition.left 
+                (element.top <= tank1Position.bottom 
+                &&element.bottom >=tank1Position.top 
+                &&element.left -1<= tank1Position.right 
+                &&element.right>=tank1Position.left 
                 ){
                     xPos -= 2   
                     return}
             })
             allEnemyPositions.find(element =>{
                 if
-                (element.top <= thisPlayerPosition.bottom 
-                &&element.bottom >=thisPlayerPosition.top 
-                &&element.left -1<= thisPlayerPosition.right 
-                &&element.right>=thisPlayerPosition.left 
+                (element.top <= tank1Position.bottom 
+                &&element.bottom >=tank1Position.top 
+                &&element.left -1<= tank1Position.right 
+                &&element.right>=tank1Position.left 
                 ){
                     xPos -= 5 
                     return  }
                 })
 
             if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
-                DOMplayer.style.left = `${mapWidth}px`
+                tank.style.left = `${mapWidth}px`
                 return
             }else{  //keep going right if there is space
-                DOMplayer.style.left = `${xPos}px`
+                tank.style.left = `${xPos}px`
                 return
             }
         }
     
         
     }
+    
+
+
+
+
+
+
+
+
+    function movement2(){
+        if(!left2 && !right2 && !up2 && !down2){
+            return
+        }
+        //dont let player take position of enemy spawn
+        if(tank2Position.left <= 40 && tank2Position.top <= 40){
+            if(facing2 === 'left'){
+                tank2.style.left = '42px'
+            }
+            if(facing2 === 'up'){
+                tank2.style.top = '42px'
+            }
+            return
+        }
+        //=============VERTICAL MOVEMENT===================
+        //access tank Y position on map
+        let yPos = parseInt(tank2.style.top.slice(0, length -2)) 
+        //go down
+        if(down2){
+            
+            tank2.style.transform = `rotateZ(0deg)`
+            facing2 = 'down'
+
+            if(!(tank2Position.bottom +2 >= tank1Position.top && tank2Position.left <= tank1Position.right && tank2Position.right >= tank1Position.left && tank2Position.top <= tank1Position.bottom)){
+                
+                yPos += 1
+            }else{
+                yPos -= 1 
+            }
+
+            //Check for crash with any obstacle
+            allTankObstaclePositions.forEach(element =>{
+                if
+                (element.top -1<= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right >=tank2Position.left 
+                ){
+                    yPos -= 2  
+                    return }
+            })
+            allEnemyPositions.find(element =>{
+                if
+                (element.top -1<= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right >=tank2Position.left 
+                ){
+                    yPos -= 5 
+                    return  }
+            })
+
+            if(yPos >= mapHeight){  //STOP when it reaches MAP-BOTTOM
+                tank2.style.top = `${mapHeight}px`
+                return
+            }else{  //keep going down if there is space
+                tank2.style.top = `${yPos}px`
+                return
+            }
+        }
+        //go up
+        if(up2){
+           
+            tank2.style.transform = `rotateZ(180deg)`
+            facing2 = 'up'
+            if(!(tank2Position.top - 2 <= tank1Position.bottom && tank2Position.left <= tank1Position.right && tank2Position.right >= tank1Position.left && tank2Position.bottom > tank1Position.top)){
+                   
+                yPos -= 1
+            }else{
+                yPos += 1
+            }
+
+            //Check for crash with any obstacle
+            allTankObstaclePositions.forEach(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom +1>=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right >=tank2Position.left 
+                ){
+                    yPos += 2  
+                    return }
+            })
+            allEnemyPositions.find(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom +1>=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right >=tank2Position.left 
+                ){
+                    yPos += 5  
+                    return }
+            })
+
+            if(yPos <= 0){  //STOP when it reaches MAP-TOP
+                tank2.style.top = `${0}px`
+                return
+            }else{  //keep going up if there is space
+                tank2.style.top = `${yPos}px`
+                return
+            }
+        }
+        //+++++++++++++++++++++++++++++++++++++++++++++++
+    
+        //=============HORIZONTAL MOVEMENT===============
+        //access tank X position on map
+        let xPos = parseInt(tank2.style.left.slice(0, length -2))
+        //go left
+        if(left2){
+            
+            tank2.style.transform = `rotateZ(90deg)`
+            facing2 = 'left'
+            if(!(tank2Position.left -2  <= tank1Position.right && tank2Position.bottom >= tank1Position.top && tank2Position.top <= tank1Position.bottom && tank2Position.right >= tank1Position.left) ){                
+                xPos -= 1
+            }else{
+                xPos += 1
+            }
+
+            allTankObstaclePositions.forEach(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right +1>=tank2Position.left 
+                ){
+                    xPos += 2   
+                    return}
+            })
+            allEnemyPositions.find(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left <= tank2Position.right 
+                &&element.right +1>=tank2Position.left 
+                ){
+                    xPos += 5   
+                    return
+                }
+            })
+
+            if(xPos <= 0){  //STOP when it reaches MAP-LEFT-edge
+                tank2.style.left = `${0}px`
+                return
+            }else{  //keep going left if there is space
+                tank2.style.left = `${xPos}px`
+                return
+            }
+        }
+        //go right
+        if(right2){
+            
+            tank2.style.transform = `rotateZ(-90deg)`
+            facing2 = 'right'
+            if(!(tank2Position.right +2 >= tank1Position.left && tank2Position.bottom >= tank1Position.top && tank2Position.top <= tank1Position.bottom && tank2Position.left <= tank1Position.right)){
+               
+                xPos += 1
+            }else{
+                xPos -= 1
+            }
+
+            allTankObstaclePositions.forEach(element =>{
+                if
+                (element.top <= tank2Position.bottom 
+                &&element.bottom >=tank2Position.top 
+                &&element.left -1<= tank2Position.right 
+                &&element.right>=tank2Position.left 
+                ){
+                    xPos -= 2   
+                    return}
+            })
+            allEnemyPositions.find(element =>{
+                if
+                    (element.top <= tank2Position.bottom 
+                    &&element.bottom >=tank2Position.top 
+                    &&element.left -1<= tank2Position.right 
+                    &&element.right>=tank2Position.left 
+                ){
+                    xPos -= 5   
+                    return}
+            })
+            if(xPos >= mapWidth){  //STOP when it reaches MAP-RIGHT-edge
+                tank2.style.left = `${mapWidth}px`
+                return
+            }else{  //keep going right if there is space
+                tank2.style.left = `${xPos}px`
+                return
+            }
+        }
+    
         
+    }
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
 
@@ -1254,8 +1437,8 @@ setInterval(()=>{
     
    
     //pass current player1 and player2 tanks position to movement function
-    playerMovement(tank, tank1Position, tank2Position)
-    playerMovement(tank2, tank2Position, tank1Position)
+    movement()
+    movement2()
     
     //constantly check position of each obstacle for collision with tanks or missles
     // allTankObstaclePositions = Obstacle.getAll()
@@ -2024,4 +2207,3 @@ const getRandomNumberBetween = (min, max) => {
 
   //misc
   const enemyGen = document.querySelector('.enemy-generator').addEventListener('click', Enemy.create)
-
