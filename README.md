@@ -1,12 +1,8 @@
-This is a simple game aspiring to be famous Battle City's clone, yet a bit different.
-
-This is a working prototype. Changes might occur later.
-
-For now: 
-1. There is a square map with two 'Tanks' - red (player 1) and blue - (player 2)
+My own variation of  famous video game Battle City by Nintendo (1985)
 
 
-2. CONTROLS:
+
+CONTROLS:
 
 Player 1
 up - arrow up
@@ -22,11 +18,9 @@ left - a
 right - d
 FIRE - 'Q' key
 
-3. The goal is to destroy the other player's tank by shooting to it. Each time a tank gets hit,
-it loses 10% of "life" which is opacity. After 10 hits it disappears and game is over - 
-winner is logged in the console.
 
 
+IMPORTANT UPDATES - development process log:
 
 //03.03.2021 
 - optimized missle/tank boundaries, 
@@ -109,7 +103,7 @@ After returning to reduce, problem is gone, but performance is still less than e
 
 - changed player movement function to return instantly if no arrow is pressed. 
 - added complete functionality for different obstacles - trees dont interact with tanks, water stops movement but not missles, rocks stop movement and missles but they don't disappear like brick walls.
-- removed player missle vs player intercation - players fight enemies, not each other
+- removed player missle vs player intercation - players fight enemies, not each other. Function is still in the file however, just commented out - maybe will be re-used later.
 
 17.03,2021
 - further performance adjustments - created 'static' array containing positions of all obstacles after they are generated. tanks now refer to this instead of the one generated in interval every 20ms. 
@@ -124,4 +118,4 @@ After returning to reduce, problem is gone, but performance is still less than e
 - refactored the entire player movement functions - merged two separate functions for player 1 and player 2 into one with parameters and conditional checks.
 
 19.03.2021
-reversed movement function changes - separated again into two functions, it proven to be interfering with another players movement, too complex...
+reversed movement function changes - separated again into two functions, it proven to be interfering with another players movement, too complex to maintain in a single function - happened to be more complicated with all if-statements required.
