@@ -55,7 +55,7 @@ tank.style.opacity = 1
 const tank2 = document.createElement('div')
 // .setAttribute('style', "top: 0px; left: 360px")
 map.appendChild(tank2)
-tank2.setAttribute('style', "top: 360px; left:0px")
+tank2.setAttribute('style', "top: 30px; left:578px")
 tank2.classList.add('tank2')
 tank2.style.opacity = 1
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -182,7 +182,7 @@ class Timer{
 
 
 
-
+// enemy explosion animation
 
     function explode(enemy){
         let explosion = document.createElement('div')
@@ -191,6 +191,8 @@ class Timer{
         explosion.style.top = `${enemy.top + 10}px`
         boom.play()
         explosion.classList.add('explo')
+
+        Enemy.number --
         setTimeout(() => {
             
             explosion.remove()
@@ -236,12 +238,39 @@ class Timer{
                             enemy.DOMnode.remove()
                             missle.remove()
                             // missle = null
-                            
+                            return
                         } 
                     })
     
                     
                 }
+
+//function checking if player shot the obstacle
+function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater){
+    allTankObstaclePositions.find((obstacle, index) =>{
+        //check if obstacle was hit by missle
+        if(
+           !obstacle.node.classList.contains('water') 
+           && missleTop + 10 >= obstacle.top
+           && missleTop  <= obstacle.bottom
+           && missleLeft <= obstacle.right
+           && missleLeft + 6 >= obstacle.left
+        
+        ){
+            //remove the obstacle and the missle if true
+            clearInterval(performanceEater)
+            missle.remove()
+            if(!obstacle.node.classList.contains('rock')){
+
+                obstacle.node.remove()
+                allTankObstaclePositions.splice(index,1)
+                return
+            }
+        } 
+    })    
+}
+
+
 
                 //function for checking if player was hit by enemy
                 function checkIfPlayerWasHit(which, missle, missleLeft, missleTop, position){
@@ -443,7 +472,7 @@ class Timer{
                         missle.style.left = `${trajectorZ}px`
 
                         //check if obstacle was hit by missle
-                        allTankObstaclePositions.find((obstacle, index) =>{
+                        allTankObstaclePositions.forEach((obstacle, index) =>{
                             if(
                                !obstacle.node.classList.contains('water')
                                 && missleTop + 10 >= obstacle.top
@@ -453,6 +482,7 @@ class Timer{
                             
                             ){
                                 //remove the obstacle and the missle if true
+                                
                                 clearInterval(shootingInterval)
                                 missle.remove()
                                 if(!obstacle.node.classList.contains('rock')){
@@ -462,12 +492,13 @@ class Timer{
                                     return
                                 }
                             } 
+                        })
                             //check if one of the players was hit
                             checkIfPlayerWasHit(tank, missle, missleLeft, missleTop, tank1Position)
-                        checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop, tank2Position)
+                            checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop, tank2Position)
                             missleTop = null
                             missleLeft = null
-                        })    
+                        
                     }, 20);
                 }
                 if(missleFacing === 'right'){
@@ -526,30 +557,7 @@ class Timer{
 
 
 //PLAYER SHOOTING section
-//function checking if player shot the obstacle
-            function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater){
-                allTankObstaclePositions.find((obstacle, index) =>{
-                    //check if obstacle was hit by missle
-                    if(
-                       !obstacle.node.classList.contains('water') 
-                       && missleTop + 10 >= obstacle.top
-                       && missleTop  <= obstacle.bottom
-                       && missleLeft <= obstacle.right
-                       && missleLeft + 6 >= obstacle.left
-                    
-                    ){
-                        //remove the obstacle and the missle if true
-                        clearInterval(performanceEater)
-                        missle.remove()
-                        if(!obstacle.node.classList.contains('rock')){
 
-                            obstacle.node.remove()
-                            allTankObstaclePositions.splice(index,1)
-                            return
-                        }
-                    } 
-                })    
-            }
                 
 
 
@@ -1500,7 +1508,7 @@ class Obstacle{
         
         //create new  obstacle
         const obstacle = document.createElement('div')                
-        const randomObstacle = Math.floor(Math.random() * 7)
+        const randomObstacle = Math.floor(Math.random() * 10)
         obstacle.classList.add('obstacle')
 
         if(randomObstacle === 0){
@@ -1525,7 +1533,7 @@ class Obstacle{
 
 
         //position it randomly using positionsArray
-        let top = positionsArray[Math.floor(Math.random() * 26)]
+        let top = positionsArray[Math.floor(Math.random() * 27)]
         let left = positionsArray[Math.floor(Math.random() * 23)]
         
         //add an id using it's generated positions so that
@@ -1672,7 +1680,7 @@ class Enemy{
     static create = function(){
         
         //check if max number of enemies was not exceeded and don't execute if true
-        if(this.number > 20){
+        if(this.number > 10){
             
             return
         }   
@@ -1696,7 +1704,8 @@ class Enemy{
                 //add CSS styles
                 enemy.classList.add('enemy-tank')
                 //add initial position
-                enemy.setAttribute('style', "top: 0px; left: 0px")
+                // enemy.style.position = 'absolute'
+                enemy.style.left = '580px'
                 //add ID in case it is needed
                 enemy.setAttribute('id', `enemy${Enemy.number}`) 
                 //append it to map
