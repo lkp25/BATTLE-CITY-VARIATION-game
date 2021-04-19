@@ -1,7 +1,7 @@
 My own variation of  famous video game Battle City by Nintendo (1985)
 
 
-
+New Level is generated automatically every 2 minutes.
 CONTROLS:
 
 Player 1
@@ -119,3 +119,17 @@ After returning to reduce, problem is gone, but performance is still less than e
 
 19.03.2021
 reversed movement function changes - separated again into two functions, it proven to be interfering with another players movement, too complex to maintain in a single function - happened to be more complicated with all if-statements required.
+
+19.04.2021
+fixed all shooting bugs, 
+added more intelligent obstacle destruction mode for enemies, 
+slowed down speed of player missles, 
+added logic for both players' lifebars and destroyed enemies counter,
+added fire animation to player tank after it gets shot,
+improved enemy spawning logic
+created entire logic for generating new level and fully automatic enemy spawn,
+added background images that change with each new level.
+performed thorough test
+
+THIS IS NOW THE OFFICIAL, fully playable BETA VERSION :)
+

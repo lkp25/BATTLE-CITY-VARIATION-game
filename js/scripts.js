@@ -3,8 +3,11 @@ const levelBackground = [
     'url(./images/cosmos.png) center/cover',
     'url(./images/matrix.png) center/cover',
     'url(./images/lava.png) center/cover',
+    'url(./images/woods.png) center/cover',
  'url(./images/desert.png) center/cover']
-let currentLevel = -1
+
+//current level 
+ let currentLevel = -1
 //hide scrollbars
 document.body.style.overflow = 'hidden'
 //explosion sound
@@ -25,11 +28,11 @@ let player1frags = 0
 const player2KilledDisplay = document.querySelector('.player-two-enemies-destroyed')
 let player2frags = 0
 
-//enemy spawn status
+//enemy spawn status - free/occupied
 let spawnStatus
 //select enemy generating button
 const enemyGen = document.querySelector('.enemy-generator')
-
+enemyGen.style.visibility = 'hidden'
 //define game area
 //map size
 let mapHeight = 580
@@ -75,7 +78,7 @@ tank.style.opacity = 1
 const tank2 = document.createElement('div')
 // .setAttribute('style', "top: 0px; left: 360px")
 map.appendChild(tank2)
-tank2.setAttribute('style', "top: 30px; left:578px")
+tank2.setAttribute('style', "top: 500px; left:578px")
 tank2.classList.add('tank2')
 tank2.style.opacity = 1
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -112,39 +115,54 @@ class Timer{
                 this.hoursField.innerText = this.hours
             }
             // if(this.minutes === 1 && this.seconds === 1){
-            if( this.seconds === 10){
+            // if( this.seconds === 10){}
+              
                
-               //throw out old map
-                map.style.transform = `rotateX(180deg) scaleX(0) skewX(20deg)`
-                
-                currentLevel++
-                map.style.background = `${levelBackground[currentLevel]}`
-                //REFRESH THE OBSTACLES - GENERATE NEW LEVEL
-                Obstacle.generateNewLevel()
-                endLevel = true
-                Enemy.getAllEnemies().forEach(element =>{
-                    element.DOMnode.remove()
-                })
-                tank.style.left = '582px'
-                tank2.style.left = '582px'
-                Enemy.number = 0
-                spawnStatus = 'occupied'
-                //present the new map
-                
-                setTimeout(() => {
-                    map.style.transform = 'rotateX(0deg) scaleX(1) skewX(0deg)'
-                    endLevel = false
-                    spawnStatus = 'free'
-                    Enemy.create()
-                }, 1000);
                
-            }
+            
+
+            //Generate new enemy every 1 second (unless spawn is occupied)
+            //performs click event on a hidden button previously used for testing
             enemyGen.click()
         },1000)
     
 }
+// LEVEL CHANGING INTERVAL
+setInterval(() => {
+    //throw out old map
+ map.style.transform = `rotateX(180deg) scaleX(0) skewX(20deg)`
+ //increase level counter
+ currentLevel++
 
-
+ //change background
+ map.style.background = `${levelBackground[currentLevel]}`
+ 
+ //REFRESH THE OBSTACLES - GENERATE NEW LEVEL
+ Obstacle.generateNewLevel()
+ 
+ //kill all old intervals
+ endLevel = true
+ Enemy.getAllEnemies().forEach(element =>{
+     element.DOMnode.remove()
+ })
+ //place players in starting positions
+ tank.style.left = '582px'
+ tank2.style.left = '582px'
+ tank2.style.top = '300px'
+ tank.style.top = '500px'
+ 
+ //reset enemy counter
+ Enemy.number = 0
+ spawnStatus = 'occupied'
+ 
+ //present the new map                
+ setTimeout(() => {
+     map.style.transform = 'rotateX(0deg) scaleX(1) skewX(0deg)'
+     endLevel = false
+     spawnStatus = 'free'
+     Enemy.create()
+ }, 1000);
+}, 180000);
 
 
 
@@ -1750,7 +1768,7 @@ class Enemy{
         }   
         
         Enemy.getAllEnemies().forEach((element) =>{
-            if(element.top <= 42 && element.left <= 42){
+            if(element.top <= 45 && element.left <= 45){
                 spawnStatus = 'occupied'
             }else{
                 spawnStatus = 'free'
