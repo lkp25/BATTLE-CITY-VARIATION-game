@@ -20,6 +20,8 @@ let player2frags = 0
 
 //enemy spawn status
 let spawnStatus
+//select enemy generating button
+const enemyGen = document.querySelector('.enemy-generator')
 
 //define game area
 //map size
@@ -128,6 +130,7 @@ class Timer{
                 }, 1000);
                
             }
+            enemyGen.click()
         },1000)
     
 }
@@ -1725,14 +1728,14 @@ class Enemy{
     constructor(){}
     //current number of enemies
     static number = 0 
-
-
-
+    
+    
+    
     //=======================create new enemy tank on the map.========================
     static create = function(){
         
         //check if max number of enemies was not exceeded and don't execute if true
-        if(this.number > 10){
+        if(Enemy.number >= 12){
             
             return
         }   
@@ -1742,7 +1745,7 @@ class Enemy{
                 spawnStatus = 'occupied'
             }else{
                 spawnStatus = 'free'
-
+                
             }
         })
         if(spawnStatus === 'occupied'){
@@ -1752,122 +1755,122 @@ class Enemy{
         }
         //else create new enemy
         const enemy = document.createElement('div')
-                
-                //add CSS styles
-                enemy.classList.add('enemy-tank')
-               
-                
-                //add ID in case it is needed
-                enemy.setAttribute('id', `enemy${Enemy.number}`) 
-                //append it to map
-                map.appendChild(enemy)
+        
+        //add CSS styles
+        enemy.classList.add('enemy-tank')
+        
+        
+        //add ID in case it is needed
+        enemy.setAttribute('id', `enemy${Enemy.number}`) 
+        //append it to map
+        map.appendChild(enemy)
                 //increase current number of enemies
                 Enemy.number ++
-
-        //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
-        Enemy.move(enemy)
-        
-        //initialize shooting interval
-        Enemy.shootMissle(enemy)
-        
-    }
-
-
-
-    //==============================================================================
-    //================================== AI SHOOTING=================================
-    //==============================================================================
-    static shootMissle = function(whoIsShooting){
-        // console.log(whoIsShooting.id, 'enemy');
-        
-
-        const shootingInterval = setInterval(() => {
-            //don't create a ghost-missle if enemy was just destroyed!
-            if(whoIsShooting.style.display === 'none' || endLevel){
                 
-                clearInterval(shootingInterval)
-            }else{
-
-                createMissle(whoIsShooting, 'enemy', allEnemyPositions)
-            }
-        }, 1000);
-    }
-
-
-    //==============================================================================
-    //==================================movement AI=================================
-    //==============================================================================
-    static move = function(enemy){
-       
-        //main positioning variables: vertical and horizontal
-        let upORdown = 0
-        let leftORright = 0
-
-        //current movement direction of enemy tank
-        let enemyFacing = 'right'
-        
-        
-
-
-        //main movement randomization interval options -
-        
-        
-        let randomMove = 0
-       
-       //option 1: hyperrandom
-        //every iteration calls buuu function which after hyperRandom time
-        //returns sets randomMove to left/right/up/down.
-        // let hyperRandom
-        // setInterval(() => {
-        //     hyperRandom = Math.floor(Math.random() * 3000)    
-            
-        //     buuu()   
-        // }, 5000);
-        // function buuu(){return setTimeout(() => {
-        //     randomMove = Math.floor(Math.random() * 4)            
-        // }, hyperRandom)}     
-        
-        
-        // option 2: player pursuit
-        // setInterval(() => {
-        //     if(tank1Position.top > enemy.offsetTop){
-        //         randomMove = 3
-        //         setTimeout(() => {
-        //             if(tank1Position.left > enemy.offsetLeft){
-        //                 randomMove = 0
-        //             }else{
-        //                 randomMove = 1
-        
-        //             }
-        //         },250);
-
-        //     }else{
-        //         randomMove = 2
-
-        //     }
-        // }, 1500);
-
-        // option 3: simplest random with set interval
-        // OLD, simple, more predictable
-        // randomMove - parameter used to change direction randomly ALLWAYS after specified time
-        
-        //name the interval so it can be removed if this enemy gets shot by player!!!
-        const randomMovementGenerator = setInterval(() => {
-            if(enemy.style.display === 'none' || endLevel){
+                //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
+                Enemy.move(enemy)
                 
-                clearInterval(randomMovementGenerator)
+                //initialize shooting interval
+                Enemy.shootMissle(enemy)
+                
             }
-            randomMove = Math.floor(Math.random() * 4)   
-        }, 4000);
-           
-        
-
-        //=========================MAIN AI MOVEMENT INTERVAL==============================
-        //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
-
-        let obstacleDetection
-        const enemyMovementInterval = setInterval(()=>{
             
+            
+            
+            //==============================================================================
+            //================================== AI SHOOTING=================================
+            //==============================================================================
+            static shootMissle = function(whoIsShooting){
+                // console.log(whoIsShooting.id, 'enemy');
+                
+                
+                const shootingInterval = setInterval(() => {
+                    //don't create a ghost-missle if enemy was just destroyed!
+                    if(whoIsShooting.style.display === 'none' || endLevel){
+                        
+                        clearInterval(shootingInterval)
+                    }else{
+                        
+                        createMissle(whoIsShooting, 'enemy', allEnemyPositions)
+                    }
+                }, 1000);
+            }
+            
+            
+            //==============================================================================
+            //==================================movement AI=================================
+            //==============================================================================
+            static move = function(enemy){
+                
+                //main positioning variables: vertical and horizontal
+                let upORdown = 0
+                let leftORright = 0
+                
+                //current movement direction of enemy tank
+                let enemyFacing = 'right'
+                
+                
+                
+                
+                //main movement randomization interval options -
+        
+                
+                let randomMove = 0
+                
+                //option 1: hyperrandom
+                //every iteration calls buuu function which after hyperRandom time
+                //returns sets randomMove to left/right/up/down.
+                // let hyperRandom
+                // setInterval(() => {
+                    //     hyperRandom = Math.floor(Math.random() * 3000)    
+                    
+                    //     buuu()   
+                    // }, 5000);
+                    // function buuu(){return setTimeout(() => {
+                        //     randomMove = Math.floor(Math.random() * 4)            
+                        // }, hyperRandom)}     
+                        
+                        
+                        // option 2: player pursuit
+                        // setInterval(() => {
+                            //     if(tank1Position.top > enemy.offsetTop){
+                                //         randomMove = 3
+                                //         setTimeout(() => {
+                                    //             if(tank1Position.left > enemy.offsetLeft){
+                                        //                 randomMove = 0
+                                        //             }else{
+                                            //                 randomMove = 1
+                                            
+                                            //             }
+                                            //         },250);
+                                            
+                                            //     }else{
+                                                //         randomMove = 2
+                                                
+                                                //     }
+                                                // }, 1500);
+                                                
+                                                // option 3: simplest random with set interval
+                                                // OLD, simple, more predictable
+                                                // randomMove - parameter used to change direction randomly ALLWAYS after specified time
+                                                
+                                                //name the interval so it can be removed if this enemy gets shot by player!!!
+                                                const randomMovementGenerator = setInterval(() => {
+                                                    if(enemy.style.display === 'none' || endLevel){
+                                                        
+                                                        clearInterval(randomMovementGenerator)
+                                                    }
+                                                    randomMove = Math.floor(Math.random() * 4)   
+                                                }, 4000);
+                                                
+                                                
+                                                
+                                                //=========================MAIN AI MOVEMENT INTERVAL==============================
+                                                //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
+                                                
+                                                let obstacleDetection
+                                                const enemyMovementInterval = setInterval(()=>{
+                                                    
             // Check for crash with any obstacle
             //1 - gets positions of all obstacles
             //2- reduce checks only for obstacles tanks is currently colliding with,
@@ -1889,10 +1892,10 @@ class Enemy{
             let enemyLeft = enemy.offsetLeft
             let enemyTop = enemy.offsetTop
             
-
+            
             obstacleDetection = allTankObstaclePositions.find( element =>{
-                    if
-                    (
+                if
+                (
                     
                     element.top <= enemyTop + 40
                     &&element.left<= enemyLeft + 40
@@ -1901,157 +1904,157 @@ class Enemy{
                     ){
                         //and change direction for further movement
                         return element
-                                                                      
-                    }
-            })//ONLY first item is needed, 
-                    //rest must be discarded not to interfere with changing movement direction.
-            
-            enemyLeft = null
-            enemyTop = null
-
-            //4 - obstacleDetection is only true in the moment of collision. 
-            //so if there was a collision and tank approached obstacle from the right: 
-            if(obstacleDetection && enemyFacing === 'right'){
-               
-                //make it reverse (go left)
-                 randomMove = 1
-                 //BUT ONLY A LITTLE BIT - after 50ms GET ANOTHER direction TO THE SIDE,
-                 //don't approach the obstacle again and don't keep going back, try to omit it.
-                 setTimeout(() => {
-                    let helpingFactor = Math.floor(Math.random() * 2)
-                    if(helpingFactor === 0){
-                        randomMove = 3
-                    }else{
-                        randomMove = 2
-                    }
-                }, 50);
-            }    
-            else if(obstacleDetection && enemyFacing === 'left'){
-                randomMove = 0
-                setTimeout(() => {
-                    let helpingFactor = Math.floor(Math.random() * 2)
-                    if(helpingFactor === 0){
-                        randomMove = 3
-                    }else{
-                        randomMove = 2
-                    }
-                }, 50);
-            }    
-            else if(obstacleDetection && enemyFacing === 'up'){
-                randomMove = 3
-                setTimeout(() => {
-                    randomMove = Math.floor(Math.random() * 2)
-                   
-                }, 50);
-            }    
-            else if(obstacleDetection && enemyFacing === 'down'){
-                randomMove = 2
-                setTimeout(() => {
-                    randomMove = Math.floor(Math.random() * 2)
-                    
-                }, 50);
-            }    
-
-
-
-
                         
-            //force enemy movement  according to random number:================            
-            //DOWN DOWN DOWN DOWN DOWN -if 3
-            if(randomMove === 3){
-                AI_down()
-
-                //reaches map bottom edge - change direction
-                if(upORdown > mapHeight - 2){
-                    enemy.style.top = `${mapHeight - 2}px`            
-                            
-                    //if it is trying to go over the egde, draw random number again
-                    //to force changing direction
-                    if(randomMove === 3){
-                        randomMove = Math.floor(Math.random() * 4)
                     }
-
+                })//ONLY first item is needed, 
+                //rest must be discarded not to interfere with changing movement direction.
+                
+                enemyLeft = null
+                enemyTop = null
+                
+                //4 - obstacleDetection is only true in the moment of collision. 
+                //so if there was a collision and tank approached obstacle from the right: 
+                if(obstacleDetection && enemyFacing === 'right'){
                     
-                }
+                    //make it reverse (go left)
+                    randomMove = 1
+                    //BUT ONLY A LITTLE BIT - after 50ms GET ANOTHER direction TO THE SIDE,
+                    //don't approach the obstacle again and don't keep going back, try to omit it.
+                    setTimeout(() => {
+                        let helpingFactor = Math.floor(Math.random() * 2)
+                        if(helpingFactor === 0){
+                            randomMove = 3
+                        }else{
+                            randomMove = 2
+                        }
+                    }, 50);
+                }    
+                else if(obstacleDetection && enemyFacing === 'left'){
+                    randomMove = 0
+                    setTimeout(() => {
+                        let helpingFactor = Math.floor(Math.random() * 2)
+                        if(helpingFactor === 0){
+                            randomMove = 3
+                        }else{
+                            randomMove = 2
+                        }
+                    }, 50);
+                }    
+                else if(obstacleDetection && enemyFacing === 'up'){
+                    randomMove = 3
+                    setTimeout(() => {
+                        randomMove = Math.floor(Math.random() * 2)
+                        
+                    }, 50);
+                }    
+                else if(obstacleDetection && enemyFacing === 'down'){
+                    randomMove = 2
+                    setTimeout(() => {
+                        randomMove = Math.floor(Math.random() * 2)
+                        
+                    }, 50);
+                }    
+                
+                
+                
+                
+                
+                //force enemy movement  according to random number:================            
+                //DOWN DOWN DOWN DOWN DOWN -if 3
+                if(randomMove === 3){
+                    AI_down()
+                    
+                    //reaches map bottom edge - change direction
+                    if(upORdown > mapHeight - 2){
+                        enemy.style.top = `${mapHeight - 2}px`            
+                        
+                        //if it is trying to go over the egde, draw random number again
+                        //to force changing direction
+                        if(randomMove === 3){
+                            randomMove = Math.floor(Math.random() * 4)
+                        }
+                        
+                        
+                    }
                 //crashes with another enemy tank - change direction
                 allEnemyPositions.find(element =>{
                     if
                     (
-                    element.node !== enemy.id                
-                    &&element.top -1<= enemy.offsetTop + 40
-                    &&element.bottom >=enemy.offsetTop
-                    &&element.left <= enemy.offsetLeft + 40
-                    &&element.right >=enemy.offsetLeft
-                    ){
-                        upORdown -2
-                        randomMove = Math.floor(Math.random() * 4)
-                        AI_up()    }
-                    })
-                
-                //collision with player one or two - change direction
-                if(
-                    (enemy.offsetTop + 41 >= tank2Position.top 
-                        && enemy.offsetLeft <= tank2Position.right 
-                        && enemy.offsetLeft + 41>= tank2Position.left 
-                        && enemy.offsetTop <= tank2Position.bottom) 
-                        ||
-                        (enemy.offsetTop + 41 >= tank1Position.top 
-                        && enemy.offsetLeft <= tank1Position.right 
-                        && enemy.offsetLeft + 41>= tank1Position.left 
-                        && enemy.offsetTop <= tank1Position.bottom)
+                        element.node !== enemy.id                
+                        &&element.top -1<= enemy.offsetTop + 40
+                        &&element.bottom >=enemy.offsetTop
+                        &&element.left <= enemy.offsetLeft + 40
+                        &&element.right >=enemy.offsetLeft
                         ){
-                        upORdown -2
-                        randomMove = Math.floor(Math.random() * 4)
-                        AI_up()    
-                    }
-                   
-
-            //UP UP UP UP UP UP UP UP UP  - 2
-            }else if(randomMove === 2){
-                AI_up()
-            //top edge
-                if(upORdown < 2){
-                    enemy.style.top = `2px`
-                    
-                    if(randomMove === 2){
-                        randomMove = Math.floor(Math.random() * 4)
-                    }
-                 }
-                 allEnemyPositions.find(element =>{
-                    if
-                    (
+                            upORdown -2
+                            randomMove = Math.floor(Math.random() * 4)
+                            AI_up()    }
+                        })
+                        
+                        //collision with player one or two - change direction
+                        if(
+                            (enemy.offsetTop + 41 >= tank2Position.top 
+                                && enemy.offsetLeft <= tank2Position.right 
+                                && enemy.offsetLeft + 41>= tank2Position.left 
+                                && enemy.offsetTop <= tank2Position.bottom) 
+                                ||
+                                (enemy.offsetTop + 41 >= tank1Position.top 
+                                    && enemy.offsetLeft <= tank1Position.right 
+                                    && enemy.offsetLeft + 41>= tank1Position.left 
+                                    && enemy.offsetTop <= tank1Position.bottom)
+                                    ){
+                                        upORdown -2
+                                        randomMove = Math.floor(Math.random() * 4)
+                                        AI_up()    
+                                    }
+                                    
+                                    
+                                    //UP UP UP UP UP UP UP UP UP  - 2
+                                }else if(randomMove === 2){
+                                    AI_up()
+                                    //top edge
+                                    if(upORdown < 2){
+                                        enemy.style.top = `2px`
+                                        
+                                        if(randomMove === 2){
+                                            randomMove = Math.floor(Math.random() * 4)
+                                        }
+                                    }
+                                    allEnemyPositions.find(element =>{
+                                        if
+                                        (
                         element.node !== enemy.id
                         &&element.top <= enemy.offsetTop + 40
                         &&element.bottom +1 >=enemy.offsetTop
                         &&element.left <= enemy.offsetLeft + 40
                         &&element.right >=enemy.offsetLeft
-                    ){
-                        upORdown +2
-                        randomMove = Math.floor(Math.random() * 4)
-                        AI_down()    }
-                    })
-            
-                    if(
-                        (enemy.offsetTop + 41 >= tank2Position.top 
-                            && enemy.offsetLeft <= tank2Position.right 
-                            && enemy.offsetLeft + 41>= tank2Position.left 
-                            && enemy.offsetTop <= tank2Position.bottom) 
-                            ||
-                            (enemy.offsetTop + 41 >= tank1Position.top 
-                            && enemy.offsetLeft <= tank1Position.right 
-                            && enemy.offsetLeft + 41>= tank1Position.left 
-                            && enemy.offsetTop <= tank1Position.bottom)
-                            ){
+                        ){
                             upORdown +2
                             randomMove = Math.floor(Math.random() * 4)
-                            AI_down()    
-                        }
-                                          
-
-            
-            //LEFT LEFT LEFT LEFT LEFT LEFT - 1
-             }else if(randomMove === 1){
-                AI_left()
+                            AI_down()    }
+                        })
+                        
+                        if(
+                            (enemy.offsetTop + 41 >= tank2Position.top 
+                                && enemy.offsetLeft <= tank2Position.right 
+                                && enemy.offsetLeft + 41>= tank2Position.left 
+                                && enemy.offsetTop <= tank2Position.bottom) 
+                                ||
+                                (enemy.offsetTop + 41 >= tank1Position.top 
+                                    && enemy.offsetLeft <= tank1Position.right 
+                                    && enemy.offsetLeft + 41>= tank1Position.left 
+                                    && enemy.offsetTop <= tank1Position.bottom)
+                                    ){
+                                        upORdown +2
+                                        randomMove = Math.floor(Math.random() * 4)
+                                        AI_down()    
+                                    }
+                                    
+                                    
+                                    
+                                    //LEFT LEFT LEFT LEFT LEFT LEFT - 1
+                                }else if(randomMove === 1){
+                                    AI_left()
                 //left edge
                 if(leftORright < 2){
                     enemy.style.left = `2px`
@@ -2061,9 +2064,9 @@ class Enemy{
                     if(randomMove === 1){
                         randomMove = Math.floor(Math.random() * 4)
                     }
-                                   
-                 }
-                 allEnemyPositions.find(element =>{
+                    
+                }
+                allEnemyPositions.find(element =>{
                     if
                     (
                         element.node !== enemy.id
@@ -2071,38 +2074,38 @@ class Enemy{
                         &&element.bottom >=enemy.offsetTop
                         &&element.left <= enemy.offsetLeft + 40
                         &&element.right + 1>=enemy.offsetLeft
-                    ){
-                        leftORright+2
-                        randomMove = Math.floor(Math.random() * 4)
-                        AI_right()   }
-                    })
-                    if(
-                        (enemy.offsetTop + 41 >= tank2Position.top 
-                            && enemy.offsetLeft <= tank2Position.right 
-                            && enemy.offsetLeft + 41>= tank2Position.left 
-                            && enemy.offsetTop <= tank2Position.bottom) 
-                            ||
-                            (enemy.offsetTop + 41 >= tank1Position.top 
-                            && enemy.offsetLeft <= tank1Position.right 
-                            && enemy.offsetLeft + 41>= tank1Position.left 
-                            && enemy.offsetTop <= tank1Position.bottom)
-                            ){
+                        ){
                             leftORright+2
                             randomMove = Math.floor(Math.random() * 4)
-                            AI_right()    
-                        }
-                        
-            //RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT - 0
-            }else if(randomMove === 0){
-                AI_right()
-
-                //right edge
-                if(leftORright > mapWidth - 2){
-                    enemy.style.left = `${mapWidth -2}px`
-                    
-                    //if it is trying to go over the egde, draw random number again
-                    //to force changing direction
-                    if(randomMove === 0){
+                            AI_right()   }
+                        })
+                        if(
+                            (enemy.offsetTop + 41 >= tank2Position.top 
+                                && enemy.offsetLeft <= tank2Position.right 
+                                && enemy.offsetLeft + 41>= tank2Position.left 
+                                && enemy.offsetTop <= tank2Position.bottom) 
+                                ||
+                                (enemy.offsetTop + 41 >= tank1Position.top 
+                                    && enemy.offsetLeft <= tank1Position.right 
+                                    && enemy.offsetLeft + 41>= tank1Position.left 
+                                    && enemy.offsetTop <= tank1Position.bottom)
+                                    ){
+                                        leftORright+2
+                                        randomMove = Math.floor(Math.random() * 4)
+                                        AI_right()    
+                                    }
+                                    
+                                    //RIGHT RIGHT RIGHT RIGHT RIGHT RIGHT - 0
+                                }else if(randomMove === 0){
+                                    AI_right()
+                                    
+                                    //right edge
+                                    if(leftORright > mapWidth - 2){
+                                        enemy.style.left = `${mapWidth -2}px`
+                                        
+                                        //if it is trying to go over the egde, draw random number again
+                                        //to force changing direction
+                                        if(randomMove === 0){
                         randomMove = Math.floor(Math.random() * 4)
                     }
                 }
@@ -2114,100 +2117,101 @@ class Enemy{
                         &&element.bottom >=enemy.offsetTop
                         &&element.left -1 <= enemy.offsetLeft + 40
                         &&element.right >=enemy.offsetLeft
-                    ){
-                        leftORright-2
-                        randomMove = Math.floor(Math.random() * 4)
-                        AI_left()    }
-                    })
-                    if(
-                        (enemy.offsetTop + 41 >= tank2Position.top 
-                        && enemy.offsetLeft <= tank2Position.right 
-                        && enemy.offsetLeft + 41>= tank2Position.left 
-                        && enemy.offsetTop <= tank2Position.bottom) 
-                        ||
-                        (enemy.offsetTop + 41 >= tank1Position.top 
-                        && enemy.offsetLeft <= tank1Position.right 
-                        && enemy.offsetLeft + 41>= tank1Position.left 
-                        && enemy.offsetTop <= tank1Position.bottom)
                         ){
                             leftORright-2
                             randomMove = Math.floor(Math.random() * 4)
-                            AI_left()    
+                            AI_left()    }
+                        })
+                        if(
+                            (enemy.offsetTop + 41 >= tank2Position.top 
+                                && enemy.offsetLeft <= tank2Position.right 
+                                && enemy.offsetLeft + 41>= tank2Position.left 
+                                && enemy.offsetTop <= tank2Position.bottom) 
+                                ||
+                                (enemy.offsetTop + 41 >= tank1Position.top 
+                                    && enemy.offsetLeft <= tank1Position.right 
+                                    && enemy.offsetLeft + 41>= tank1Position.left 
+                                    && enemy.offsetTop <= tank1Position.bottom)
+                                    ){
+                                        leftORright-2
+                                        randomMove = Math.floor(Math.random() * 4)
+                                        AI_left()    
+                                    }
+                                    
+                                }
+                                
+                                
+                            },30)      
+                            //*end of interval++++++++++++++++++++++++++
+                            
+
+                            //vertical movement functions====================
+                            function AI_down(){//go down
+                                enemyFacing = 'down'
+                                upORdown += 1            
+                                enemy.style.top = `${upORdown}px`
+                                enemy.style.transform = `rotateZ(90deg)`
+                                
+                            }        
+                            function AI_up() {//go up
+                                enemyFacing = 'up'
+                                upORdown -= 1            
+                                enemy.style.top = `${upORdown}px`
+                                enemy.style.transform = `rotateZ(270deg)`
+                                
+                            }             
+                            
+                            //horizontal movement functions====================
+                            function AI_left(){//go left
+                                enemyFacing = 'left'
+                                leftORright -= 1            
+                                enemy.style.left = `${leftORright}px`
+                                enemy.style.transform = `rotateZ(180deg)`
+                                
+                            }
+                            function AI_right(){//go right
+                                enemyFacing = 'right'
+                                leftORright += 1            
+                                enemy.style.left = `${leftORright}px`
+                                enemy.style.transform = `rotateZ(0deg)`
+                                
+                            }
                         }
-                    
-            }
                         
-           
-        },30)      
-        //*end of interval++++++++++++++++++++++++++
-
-
-        //vertical movement functions====================
-        function AI_down(){//go down
-            enemyFacing = 'down'
-            upORdown += 1            
-            enemy.style.top = `${upORdown}px`
-            enemy.style.transform = `rotateZ(90deg)`
-            
-        }        
-        function AI_up() {//go up
-            enemyFacing = 'up'
-            upORdown -= 1            
-            enemy.style.top = `${upORdown}px`
-            enemy.style.transform = `rotateZ(270deg)`
-            
-        }             
-
-        //horizontal movement functions====================
-        function AI_left(){//go left
-            enemyFacing = 'left'
-            leftORright -= 1            
-            enemy.style.left = `${leftORright}px`
-            enemy.style.transform = `rotateZ(180deg)`
-            
-        }
-        function AI_right(){//go right
-            enemyFacing = 'right'
-            leftORright += 1            
-            enemy.style.left = `${leftORright}px`
-            enemy.style.transform = `rotateZ(0deg)`
-            
-        }
-    }
-
-
-    //method to return array of objects containing borders' positions of all alive enemies
-    static getAllEnemies = function(){
-        return  [...document.querySelectorAll('.enemy-tank')].map(element => {
-            return {
-                top: element.offsetTop,
-                bottom: element.offsetTop + 40,
-                left: element.offsetLeft,
-                right: element.offsetLeft + 40,
-                node: element.id,
-                DOMnode: element
-            }
-
-            
-        })
-        
-        
-    }   
-    
-}
-
-
-
-//initialize game:
-Obstacle.generateNewLevel()
-
-// enemy creator interval
-// Enemy.create()
-
-
- 
-
- 
+                        
+                        //method to return array of objects containing borders' positions of all alive enemies
+                        static getAllEnemies = function(){
+                            return  [...document.querySelectorAll('.enemy-tank')].map(element => {
+                                return {
+                                    top: element.offsetTop,
+                                    bottom: element.offsetTop + 40,
+                                    left: element.offsetLeft,
+                                    right: element.offsetLeft + 40,
+                                    node: element.id,
+                                    DOMnode: element
+                                }
+                                
+                                
+                            })
+                            
+                            
+                        }   
+                        
+                    }
+                    enemyGen.addEventListener('click', Enemy.create)
+                    
+                    
+                    
+                    //initialize game:
+                    Obstacle.generateNewLevel()
+                    
+                    // enemy creator interval
+                    // Enemy.create()
+                    
+                    
+                    
+                    
+                    
 
 
 
@@ -2272,5 +2276,4 @@ const getRandomNumberBetween = (min, max) => {
 
 
 
-  //misc
-  const enemyGen = document.querySelector('.enemy-generator').addEventListener('click', Enemy.create)
+  //misc - button for testing enemies spwan
