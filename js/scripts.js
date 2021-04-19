@@ -1,18 +1,22 @@
 //hide scrollbars
 document.body.style.overflow = 'hidden'
+//explosion sound
 const boom = document.getElementById('explo')
-let allTankObstaclePositions
-let allMissleObstaclePositions 
 
 //=======================================================================
 //===================MAIN VARIABLES, CREATING PLAYERS====================
 //=======================================================================
-//define game area
 const map = document.querySelector('.map')
 const player1Life = document.querySelector('.player-one-lifebar')
+player1Life.style.width = '100%'
 const player2Life = document.querySelector('.player-two-lifebar')
-const player1Killed = document.querySelector('.player-one-enemies-destroyed')
-const player2Killed = document.querySelector('.player-two-enemies-destroyed')
+player2Life.style.width = '100%'
+const player1KilledDisplay = document.querySelector('.player-one-enemies-destroyed')
+let player1frags = 0
+const player2KilledDisplay = document.querySelector('.player-two-enemies-destroyed')
+let player2frags = 0
+
+//define game area
 //map size
 let mapHeight = 580
 let mapWidth = 580
@@ -23,6 +27,8 @@ let tank2Position = {}
 let missle1Position = {}
 let missle2Position = {}
 
+let allTankObstaclePositions
+let allMissleObstaclePositions 
 //movement of player tanks - key values:
 //player one
 let up = false
@@ -283,7 +289,19 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                 
                                 
                                 missle.remove()
-                                which.style.opacity = `${((((which.style.opacity * 10) - 1) / 10))}`
+                                setFire(which)
+                                if(which === tank){
+                                    player1Life.style.width = `${parseInt(player1Life.style.width.slice(0, length - 1)) - 10}%`
+                                }
+                                if(which === tank2){
+                                    
+                                    player2Life.style.width = `${parseInt(player2Life.style.width.slice(0, length - 1)) - 10}%`
+                                }
+                                
+                                if(parseInt(player1Life.style.width.slice(0, length - 1)) <= 0){
+                                    console.log('GAMEOVER');
+                                }
+                                // which.style.opacity = `${((((which.style.opacity * 10) - 1) / 10))}`
                                 // missle = null
                                 
                         }   
@@ -1749,7 +1767,7 @@ class Enemy{
        
         //main positioning variables: vertical and horizontal
         let upORdown = 0
-        let leftORright = 0
+        let leftORright = 580
 
         //current movement direction of enemy tank
         let enemyFacing = 'right'
