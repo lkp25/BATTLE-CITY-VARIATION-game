@@ -1,3 +1,10 @@
+//level background array
+const levelBackground = [
+    'url(./images/cosmos.png) center/cover',
+    'url(./images/matrix.png) center/cover',
+    'url(./images/lava.png) center/cover',
+ 'url(./images/desert.png) center/cover']
+let currentLevel = -1
 //hide scrollbars
 document.body.style.overflow = 'hidden'
 //explosion sound
@@ -110,6 +117,8 @@ class Timer{
                //throw out old map
                 map.style.transform = `rotateX(180deg) scaleX(0) skewX(20deg)`
                 
+                currentLevel++
+                map.style.background = `${levelBackground[currentLevel]}`
                 //REFRESH THE OBSTACLES - GENERATE NEW LEVEL
                 Obstacle.generateNewLevel()
                 endLevel = true
@@ -1735,13 +1744,13 @@ class Enemy{
     static create = function(){
         
         //check if max number of enemies was not exceeded and don't execute if true
-        if(Enemy.number >= 12){
+        if(Enemy.number >= 11){
             
             return
         }   
         
         Enemy.getAllEnemies().forEach((element) =>{
-            if(element.top <= 40 && element.left <= 40){
+            if(element.top <= 42 && element.left <= 42){
                 spawnStatus = 'occupied'
             }else{
                 spawnStatus = 'free'
@@ -1803,8 +1812,8 @@ class Enemy{
             static move = function(enemy){
                 
                 //main positioning variables: vertical and horizontal
-                let upORdown = 0
-                let leftORright = 0
+                let upORdown = 1
+                let leftORright = 1
                 
                 //current movement direction of enemy tank
                 let enemyFacing = 'right'
@@ -1815,46 +1824,18 @@ class Enemy{
                 //main movement randomization interval options -
         
                 
-                let randomMove = 0
+                let randomMove = 1
                 
-                //option 1: hyperrandom
-                //every iteration calls buuu function which after hyperRandom time
-                //returns sets randomMove to left/right/up/down.
-                // let hyperRandom
-                // setInterval(() => {
-                    //     hyperRandom = Math.floor(Math.random() * 3000)    
-                    
-                    //     buuu()   
-                    // }, 5000);
-                    // function buuu(){return setTimeout(() => {
-                        //     randomMove = Math.floor(Math.random() * 4)            
-                        // }, hyperRandom)}     
+                 
                         
                         
-                        // option 2: player pursuit
-                        // setInterval(() => {
-                            //     if(tank1Position.top > enemy.offsetTop){
-                                //         randomMove = 3
-                                //         setTimeout(() => {
-                                    //             if(tank1Position.left > enemy.offsetLeft){
-                                        //                 randomMove = 0
-                                        //             }else{
-                                            //                 randomMove = 1
-                                            
-                                            //             }
-                                            //         },250);
-                                            
-                                            //     }else{
-                                                //         randomMove = 2
-                                                
-                                                //     }
-                                                // }, 1500);
-                                                
+                        
                                                 // option 3: simplest random with set interval
                                                 // OLD, simple, more predictable
                                                 // randomMove - parameter used to change direction randomly ALLWAYS after specified time
                                                 
                                                 //name the interval so it can be removed if this enemy gets shot by player!!!
+                                                
                                                 const randomMovementGenerator = setInterval(() => {
                                                     if(enemy.style.display === 'none' || endLevel){
                                                         
@@ -1893,7 +1874,7 @@ class Enemy{
             let enemyTop = enemy.offsetTop
             
             
-            obstacleDetection = allTankObstaclePositions.find( element =>{
+            obstacleDetection = allTankObstaclePositions.find((element, index) =>{
                 if
                 (
                     
@@ -1903,10 +1884,17 @@ class Enemy{
                     &&element.right >=enemyLeft
                     ){
                         //and change direction for further movement
+                        
+                        //PSEUDO - INTELLIGENT OBSTACLE DESTROY FUNCTION!!
+                        if(element.node.classList.contains('brick')){
+
+                            element.node.remove()
+                            allTankObstaclePositions.splice(index,1)
+                        }
                         return element
                         
                     }
-                })//ONLY first item is needed, 
+            })//ONLY first item is needed, 
                 //rest must be discarded not to interfere with changing movement direction.
                 
                 enemyLeft = null
@@ -2077,7 +2065,8 @@ class Enemy{
                         ){
                             leftORright+2
                             randomMove = Math.floor(Math.random() * 4)
-                            AI_right()   }
+                            AI_right() 
+                            createMissle(enemy, 'enemy', allEnemyPositions)  }
                         })
                         if(
                             (enemy.offsetTop + 41 >= tank2Position.top 

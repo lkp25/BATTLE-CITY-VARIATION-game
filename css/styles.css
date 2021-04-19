@@ -19,6 +19,7 @@ body{
     width: 620px;
     height: 620px;
     background: rgb(3, 0, 3);
+    /* background: url(../images/desert.png) center/cover; */
     position: relative;
     transition: 0.5s linear;
     transform-origin: top left;
