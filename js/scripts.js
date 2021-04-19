@@ -18,6 +18,9 @@ let player1frags = 0
 const player2KilledDisplay = document.querySelector('.player-two-enemies-destroyed')
 let player2frags = 0
 
+//enemy spawn status
+let spawnStatus
+
 //define game area
 //map size
 let mapHeight = 580
@@ -106,18 +109,23 @@ class Timer{
                 map.style.transform = `rotateX(180deg) scaleX(0) skewX(20deg)`
                 
                 //REFRESH THE OBSTACLES - GENERATE NEW LEVEL
-                // Obstacle.generateNewLevel()
-                
-                
-                
-            
-                
-                
+                Obstacle.generateNewLevel()
+                endLevel = true
+                Enemy.getAllEnemies().forEach(element =>{
+                    element.DOMnode.remove()
+                })
+                tank.style.left = '582px'
+                tank2.style.left = '582px'
+                Enemy.number = 0
+                spawnStatus = 'occupied'
                 //present the new map
+                
                 setTimeout(() => {
                     map.style.transform = 'rotateX(0deg) scaleX(1) skewX(0deg)'
-                    
-                }, 700);
+                    endLevel = false
+                    spawnStatus = 'free'
+                    Enemy.create()
+                }, 1000);
                
             }
         },1000)
@@ -310,7 +318,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                 if(parseInt(player1Life.style.width.slice(0, length - 1)) <= 0){
                                     console.log('GAMEOVER player 1');
                                     explode(enemy = null, tank1Position)
-                                    tank.style.left = '90000px'
+                                    tank.style.display = 'none'
                                 }
                             }
                             if(which === tank2){                                    
@@ -318,7 +326,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                 if(parseInt(player2Life.style.width.slice(0, length - 1)) <= 0){
                                     console.log('GAMEOVER player 2');
                                     explode(enemy = null, tank2Position)
-                                    tank2.style.left = '90000px'
+                                    tank2.style.display = 'none'
 
                                 }
                             }
@@ -338,7 +346,9 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
     function createMissle(whoIsShooting, which){
        
 
-       
+       if(endLevel){
+           return
+       }
         //CHECK WHO WAS SHOOTING:
             //ENEMY was shooting
             if(which === 'enemy'){
@@ -1726,7 +1736,7 @@ class Enemy{
             
             return
         }   
-        let spawnStatus
+        
         Enemy.getAllEnemies().forEach((element) =>{
             if(element.top <= 40 && element.left <= 40){
                 spawnStatus = 'occupied'
@@ -1745,9 +1755,8 @@ class Enemy{
                 
                 //add CSS styles
                 enemy.classList.add('enemy-tank')
-                //add initial position
-                // enemy.style.position = 'absolute'
-                enemy.style.left = '580px'
+               
+                
                 //add ID in case it is needed
                 enemy.setAttribute('id', `enemy${Enemy.number}`) 
                 //append it to map
@@ -1760,6 +1769,7 @@ class Enemy{
         
         //initialize shooting interval
         Enemy.shootMissle(enemy)
+        
     }
 
 
@@ -1791,7 +1801,7 @@ class Enemy{
        
         //main positioning variables: vertical and horizontal
         let upORdown = 0
-        let leftORright = 580
+        let leftORright = 0
 
         //current movement direction of enemy tank
         let enemyFacing = 'right'
@@ -2192,7 +2202,7 @@ class Enemy{
 Obstacle.generateNewLevel()
 
 // enemy creator interval
-Enemy.create()
+// Enemy.create()
 
 
  
