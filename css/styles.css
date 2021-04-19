@@ -289,5 +289,8 @@ aside{
     transition: 500ms ease-out;
     
 }
+.player-two-enemies-destroyed, .player-one-enemies-destroyed{
+    font-size: 2rem;
+}
 
 

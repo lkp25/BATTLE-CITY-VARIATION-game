@@ -3,6 +3,8 @@ document.body.style.overflow = 'hidden'
 //explosion sound
 const boom = document.getElementById('explo')
 
+//main level changing variable
+let endLevel = false
 //=======================================================================
 //===================MAIN VARIABLES, CREATING PLAYERS====================
 //=======================================================================
@@ -190,15 +192,21 @@ class Timer{
 
 // enemy explosion animation
 
-    function explode(enemy){
+    function explode(enemy, player){
         let explosion = document.createElement('div')
         map.appendChild(explosion)
-        explosion.style.left = `${enemy.left + 10}px`
-        explosion.style.top = `${enemy.top + 10}px`
+        if(player){
+            explosion.style.left = `${player.left + 10}px`
+            explosion.style.top = `${player.top + 10}px`
+        }
+        if(enemy){
+            explosion.style.left = `${enemy.left + 10}px`
+            explosion.style.top = `${enemy.top + 10}px`
+            Enemy.number --
+        }
         boom.play()
         explosion.classList.add('explo')
 
-        Enemy.number --
         setTimeout(() => {
             
             explosion.remove()
@@ -220,7 +228,7 @@ class Timer{
                 //function used to check if player missle hit any enemy
                 //for both player one and two!
 
-                function checkIfEnemyWasHit(missle, allEnemyPositions){
+                function checkIfEnemyWasHit(missle, allEnemyPositions, fragOf){
 
                     allEnemyPositions.find((enemy)=>{
                       
@@ -236,14 +244,21 @@ class Timer{
                             //remove the obstacle and the missle if true
                             explode(enemy)
                             enemy.DOMnode.style.display = 'none'
-                            
-                         
-                           
-                                
-                            
                             enemy.DOMnode.remove()
                             missle.remove()
                             // missle = null
+
+                            //add frag to kill- counter of respective player
+                            if(fragOf === 'player1'){
+                                player1frags += 1
+                                player1KilledDisplay.innerText = player1frags
+                                return
+                            }
+                            if(fragOf === 'player2'){
+                                player2frags += 1
+                                player2KilledDisplay.innerText = player2frags
+                                return
+                            }
                             return
                         } 
                     })
@@ -286,21 +301,30 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                             && (missleLeft) <= position.left + 40
                             && (missleLeft + 6) >= position.left
                         ){
+                            missle.remove()
+                            setFire(which)
                                 
-                                
-                                missle.remove()
-                                setFire(which)
-                                if(which === tank){
-                                    player1Life.style.width = `${parseInt(player1Life.style.width.slice(0, length - 1)) - 10}%`
-                                }
-                                if(which === tank2){
-                                    
-                                    player2Life.style.width = `${parseInt(player2Life.style.width.slice(0, length - 1)) - 10}%`
-                                }
+                            if(which === tank){
+                                player1Life.style.width = `${parseInt(player1Life.style.width.slice(0, length - 1)) - 10}%`
                                 
                                 if(parseInt(player1Life.style.width.slice(0, length - 1)) <= 0){
-                                    console.log('GAMEOVER');
+                                    console.log('GAMEOVER player 1');
+                                    explode(enemy = null, tank1Position)
+                                    tank.style.left = '90000px'
                                 }
+                            }
+                            if(which === tank2){                                    
+                                player2Life.style.width = `${parseInt(player2Life.style.width.slice(0, length - 1)) - 10}%`
+                                if(parseInt(player2Life.style.width.slice(0, length - 1)) <= 0){
+                                    console.log('GAMEOVER player 2');
+                                    explode(enemy = null, tank2Position)
+                                    tank2.style.left = '90000px'
+
+                                }
+                            }
+
+                                
+                                
                                 // which.style.opacity = `${((((which.style.opacity * 10) - 1) / 10))}`
                                 // missle = null
                                 
@@ -322,7 +346,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                 //resolve the issue with enemy being able to shot for the last time after it was destroyed-
                 //before the interval stopped create misle function was being called. now there is
                 //a condition to break out of the function and not generate the last 'ghost missle'
-                if(whoIsShooting.display === 'none'){
+                if(whoIsShooting.display === 'none' || endLevel){
                     return
                 }
                 
@@ -640,7 +664,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
 
 
                         //check if any enemy was hit
-                        checkIfEnemyWasHit(missle ,allEnemyPositions)
+                        checkIfEnemyWasHit(missle ,allEnemyPositions, 'player1')
 
                         
 
@@ -654,7 +678,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                         }
                         missleTop = null
                         missleLeft = null
-                }, 20)
+                }, 30)
             }
             
             
@@ -670,7 +694,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                     checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
                          
                     //check if any enemy was hit
-                    checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    checkIfEnemyWasHit(missle ,allEnemyPositions, 'player1')
                 
                     if(trajectorY > mapHeight + 100 ){
                         missle.remove()
@@ -679,7 +703,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                     }
                     missleTop = null
                         missleLeft = null
-            }, 20)}
+            }, 30)}
 
 
             if(facing === 'left'){
@@ -697,7 +721,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                       
                 
                         //check if any enemy was hit
-                    checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    checkIfEnemyWasHit(missle ,allEnemyPositions, 'player1')
                 
                     if(trajectorX < -10){
                         missle.remove()
@@ -706,7 +730,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                     }
                     missleTop = null
                     missleLeft = null
-            }, 20)}
+            }, 30)}
 
 
             if(facing === 'right'){
@@ -721,7 +745,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                       
                 
                     //check if any enemy was hit
-                    checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    checkIfEnemyWasHit(missle ,allEnemyPositions, 'player1')
                 
                     if(trajectorX >= mapWidth + 100 ){
                         missle.remove()
@@ -730,7 +754,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                     }
                     missleTop = null
                     missleLeft = null
-            }, 20)}
+            }, 30)}
         }
 
 
@@ -770,7 +794,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                     checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
                      
                     //check if any enemy was hit
-                    checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    checkIfEnemyWasHit(missle ,allEnemyPositions, 'player2')
                     
                         if(trajectorY < -10){
                             missle.remove()
@@ -779,7 +803,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                         }
                         missleTop = null
                         missleLeft = null
-                }, 20)
+                }, 30)
             }
             
             if(facing2 === 'down'){
@@ -798,7 +822,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                        
                 
                           //check if any enemy was hit
-                          checkIfEnemyWasHit(missle ,allEnemyPositions)
+                          checkIfEnemyWasHit(missle ,allEnemyPositions, 'player2')
                 
                     if(trajectorY > mapHeight +100){
                         missle.remove()
@@ -807,7 +831,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                     }
                     missleTop = null
                     missleLeft = null
-            }, 20)
+            }, 30)
         }
 
         if(facing2 === 'left'){
@@ -823,7 +847,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                         
                     checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater)
                     
-                    checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    checkIfEnemyWasHit(missle ,allEnemyPositions, 'player2')
                     
                     if(trajectorX < -10 ){
                         missle.remove()
@@ -833,7 +857,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                     missleTop = null
                     missleLeft = null
 
-                }, 20)
+                }, 30)
             }
 
             if(facing2 === 'right'){
@@ -851,7 +875,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                         
                     
                     //check if any enemy was hit
-                    checkIfEnemyWasHit(missle ,allEnemyPositions)
+                    checkIfEnemyWasHit(missle ,allEnemyPositions, 'player2')
 
                         if(trajectorX >= mapWidth + 100){
                             missle.remove()
@@ -860,7 +884,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                         }
                         missleTop = null
                         missleLeft = null
-                }, 20)
+                }, 30)
             }
         }
         
@@ -1749,7 +1773,7 @@ class Enemy{
 
         const shootingInterval = setInterval(() => {
             //don't create a ghost-missle if enemy was just destroyed!
-            if(whoIsShooting.style.display === 'none'){
+            if(whoIsShooting.style.display === 'none' || endLevel){
                 
                 clearInterval(shootingInterval)
             }else{
@@ -1819,7 +1843,7 @@ class Enemy{
         
         //name the interval so it can be removed if this enemy gets shot by player!!!
         const randomMovementGenerator = setInterval(() => {
-            if(enemy.style.display === 'none'){
+            if(enemy.style.display === 'none' || endLevel){
                 
                 clearInterval(randomMovementGenerator)
             }
@@ -1842,9 +1866,15 @@ class Enemy{
             //of a single brick.
             //3 - all colliding bricks are pushed to newArr, but only FIRST ONE will be set
             //as value for obstacleDetection. rest is ignored.
-            if(enemy.style.display === 'none'){
-                
+            
+            //CLEAR INTERVAL IF enemy is dead or level is changing
+            if(endLevel){
                 clearInterval(enemyMovementInterval)
+                return
+            }
+            if(enemy.style.display === 'none'){
+                clearInterval(enemyMovementInterval)
+                return
             }
             let enemyLeft = enemy.offsetLeft
             let enemyTop = enemy.offsetTop
