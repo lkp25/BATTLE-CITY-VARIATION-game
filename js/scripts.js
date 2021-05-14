@@ -123,11 +123,19 @@ class Timer{
             
 
             //Generate new enemy every 1 second (unless spawn is occupied)
-            //performs click event on a hidden button previously used for testing
+            //performs click event on a hidden button previously used for testing.
             if(!gameOver){
-
                 enemyGen.click()
+                
             }
+
+            //logic for ending the game if both players are dead
+            if(player1dead && player2dead){
+                gameOver = true
+                endTheGame()
+            }
+            
+            
         },1000)
     
 }
@@ -229,38 +237,6 @@ setInterval(() => {
 
 
 
-
-
-
-
-
-
-
-
-// enemy explosion animation
-
-    function explode(enemy, player){
-        let explosion = document.createElement('div')
-        map.appendChild(explosion)
-        if(player){
-            explosion.style.left = `${player.left + 10}px`
-            explosion.style.top = `${player.top + 10}px`
-        }
-        if(enemy){
-            explosion.style.left = `${enemy.left + 10}px`
-            explosion.style.top = `${enemy.top + 10}px`
-            Enemy.number --
-        }
-        boom.play()
-        explosion.classList.add('explo')
-
-        setTimeout(() => {
-            
-            explosion.remove()
-            explosion = null
-        }, 1000);
-
-    }
 
 
 
@@ -1532,8 +1508,9 @@ document.addEventListener('keyup', ((e) =>{
 
 
 //=======================================================================================
-//===================================MAIN EXECUTOR=======================================
+//===================================MOVEMENT EXECUTOR===================================
 //=======================================================================================
+
 //pass current player1 and player2 tanks position to movement function (for alive players)
 setInterval(()=>{
     if(!player1dead){
@@ -1545,7 +1522,6 @@ setInterval(()=>{
         }
         movement()
     }
-
     
     if(!player2dead){
         tank2Position = {
@@ -1557,17 +1533,14 @@ setInterval(()=>{
         movement2()
     }
     
-   
     
-    
-
+    //run bonus utility function - 
     // highlightClosestObstacles()
 },20)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-setInterval(() => {
-    
+//Separate interval for collecting all enemy tanks' positions
+setInterval(() => {    
     allEnemyPositions = Enemy.getAllEnemies()
 }, 30);
 
@@ -1590,7 +1563,7 @@ setInterval(() => {
 
 
 //=======================================================================================
-//======================THE MAIN OBSTACLE CONSTRUCTOR - =======================
+//======================THE MAIN OBSTACLE CONSTRUCTOR - =================================
 //=======================================================================================
 let numberOfObstacles = 500
 class Obstacle{
@@ -1685,28 +1658,13 @@ class Obstacle{
         
         
     }   
-    //REMOVE POSSIBLE DUPLICATES!  
-    // static removeDuplicates = this.getAll()        
-    // .reduce((duplicates, element, currentIndex, array)=>{
-        
-    //     duplicates.push([currentIndex, element.left, element.top])
-        
-    //     // for(let i = 0; duplicates.length; i++){
-    //     //     if(duplicates[i][1] === duplicates[i + 1] && duplicates[i][2] === duplicates[i + 2]){
-    //     //         console.log('huj');
-    //     //     }
-    //     // }
-        
-    //     return duplicates
-    // }, [])
-    //for finding closest obstacles - used lower in the
+    
     static closest = function(){
         return  [...document.querySelectorAll('.brick')].map(element => {
             return [
                 element,
                 Math.abs(element.offsetLeft - 9 - tank.offsetLeft) ** 2 + Math.abs(element.offsetTop - 9 - tank.offsetTop) ** 2
-                // (((Math.abs(element.offsetLeft - tank.offsetLeft)) * (Math.abs(element.offsetLeft - tank.offsetLeft)))    
-                // +    ((Math.abs(element.offsetTop - tank.offsetTop)) *  (Math.abs(element.offsetTop - tank.offsetTop))))
+                
 
             ]
             // parseInt(Math.sqrt((Math.abs(element.offsetLeft+11 - tank.offsetLeft+20) *  Math.abs(element.offsetLeft + 11 - tank.offsetLeft +20))    +    (Math.abs(element.offsetTop+11 - tank.offsetTop+20) *  Math.abs(element.offsetTop + 11 - tank.offsetTop +20))))  
@@ -1715,7 +1673,7 @@ class Obstacle{
             return a[1] - b[1]}) //returns array of all obstacles with their distance from player 1
     }
     
-    //generate new random level
+    //generate  random obstacles for new level
     static generateNewLevel = function(){
         //remove all current obstacles
         [...document.querySelectorAll('.obstacle')].forEach(obstacle => obstacle.remove())
@@ -2234,11 +2192,8 @@ class Enemy{
                     
                     
                     
-                    //initialize game:
-                    Obstacle.generateNewLevel()
                     
-                    // enemy creator interval
-                    // Enemy.create()
+                    
                     
                     
                     
@@ -2246,6 +2201,7 @@ class Enemy{
                     
 
 
+// UTILITY FUNCTIONS:
 
 
 
@@ -2325,6 +2281,8 @@ function StartGame(numOfPlayers){
     //let the enemies be born
     gameOver = false
     mainMenu.style.display = 'none'
+    //initialize game obstacles:
+    Obstacle.generateNewLevel()
 }
 
 const mainMenu = document.querySelector('.main-menu')
@@ -2337,3 +2295,23 @@ mainMenu.addEventListener('click', (e) =>{
         StartGame(2)
     }
 })
+
+//gameover logic
+function endTheGame(){
+    //make the map disappear
+    map.classList.add('fade-away')
+    document.getElementById('info-pannel').classList.add('fade-away')
+
+    
+    //remove all dom nodes for the map as well
+    setTimeout(() => {        
+        //pop up the gameover screen
+        document.querySelector('.gameover').classList.add('visible')
+        map.remove()
+    }, 1200);
+    //activate page refresh button
+    document.querySelector('.restart-btn').addEventListener('click', ()=>{
+        // refresh the page
+        location.reload()
+    })
+}

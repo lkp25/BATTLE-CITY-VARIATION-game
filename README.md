@@ -15,10 +15,9 @@ Obstacles in the game work very simple:
 - Rock (grey) - neither tanks nor missles can crush it
 - Bricks (red) - most common obstacle. Prevents  movement of tanks, but missles destroy it easily.
 
+Players can not damage each other(in early development they could). Enemies also can not hurt other enemy tanks. 
+
 New Level is generated automatically every 3 minutes - new obstacles are placed in random positions and the background image changes, all enemies are cleared, players are moved to starting positions but the damage they took so far is inherited in the next level. 
-
-
-
 
 
 CONTROLS:

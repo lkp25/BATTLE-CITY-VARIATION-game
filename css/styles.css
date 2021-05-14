@@ -13,16 +13,13 @@ body{
     justify-content: center;
 }
 
-
+/* GAME MENU */
 .main-menu{
     width: 100vw;
     height: 100vh;
     background-color: orangered;
     position: absolute;
     z-index: 100;
-}
-.hide-main-menu{
-    display: none;
 }
 
 
@@ -42,9 +39,18 @@ body{
     position: relative;
     transition: 0.5s linear;
     transform-origin: top left;
+    opacity: 1;
 }
 .change-level{
     transform:rotateY(180deg);
+}
+.fade-away{
+    animation: fade 1s ease-out forwards; 
+}
+@keyframes fade{
+100%{
+    opacity: 0;
+}
 }
 
 aside{
@@ -64,8 +70,7 @@ aside{
 .tank{
     position: absolute;
     width: 40px;
-    height: 40px;
-    /* background:linear-gradient(0deg, rgba(232,22,48,0.7707457983193278) 0%, rgba(255,201,1,1) 0%, rgba(191,4,4,1) 20%); */
+    height: 40px;    
     background: linear-gradient(180deg, rgba(232,22,48,0.7707457983193278) 0%, rgba(255, 1, 1, 0.747) 0%, rgba(67, 51, 131, 0) 10%), url(../images/player-tank-static.gif) center/cover;
     clip-path: polygon(60% 7%, 40% 7%, 30% 0, 0 0, 0 100%, 30% 100%, 33% 73%, 43% 73%, 45% 100%, 54% 100%, 57% 73%, 67% 73%, 70% 100%, 100% 100%, 100% 0, 70% 0);
     overflow: visible;
@@ -323,7 +328,19 @@ aside{
 /* GAMEOVER STATS */
 .gameover{
     display: none;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    position: absolute;
+    z-index: 100;
+    opacity: 0;
 }
 .visible{
     display: block;
+    animation: fade-in 500ms ease-out forwards;
+}
+@keyframes fade-in{
+    100%{
+        opacity: 1;
+    }
 }
