@@ -28,6 +28,8 @@ let player1frags = 0
 const player2KilledDisplay = document.querySelector('.player-two-enemies-destroyed')
 let player2frags = 0
 
+let player1dead = false
+let player2dead = false
 //enemy spawn status - free/occupied
 let spawnStatus
 //select enemy generating button
@@ -41,11 +43,9 @@ let mapWidth = 580
 let tank1Position = {}
 let tank2Position = {}
 
-let missle1Position = {}
-let missle2Position = {}
 
 let allTankObstaclePositions
-let allMissleObstaclePositions 
+
 //movement of player tanks - key values:
 //player one
 let up = false
@@ -70,7 +70,7 @@ let allEnemyPositions
 const tank = document.createElement('div')
 // .setAttribute('style', "top: 0px; left: 360px")
 map.appendChild(tank)
-tank.setAttribute('style', "top: 360px; left: 578px")
+tank.setAttribute('style', "top: 360px; left: 0px")
 tank.classList.add('tank')
 tank.style.opacity = 1
 
@@ -346,17 +346,17 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                 player1Life.style.width = `${parseInt(player1Life.style.width.slice(0, length - 1)) - 10}%`
                                 
                                 if(parseInt(player1Life.style.width.slice(0, length - 1)) <= 0){
-                                    console.log('GAMEOVER player 1');
+                                    player1dead = true
                                     explode(enemy = null, tank1Position)
-                                    tank.style.display = 'none'
+                                    tank.style.top = '-1000px'
                                 }
                             }
                             if(which === tank2){                                    
                                 player2Life.style.width = `${parseInt(player2Life.style.width.slice(0, length - 1)) - 10}%`
                                 if(parseInt(player2Life.style.width.slice(0, length - 1)) <= 0){
-                                    console.log('GAMEOVER player 2');
+                                    player2dead = true
                                     explode(enemy = null, tank2Position)
-                                    tank2.style.display = 'none'
+                                    tank2.style.top = '-1000px'
 
                                 }
                             }
@@ -484,9 +484,12 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                         })    
                         
                         //check if one of the players was hit
-                        checkIfPlayerWasHit(tank, missle, missleLeft, missleTop, tank1Position)
+                        if(!player1dead){
+                            checkIfPlayerWasHit(tank, missle, missleLeft, missleTop, tank1Position)
+                        }
+                        if(!player2dead){
                         checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop, tank2Position)
-
+                        }
                         //no longer needed - set to null so they can be cleared faster from memory
                         missleTop = null
                         missleLeft = null
@@ -533,8 +536,12 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                             } 
                             //check if one of the players was hit
                         })    
-                        checkIfPlayerWasHit(tank, missle, missleLeft, missleTop, tank1Position)
+                        if(!player1dead){
+                            checkIfPlayerWasHit(tank, missle, missleLeft, missleTop, tank1Position)
+                        }
+                        if(!player2dead){
                         checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop, tank2Position)
+                        }
                         missleTop = null
                         missleLeft = null
                     }, 20);
@@ -576,8 +583,12 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                             } 
                         })
                             //check if one of the players was hit
-                            checkIfPlayerWasHit(tank, missle, missleLeft, missleTop, tank1Position)
+                            if(!player1dead){
+                                checkIfPlayerWasHit(tank, missle, missleLeft, missleTop, tank1Position)
+                            }
+                            if(!player2dead){
                             checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop, tank2Position)
+                            }
                             missleTop = null
                             missleLeft = null
                         
@@ -621,8 +632,12 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                             } 
                         })    
                         //check if one of the players was hit
-                        checkIfPlayerWasHit(tank, missle, missleLeft, missleTop, tank1Position)
+                        if(!player1dead){
+                            checkIfPlayerWasHit(tank, missle, missleLeft, missleTop, tank1Position)
+                        }
+                        if(!player2dead){
                         checkIfPlayerWasHit(tank2, missle, missleLeft, missleTop, tank2Position)
+                        }
                         missleTop = null
                         missleLeft = null
                     }, 20);
@@ -648,7 +663,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
 
 
             //PLAYER 1 WAS SHOOTING=============================================
-            if(which === 1 && fire === true){
+            if(which === 1 && fire === true && player1dead === false){
                 //calculate missle position based on tank position
                 const missle = document.createElement('div')
                 missle.classList.add('missle')
@@ -805,7 +820,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
 
 
         //PLAYER 2 WAS SHOOTING=============================================
-        if(which === 2 && fire2 === true){
+        if(which === 2 && fire2 === true && player2dead === false){
                 //calculate missle position based on tank position
                 const missle = document.createElement('div')
                 missle.classList.add('missle')
@@ -1511,29 +1526,31 @@ document.addEventListener('keyup', ((e) =>{
 //=======================================================================================
 //===================================MAIN EXECUTOR=======================================
 //=======================================================================================
+//pass current player1 and player2 tanks position to movement function (for alive players)
 setInterval(()=>{
-     tank1Position = {
-        top:tank.offsetTop,
-        left: tank.offsetLeft,
-        bottom: tank.offsetTop + 40,
-        right: tank.offsetLeft + 40
+    if(!player1dead){
+        tank1Position = {
+           top:tank.offsetTop,
+           left: tank.offsetLeft,
+           bottom: tank.offsetTop + 40,
+           right: tank.offsetLeft + 40
+        }
+        movement()
     }
-     tank2Position = {
-        top:tank2.offsetTop,
-        left: tank2.offsetLeft,
-        bottom: tank2.offsetTop + 40,
-        right: tank2.offsetLeft + 40
-    }    
+
+    
+    if(!player2dead){
+        tank2Position = {
+            top:tank2.offsetTop,
+            left: tank2.offsetLeft,
+            bottom: tank2.offsetTop + 40,
+            right: tank2.offsetLeft + 40
+        }    
+        movement2()
+    }
     
    
-    //pass current player1 and player2 tanks position to movement function
-    movement()
-    movement2()
     
-    //constantly check position of each obstacle for collision with tanks or missles
-    // allTankObstaclePositions = Obstacle.getAll()
-    
-    //constantly check position of each enemy for collision with tanks or missles or obstacles
     
 
     // highlightClosestObstacles()

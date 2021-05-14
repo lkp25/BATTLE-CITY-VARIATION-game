@@ -1,22 +1,35 @@
 My own variation of  famous video game Battle City by Nintendo (1985)
 
+Has a single player mode and 2 players mode.
 
-New Level is generated automatically every 2 minutes.
+The goal of the game is to destroy as many enemies as possible and survive for as long as possible. 
+Each player can take up to 9 enemy missles - the 10th destroys the tank completely.
+Enemies are much weaker - one missle destroys every enemy tank.
+Players' lifebars on the right pannel indicate seriousness of the damage, as well as animated flames appearing on players' tanks after they are hit.
+
+New Level is generated automatically every 3 minutes - new obstacles are placed in random positions and the background image changes, all enemies are cleared, players are moved to starting positions but the damage they took so far is inherited in the next level. 
+
+
+
+
+
 CONTROLS:
 
-Player 1
+Player 1:
 up - arrow up
 down - arrow down
 left - arrow left
 right - arrow right
 FIRE - 'P' key
 
-Player 2
-up - w
-down - s
-left - a
-right - d
+Player 2:
+up - W
+down - S
+left - A
+right - D
 FIRE - 'Q' key
+
+
 
 
 
@@ -121,15 +134,15 @@ After returning to reduce, problem is gone, but performance is still less than e
 reversed movement function changes - separated again into two functions, it proven to be interfering with another players movement, too complex to maintain in a single function - happened to be more complicated with all if-statements required.
 
 19.04.2021
-fixed all shooting bugs, 
-added more intelligent obstacle destruction mode for enemies, 
-slowed down speed of player missles, 
-added logic for both players' lifebars and destroyed enemies counter,
-added fire animation to player tank after it gets shot,
-improved enemy spawning logic
-created entire logic for generating new level and fully automatic enemy spawn,
-added background images that change with each new level.
-performed thorough test
+- fixed all shooting bugs, 
+- added more intelligent obstacle destruction mode for enemies, 
+- slowed down speed of player missles, 
+- added logic for both players' lifebars and destroyed enemies counter,
+- added fire animation to player tank after it gets shot,
+- improved enemy spawning logic
+- created entire logic for generating new level and fully automatic enemy spawn,
+- added background images that change with each new level.
+- performed thorough testing
 
 THIS IS NOW THE OFFICIAL, fully playable BETA VERSION :)
 
