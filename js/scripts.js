@@ -1,3 +1,4 @@
+let gameOver = true
 //level background array
 const levelBackground = [
     'url(./images/cosmos.png) center/cover',
@@ -70,7 +71,7 @@ let allEnemyPositions
 const tank = document.createElement('div')
 // .setAttribute('style', "top: 0px; left: 360px")
 map.appendChild(tank)
-tank.setAttribute('style', "top: 360px; left: 0px")
+tank.setAttribute('style', "top: 360px; left: 578px")
 tank.classList.add('tank')
 tank.style.opacity = 1
 
@@ -123,10 +124,15 @@ class Timer{
 
             //Generate new enemy every 1 second (unless spawn is occupied)
             //performs click event on a hidden button previously used for testing
-            enemyGen.click()
+            if(!gameOver){
+
+                enemyGen.click()
+            }
         },1000)
     
 }
+
+
 // LEVEL CHANGING INTERVAL
 setInterval(() => {
     //throw out old map
@@ -1786,12 +1792,12 @@ class Enemy{
             return
         }   
         
-        Enemy.getAllEnemies().forEach((element) =>{
-            if(element.top <= 45 && element.left <= 45){
+        Enemy.getAllEnemies().find((element) =>{
+            if(element.top <= 50 && element.left <= 50){
                 spawnStatus = 'occupied'
+                return
             }else{
-                spawnStatus = 'free'
-                
+                spawnStatus = 'free'                
             }
         })
         if(spawnStatus === 'occupied'){
@@ -2281,13 +2287,10 @@ class Enemy{
 
 
 
-//fire!!
-
+//make the player tank burn after it gets hit!
 function setFire(where){
     
-    const fire = document.createElement('div')
-    // getRandomNumberBetween(where.width)
-        
+    const fire = document.createElement('div')        
     
     where.appendChild(fire)
     fire.setAttribute('style', `top: ${getRandomNumberBetween(1, where.getBoundingClientRect().height * 0.5)}px; left:${getRandomNumberBetween(0, where.getBoundingClientRect().width * 0.95)}px`)
@@ -2295,11 +2298,42 @@ function setFire(where){
     
 }
 
-//useful function for getting random numbers between min and max value provided
+//utility function for getting random numbers between min and max value provided
 const getRandomNumberBetween = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
+};
 
 
 
-  //misc - button for testing enemies spwan
+
+
+
+
+//GAME STARTING LOGIC: initialize player one only or both players
+
+function StartGame(numOfPlayers){
+    //logic for single player game - not default. Hide all player 2 props
+    if(numOfPlayers === 1){
+        player2dead = true
+        tank2.style.top = '2000px'
+        document.querySelector('.player-two-stats').style.visibility = 'hidden'
+    }
+    //reset timer
+    Timer.seconds = 0    
+    Timer.minutes = 0
+    Timer.hours = 0
+    //let the enemies be born
+    gameOver = false
+    mainMenu.style.display = 'none'
+}
+
+const mainMenu = document.querySelector('.main-menu')
+
+//make user decide if game is in single player mode or for two players:
+mainMenu.addEventListener('click', (e) =>{
+    if(e.target.id === 'single'){
+        StartGame(1)
+    }else{
+        StartGame(2)
+    }
+})

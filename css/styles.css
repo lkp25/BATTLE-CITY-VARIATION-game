@@ -13,6 +13,25 @@ body{
     justify-content: center;
 }
 
+
+.main-menu{
+    width: 100vw;
+    height: 100vh;
+    background-color: orangered;
+    position: absolute;
+    z-index: 100;
+}
+.hide-main-menu{
+    display: none;
+}
+
+
+
+
+
+
+
+
 /* main game interface */
 .map{
     overflow: hidden;
@@ -295,3 +314,16 @@ aside{
 }
 
 
+
+
+
+
+
+
+/* GAMEOVER STATS */
+.gameover{
+    display: none;
+}
+.visible{
+    display: block;
+}

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>battle city fo real</title>
+  <title>battle city like clone</title>
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
 
@@ -13,15 +13,26 @@
 </head>
 
 <body>
-  <div class="map">
-    <!-- <div class="missle"></div> -->
-    <div class="enemy-spawn"></div>
-    <!-- <div class="fire"></div> -->
-    <!-- <div class="explo"></div> -->
-    
+  <!-- MAIN MENU -->
+  <div class="main-menu">
+    <h1>Battle City Modified</h1>
+    <div class="player-choice">
+      <button id="single">SINGLE PLAYER</button>
+      <button id="shared">TWO PLAYERS</button>
+    </div>
   </div>
+
+  
+<!-- define game area -->
+  <div class="map">    
+    <div class="enemy-spawn"></div>    
+  </div>
+
+
+  <!-- RIGHT INFO PANNEL -->
   <aside>
     <br>
+    <!-- timer -->
     <section class="timer">
       <h1>How long <br>can you hold?</h1>
       <span class="hours">0</span><span>h</span>
@@ -30,6 +41,7 @@
     </section>
     <br><br><br>
     
+    <!-- player one info -->
     <section class="player-one-stats">
       <h2> PLAYER 1</h2>      
       <div class="player-one-lifebar-frame">
@@ -38,9 +50,11 @@
       <h3>Enemies destroyed:</h3>
       <span class="player-one-enemies-destroyed">0</span>
     </section>
-
+    
     
     <br><br><br>
+
+    <!-- player two info -->
     <section class="player-two-stats">
       <h2> PLAYER 2</h2>      
       <div class="player-two-lifebar-frame">
@@ -53,7 +67,19 @@
     <button class="enemy-generator">create new enemy</button>
   </aside>
 
+
+  <!-- AUDIO ELEMENT - explosion sound -->
   <audio id="explo" src="./sounds/damage.wav"></audio>
+
+
+  <!-- GAME OVER LAYOUT -->
+  <div class="gameover">
+    <div class="gameover-stats">
+      <button class="refresh-btn">Back to main menu</button>
+    </div>
+  </div>
+
+
   <script src="js/scripts.js"></script>
 
 </body>

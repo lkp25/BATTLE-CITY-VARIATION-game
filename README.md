@@ -1,11 +1,19 @@
 My own variation of  famous video game Battle City by Nintendo (1985)
+All game graphics and logic are designed by me. 
 
-Has a single player mode and 2 players mode.
+The game has single player mode as well as 2-players mode.
 
+Short description:
 The goal of the game is to destroy as many enemies as possible and survive for as long as possible. 
-Each player can take up to 9 enemy missles - the 10th destroys the tank completely.
+Each player can take up to 9 enemy missles - the 10th destroys player's tank completely.
 Enemies are much weaker - one missle destroys every enemy tank.
-Players' lifebars on the right pannel indicate seriousness of the damage, as well as animated flames appearing on players' tanks after they are hit.
+Players' lifebars on the right info pannel indicate seriousness of the damage, just like animated flames appearing on players' tanks after they are hit do.
+
+Obstacles in the game work very simple:
+- Forest (green) - tanks and missles are free to pass through however they are less visible through the leaves
+- Water (blue) - tanks cannot go into the water, missles fly over it
+- Rock (grey) - neither tanks nor missles can crush it
+- Bricks (red) - most common obstacle. Prevents  movement of tanks, but missles destroy it easily.
 
 New Level is generated automatically every 3 minutes - new obstacles are placed in random positions and the background image changes, all enemies are cleared, players are moved to starting positions but the damage they took so far is inherited in the next level. 
 
@@ -143,6 +151,12 @@ reversed movement function changes - separated again into two functions, it prov
 - created entire logic for generating new level and fully automatic enemy spawn,
 - added background images that change with each new level.
 - performed thorough testing
+
+14.05.2021
+- fixed 'endless explosions' bug when any of the players was destroyed
+- don't show player's statistics on the right pannel if he is dead(for 2 players game mode)
+- Added primitive Main Menu screen with desired functionality: user can choose game mode to be single or for two players by clicking on the corresponding button.
+- added logic for startGame function. If user chose single-player mode, player 2 tank and statistics will not be displayed. Also improved logic for enemies and missles - they ignore checking for collisions with inactive player.
 
 THIS IS NOW THE OFFICIAL, fully playable BETA VERSION :)
 
