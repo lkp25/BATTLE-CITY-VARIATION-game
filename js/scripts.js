@@ -146,11 +146,14 @@ setInterval(() => {
      element.DOMnode.remove()
  })
  //place players in starting positions
- tank.style.left = '582px'
+ if(!player1dead){
+     tank.style.left = '582px'
+     tank.style.top = '500px'
+ }
+ if(!player2dead){
  tank2.style.left = '582px'
  tank2.style.top = '300px'
- tank.style.top = '500px'
- 
+ }
  //reset enemy counter
  Enemy.number = 0
  spawnStatus = 'occupied'
@@ -345,26 +348,25 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                             if(which === tank){
                                 player1Life.style.width = `${parseInt(player1Life.style.width.slice(0, length - 1)) - 10}%`
                                 
+                                //check if the lifebar is empty - player dies logic:
                                 if(parseInt(player1Life.style.width.slice(0, length - 1)) <= 0){
                                     player1dead = true
                                     explode(enemy = null, tank1Position)
+                                    //instead of deleting the DOM node, move it outside of the visible area
                                     tank.style.top = '-1000px'
+                                    document.querySelector('.player-one-stats').style.visibility = 'hidden'
                                 }
                             }
+
                             if(which === tank2){                                    
                                 player2Life.style.width = `${parseInt(player2Life.style.width.slice(0, length - 1)) - 10}%`
                                 if(parseInt(player2Life.style.width.slice(0, length - 1)) <= 0){
                                     player2dead = true
                                     explode(enemy = null, tank2Position)
                                     tank2.style.top = '-1000px'
-
+                                    document.querySelector('.player-two-stats').style.visibility = 'hidden'
                                 }
                             }
-
-                                
-                                
-                                // which.style.opacity = `${((((which.style.opacity * 10) - 1) / 10))}`
-                                // missle = null
                                 
                         }   
                 }
