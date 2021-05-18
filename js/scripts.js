@@ -1768,7 +1768,8 @@ class Enemy{
         
         //add CSS styles
         enemy.classList.add('enemy-tank')
-        
+        enemy.style.top = '0px'
+        enemy.style.left = '0px'
         
         //add ID in case it is needed
         enemy.setAttribute('id', `enemy${Enemy.number}`) 
@@ -2259,7 +2260,30 @@ const getRandomNumberBetween = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+// enemy explosion animation
 
+function explode(enemy, player){
+    let explosion = document.createElement('div')
+    map.appendChild(explosion)
+    if(player){
+        explosion.style.left = `${player.left + 10}px`
+        explosion.style.top = `${player.top + 10}px`
+    }
+    if(enemy){
+        explosion.style.left = `${enemy.left + 10}px`
+        explosion.style.top = `${enemy.top + 10}px`
+        Enemy.number --
+    }
+    boom.play()
+    explosion.classList.add('explo')
+
+    setTimeout(() => {
+        
+        explosion.remove()
+        explosion = null
+    }, 1000);
+
+}
 
 
 
@@ -2308,7 +2332,7 @@ function endTheGame(){
         //pop up the gameover screen
         document.querySelector('.gameover').classList.add('visible')
         map.remove()
-    }, 1200);
+    }, 2500);
     //activate page refresh button
     document.querySelector('.restart-btn').addEventListener('click', ()=>{
         // refresh the page
