@@ -128,10 +128,10 @@ class Timer{
 
             //Generate new enemy every 1 second (unless spawn is occupied)
             //performs click event on a hidden button previously used for testing.
-            if(!gameOver){
-                enemyGen.click()
+            // if(!gameOver){
+            //     enemyGen.click()
                 
-            }
+            // }
 
             //logic for ending the game if both players are dead
             if(player1dead && player2dead){
@@ -1563,6 +1563,18 @@ setInterval(()=>{
 //Separate interval for collecting all enemy tanks' positions
 setInterval(() => {    
     allEnemyPositions = Enemy.getAllEnemies()
+
+    Enemy.getAllEnemies().find((element) =>{
+        if(element.top <= 60 && element.left <= 60){
+            document.querySelector('.enemy-spawn').style.opacity = '0.3'
+            spawnStatus = 'occupied'
+            return
+        }else{
+            spawnStatus = 'free' 
+            Enemy.create()  
+            document.querySelector('.enemy-spawn').style.opacity = '1'             
+        }
+    })
 }, 30);
 
 
@@ -1772,12 +1784,13 @@ class Enemy{
         }   
         
         Enemy.getAllEnemies().find((element) =>{
-            if(element.top <= 60 && element.left <= 60){
-                
+            if(element.top <= 50 && element.left <= 50){
+                document.querySelector('.enemy-spawn').style.opacity = '0.3'
                 spawnStatus = 'occupied'
                 return
             }else{
-                spawnStatus = 'free'                
+                spawnStatus = 'free'   
+                document.querySelector('.enemy-spawn').style.opacity = '1'             
             }
         })
         
@@ -2333,6 +2346,8 @@ function StartGame(numOfPlayers){
     mainMenu.style.display = 'none'
     //initialize game obstacles:
     Obstacle.generateNewLevel()
+    //create first enemy
+    Enemy.create()
 }
 
 const mainMenu = document.querySelector('.main-menu')
