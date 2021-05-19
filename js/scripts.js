@@ -1807,8 +1807,7 @@ class Enemy{
             enemy.style.top = '0px'
             enemy.style.left = '0px'
 
-            //add ID in case it is needed
-            enemy.setAttribute('id', `enemy${Enemy.number}`) 
+            
             //append it to map
             map.appendChild(enemy)
                     //increase current number of enemies
