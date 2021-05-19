@@ -8,19 +8,88 @@
 }
 body{
     background: rgba(0, 0, 0, 0.486);
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto;
     align-items: center;
     justify-content: center;
 }
 
+
 /* GAME MENU */
 .main-menu{
+    margin: 0;
+    position: absolute;
     width: 100vw;
     height: 100vh;
-    background-color: orangered;
+    background-color: rgb(8, 8, 8);
+    color: rgb(253, 253, 253);
     position: absolute;
     z-index: 100;
+    display: grid;
+    gap: 5rem;
+    justify-items: center;
+    grid-template-rows: 1fr 1fr 1fr;
+    overflow: hidden;
 }
+.main-menu .player-choice{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+.main-menu h1{
+    color: transparent;
+    font-size: 7rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+    place-self: center;
+    background: url(../images/bricks2.png);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.main-menu button{
+    align-self: flex-end;
+    width: 400px;
+    place-self: center;
+    margin-bottom: 1rem;
+    padding: 2rem;
+    background: linear-gradient(180deg, rgb(3, 3, 3), rgba(0, 0, 0, 0.294)), url(../images/bricks2.png);
+    color: white;
+    font-size: 2rem;
+    position: relative;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.main-menu button::after{
+    content: "";
+    background: linear-gradient(180deg, rgba(232,22,48,0.7707457983193278) 0%, rgba(255, 1, 1, 0.747) 0%, rgba(67, 51, 131, 0) 10%), url(../images/player-tank-static.gif) center/cover;
+
+    height: 60px;
+    width: 60px;
+    display: block;
+    position: absolute;
+    right: -100px;
+    transform: rotateZ(90deg) translateX(50%);
+    top: 0;
+    clip-path: polygon(60% 7%, 40% 7%, 30% 0, 0 0, 0 100%, 30% 100%, 33% 73%, 43% 73%, 45% 100%, 54% 100%, 57% 73%, 67% 73%, 70% 100%, 100% 100%, 100% 0, 70% 0);
+
+}
+
+.main-menu #shared::before{
+    content: "";
+    background: linear-gradient(180deg, rgba(19, 56, 160, 0.771) 0%, rgba(1, 39, 255, 0.747) 0%, rgba(67, 51, 131, 0) 10%), url(../images/player-tank-static.gif) center/cover;
+
+    height: 60px;
+    width: 60px;
+    display: block;
+    position: absolute;
+    left: -100px;
+    transform: rotateZ(270deg) translateX(-50%);
+    top: 0;
+    clip-path: polygon(60% 7%, 40% 7%, 30% 0, 0 0, 0 100%, 30% 100%, 33% 73%, 43% 73%, 45% 100%, 54% 100%, 57% 73%, 67% 73%, 70% 100%, 100% 100%, 100% 0, 70% 0);
+
+}
+
+
+
 
 
 
@@ -66,6 +135,13 @@ aside{
 
 
 
+
+
+
+
+
+
+
 /* player tanks */
 .tank{
     position: absolute;
@@ -102,6 +178,14 @@ aside{
 }
 
 
+
+
+
+
+
+
+
+
 /* ENEMY TANKS AND SPAWN */
 
 .enemy-spawn{
@@ -127,6 +211,15 @@ aside{
   -webkit-clip-path: polygon(0 0, 43% 2%, 89% 2%, 91% 24%, 79% 24%, 79% 41%, 100% 41%, 100% 59%, 78% 59%, 78% 74%, 92% 74%, 90% 98%, 44% 98%, 0 100%, 0 82%, 4% 65%, 2% 50%, 3% 34%, 0 22%);
   clip-path: polygon(0 0, 43% 2%, 89% 2%, 91% 24%, 79% 24%, 79% 41%, 100% 41%, 100% 59%, 78% 59%, 78% 74%, 92% 74%, 90% 98%, 44% 98%, 0 100%, 0 82%, 4% 65%, 2% 50%, 3% 34%, 0 22%);
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -162,6 +255,17 @@ aside{
     animation: shot 150ms linear forwards;
     clip-path: polygon(50% 100%, 0 0, 100% 0);
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -227,6 +331,15 @@ aside{
 
 
 
+
+
+
+
+
+
+
+
+
 /* DAMAGE ANIMATIONS */
 .fire{
     position: absolute;
@@ -260,6 +373,18 @@ aside{
     100%{opacity: 0;
         transform: scale(10)    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -317,6 +442,8 @@ aside{
 .player-two-enemies-destroyed, .player-one-enemies-destroyed{
     font-size: 2rem;
 }
+
+
 
 
 

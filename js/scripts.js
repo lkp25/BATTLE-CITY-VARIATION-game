@@ -340,8 +340,14 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                     explode(enemy = null, tank1Position)
                                     //instead of deleting the DOM node, move it outside of the visible area
                                     tank.style.top = '-1000px'
+                                    //reset the position
                                     tank1Position = {}
+                                    //make the tank invisible
                                     document.querySelector('.player-one-stats').style.visibility = 'hidden'
+                                    //set gameover statistics
+                                    document.querySelector('#p1lasted').innerText = `Lasted: ${Timer.hours}h ${Timer.minutes}min ${Timer.seconds}s`
+                                    document.querySelector('#p1killed').innerText = `Killed: ${player1frags}`
+
                                 }
                             }
 
@@ -353,6 +359,9 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                     tank2.style.top = '-1000px'
                                     tank2Position = {}
                                     document.querySelector('.player-two-stats').style.visibility = 'hidden'
+
+                                    document.querySelector('#p2lasted').innerText = `Lasted: ${Timer.hours}h ${Timer.minutes}min ${Timer.seconds}s`
+                                    document.querySelector('#p2killed').innerText = `Killed: ${player2frags}`
                                 }
                             }
                                 
@@ -1751,7 +1760,7 @@ class Enemy{
     static create = function(){
         
         //check if max number of enemies was not exceeded and don't execute if true
-        if(Enemy.number >= 11){
+        if(Enemy.number >= 20){
             
             return
         }   
@@ -1765,9 +1774,7 @@ class Enemy{
             }
         })
         if(spawnStatus === 'occupied'){
-            return setTimeout(() => {
-                Enemy.create()
-            }, 1000);
+            return 
         }
         //else create new enemy
         const enemy = document.createElement('div')
@@ -2325,7 +2332,7 @@ const mainMenu = document.querySelector('.main-menu')
 mainMenu.addEventListener('click', (e) =>{
     if(e.target.id === 'single'){
         StartGame(1)
-    }else{
+    }else if((e.target.id === 'shared')){
         StartGame(2)
     }
 })
