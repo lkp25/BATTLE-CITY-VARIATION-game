@@ -336,6 +336,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                     explode(enemy = null, tank1Position)
                                     //instead of deleting the DOM node, move it outside of the visible area
                                     tank.style.top = '-1000px'
+                                    tank1Position = {}
                                     document.querySelector('.player-one-stats').style.visibility = 'hidden'
                                 }
                             }
@@ -346,6 +347,7 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                     player2dead = true
                                     explode(enemy = null, tank2Position)
                                     tank2.style.top = '-1000px'
+                                    tank2Position = {}
                                     document.querySelector('.player-two-stats').style.visibility = 'hidden'
                                 }
                             }
