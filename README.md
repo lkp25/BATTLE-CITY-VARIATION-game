@@ -157,5 +157,11 @@ reversed movement function changes - separated again into two functions, it prov
 - Added primitive Main Menu screen with desired functionality: user can choose game mode to be single or for two players by clicking on the corresponding button.
 - added logic for startGame function. If user chose single-player mode, player 2 tank and statistics will not be displayed. Also improved logic for enemies and missles - they ignore checking for collisions with inactive player.
 
+19.05.2021
+- styled main menu
+- styled gameover screen and added full logic to statistics
+- modified enemy spawn rules - now up to 20 enemies may run on the map simultanously
+- modified obstacle generator ratio - less water and rocks, more bricks 
+
 THIS IS NOW THE OFFICIAL, fully playable BETA VERSION :)
 

@@ -1030,8 +1030,8 @@ document.addEventListener('keydown', ((e) =>{
 //key up - change to FALSE
 document.addEventListener('keyup', ((e) =>{
     //player 1
-    // tank.classList.remove('tank-move')
-    // tank2.classList.remove('tank2-move')
+    
+    
     if(e.key === 'ArrowDown'){
         down = false
     }
@@ -1093,8 +1093,12 @@ document.addEventListener('keyup', ((e) =>{
 
     function movement(){
        if(!left && !right && !up && !down){
-           return
+        //    remove movement animation
+        tank.classList.remove('tank-move')
+        return
        }
+       //add movement animation
+       tank.classList.add('tank-move')
         //dont let player take position of enemy spawn
 
         if(tank1Position.left <= 40 && tank1Position.top <= 40){
@@ -1310,8 +1314,10 @@ document.addEventListener('keyup', ((e) =>{
 
     function movement2(){
         if(!left2 && !right2 && !up2 && !down2){
+            tank2.classList.remove('tank2-move')
             return
         }
+        tank2.classList.add('tank2-move')
         //dont let player take position of enemy spawn
         if(tank2Position.left <= 40 && tank2Position.top <= 40){
             if(facing2 === 'left'){
@@ -1603,10 +1609,10 @@ class Obstacle{
         
         //create new  obstacle
         const obstacle = document.createElement('div')                
-        const randomObstacle = Math.floor(Math.random() * 10)
+        const randomObstacle = Math.floor(Math.random() * 13)
         obstacle.classList.add('obstacle')
 
-        if(randomObstacle === 0){
+        if(randomObstacle === 0 || randomObstacle === 2){
             obstacle.classList.add('forest')
             
 
@@ -1766,16 +1772,19 @@ class Enemy{
         }   
         
         Enemy.getAllEnemies().find((element) =>{
-            if(element.top <= 50 && element.left <= 50){
+            if(element.top <= 60 && element.left <= 60){
+                
                 spawnStatus = 'occupied'
                 return
             }else{
                 spawnStatus = 'free'                
             }
         })
+        
         if(spawnStatus === 'occupied'){
             return 
         }
+        
         //else create new enemy
         const enemy = document.createElement('div')
         
