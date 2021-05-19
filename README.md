@@ -1,6 +1,8 @@
 My own variation of  famous video game Battle City by Nintendo (1985)
 All game graphics and logic are designed by me. 
 
+published and ready to play at https://lkp25.github.io/BATTLE-CITY-VARIATION-game/
+
 The game has single player mode as well as 2-players mode - choice in main menu:
 ![mainmenu](https://user-images.githubusercontent.com/76160924/118810943-b7a71c00-b8ac-11eb-85e5-a6b27d32fbe2.png)
 

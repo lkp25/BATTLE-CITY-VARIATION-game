@@ -1565,7 +1565,7 @@ setInterval(() => {
     allEnemyPositions = Enemy.getAllEnemies()
 
     Enemy.getAllEnemies().find((element) =>{
-        if(element.top <= 52 && element.left <= 52){
+        if(element.top <= 56&& element.left <= 56){
             document.querySelector('.enemy-spawn').style.opacity = '0.3'
             freeSpawn = false
             
@@ -1779,7 +1779,7 @@ class Enemy{
     static create = function(){
         
         //check if max number of enemies was not exceeded and don't execute if true
-        if(Enemy.number >= 20){
+        if(Enemy.number >= 15){
             
             return
         }   
@@ -1807,7 +1807,7 @@ class Enemy{
             enemy.style.top = '0px'
             enemy.style.left = '0px'
 
-            
+            enemy.setAttribute('id', `enemy${Enemy.number * Math.random()}`) 
             //append it to map
             map.appendChild(enemy)
                     //increase current number of enemies
@@ -2015,10 +2015,7 @@ class Enemy{
                         &&element.right >=enemy.offsetLeft
                         
                         ){
-                            if(element.left <= enemy.offsetLeft + 30
-                                &&element.top <= enemy.offsetTop + 30){
-                                    element.DOMnode.style.display = 'none'
-                                }
+                            
                             upORdown -2
                             randomMove = Math.floor(Math.random() * 4)
                             AI_up()    }

@@ -36,7 +36,7 @@ let player2frags = 0
 let player1dead = false
 let player2dead = false
 //enemy spawn status - free/occupied
-let spawnStatus
+let freeSpawn = true
 //select enemy generating button
 const enemyGen = document.querySelector('.enemy-generator')
 enemyGen.style.visibility = 'hidden'
@@ -128,17 +128,17 @@ class Timer{
 
             //Generate new enemy every 1 second (unless spawn is occupied)
             //performs click event on a hidden button previously used for testing.
-            if(!gameOver){
-                enemyGen.click()
+            // if(!gameOver){
+            //     enemyGen.click()
                 
-            }
+            // }
 
             //logic for ending the game if both players are dead
             if(player1dead && player2dead){
                 gameOver = true
                 endTheGame()
             }
-            
+            Enemy.create()
             
         },1000)
     
@@ -174,14 +174,14 @@ setInterval(() => {
  }
  //reset enemy counter
  Enemy.number = 0
- spawnStatus = 'occupied'
+ 
  
  //present the new map                
  setTimeout(() => {
      map.style.transform = 'rotateX(0deg) scaleX(1) skewX(0deg)'
      endLevel = false
-     spawnStatus = 'free'
-     Enemy.create()
+     freeSpawn = true
+     
  }, 1000);
 }, 180000);
 
@@ -340,8 +340,14 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                     explode(enemy = null, tank1Position)
                                     //instead of deleting the DOM node, move it outside of the visible area
                                     tank.style.top = '-1000px'
+                                    //reset the position
                                     tank1Position = {}
+                                    //make the tank invisible
                                     document.querySelector('.player-one-stats').style.visibility = 'hidden'
+                                    //set gameover statistics
+                                    document.querySelector('#p1lasted').innerText = `Lasted: ${Timer.hours}h ${Timer.minutes}min ${Timer.seconds}s`
+                                    document.querySelector('#p1killed').innerText = `Killed: ${player1frags}`
+
                                 }
                             }
 
@@ -353,6 +359,9 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                                     tank2.style.top = '-1000px'
                                     tank2Position = {}
                                     document.querySelector('.player-two-stats').style.visibility = 'hidden'
+
+                                    document.querySelector('#p2lasted').innerText = `Lasted: ${Timer.hours}h ${Timer.minutes}min ${Timer.seconds}s`
+                                    document.querySelector('#p2killed').innerText = `Killed: ${player2frags}`
                                 }
                             }
                                 
@@ -1021,8 +1030,8 @@ document.addEventListener('keydown', ((e) =>{
 //key up - change to FALSE
 document.addEventListener('keyup', ((e) =>{
     //player 1
-    // tank.classList.remove('tank-move')
-    // tank2.classList.remove('tank2-move')
+    
+    
     if(e.key === 'ArrowDown'){
         down = false
     }
@@ -1084,8 +1093,12 @@ document.addEventListener('keyup', ((e) =>{
 
     function movement(){
        if(!left && !right && !up && !down){
-           return
+        //    remove movement animation
+        tank.classList.remove('tank-move')
+        return
        }
+       //add movement animation
+       tank.classList.add('tank-move')
         //dont let player take position of enemy spawn
 
         if(tank1Position.left <= 40 && tank1Position.top <= 40){
@@ -1301,8 +1314,10 @@ document.addEventListener('keyup', ((e) =>{
 
     function movement2(){
         if(!left2 && !right2 && !up2 && !down2){
+            tank2.classList.remove('tank2-move')
             return
         }
+        tank2.classList.add('tank2-move')
         //dont let player take position of enemy spawn
         if(tank2Position.left <= 40 && tank2Position.top <= 40){
             if(facing2 === 'left'){
@@ -1548,6 +1563,19 @@ setInterval(()=>{
 //Separate interval for collecting all enemy tanks' positions
 setInterval(() => {    
     allEnemyPositions = Enemy.getAllEnemies()
+
+    Enemy.getAllEnemies().find((element) =>{
+        if(element.top <= 52 && element.left <= 52){
+            document.querySelector('.enemy-spawn').style.opacity = '0.3'
+            freeSpawn = false
+            
+        }else{
+            freeSpawn = true 
+            
+             
+            document.querySelector('.enemy-spawn').style.opacity = '1'             
+        }
+    })
 }, 30);
 
 
@@ -1594,10 +1622,10 @@ class Obstacle{
         
         //create new  obstacle
         const obstacle = document.createElement('div')                
-        const randomObstacle = Math.floor(Math.random() * 10)
+        const randomObstacle = Math.floor(Math.random() * 13)
         obstacle.classList.add('obstacle')
 
-        if(randomObstacle === 0){
+        if(randomObstacle === 0 || randomObstacle === 2){
             obstacle.classList.add('forest')
             
 
@@ -1751,44 +1779,48 @@ class Enemy{
     static create = function(){
         
         //check if max number of enemies was not exceeded and don't execute if true
-        if(Enemy.number >= 11){
+        if(Enemy.number >= 20){
             
             return
         }   
         
-        Enemy.getAllEnemies().find((element) =>{
-            if(element.top <= 50 && element.left <= 50){
-                spawnStatus = 'occupied'
-                return
-            }else{
-                spawnStatus = 'free'                
-            }
-        })
-        if(spawnStatus === 'occupied'){
-            return setTimeout(() => {
-                Enemy.create()
-            }, 1000);
+        // Enemy.getAllEnemies().find((element) =>{
+        //     if(element.top <= 55 && element.left <= 55){
+        //         document.querySelector('.enemy-spawn').style.opacity = '0.3'
+        //         freeSpawn = 'occupied'
+        //         return
+        //     }else{
+        //         freeSpawn = 'free'   
+        //         document.querySelector('.enemy-spawn').style.opacity = '1'             
+        //     }
+        // })
+        
+        if(!freeSpawn){
+            return 
         }
-        //else create new enemy
-        const enemy = document.createElement('div')
+        if(freeSpawn){
+            //else create new enemy
+            const enemy = document.createElement('div')
+                    
+            //add CSS styles
+            enemy.classList.add('enemy-tank')
+            enemy.style.top = '0px'
+            enemy.style.left = '0px'
+
+            
+            //append it to map
+            map.appendChild(enemy)
+                    //increase current number of enemies
+            Enemy.number ++
+                    
+                    //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
+            Enemy.move(enemy)
+                    
+                    //initialize shooting interval
+            Enemy.shootMissle(enemy)
+        }
         
-        //add CSS styles
-        enemy.classList.add('enemy-tank')
-        enemy.style.top = '0px'
-        enemy.style.left = '0px'
         
-        //add ID in case it is needed
-        enemy.setAttribute('id', `enemy${Enemy.number}`) 
-        //append it to map
-        map.appendChild(enemy)
-                //increase current number of enemies
-                Enemy.number ++
-                
-                //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
-                Enemy.move(enemy)
-                
-                //initialize shooting interval
-                Enemy.shootMissle(enemy)
                 
             }
             
@@ -1854,8 +1886,8 @@ class Enemy{
                                                 
                                                 
                                                 
-                                                //=========================MAIN AI MOVEMENT INTERVAL==============================
-                                                //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
+            //=========================MAIN AI MOVEMENT INTERVAL==============================
+         //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
                                                 
                                                 let obstacleDetection
                                                 const enemyMovementInterval = setInterval(()=>{
@@ -1981,7 +2013,12 @@ class Enemy{
                         &&element.bottom >=enemy.offsetTop
                         &&element.left <= enemy.offsetLeft + 40
                         &&element.right >=enemy.offsetLeft
+                        
                         ){
+                            if(element.left <= enemy.offsetLeft + 30
+                                &&element.top <= enemy.offsetTop + 30){
+                                    element.DOMnode.style.display = 'none'
+                                }
                             upORdown -2
                             randomMove = Math.floor(Math.random() * 4)
                             AI_up()    }
@@ -2317,6 +2354,8 @@ function StartGame(numOfPlayers){
     mainMenu.style.display = 'none'
     //initialize game obstacles:
     Obstacle.generateNewLevel()
+    //create first enemy
+    Enemy.create()
 }
 
 const mainMenu = document.querySelector('.main-menu')
