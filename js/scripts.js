@@ -36,7 +36,7 @@ let player2frags = 0
 let player1dead = false
 let player2dead = false
 //enemy spawn status - free/occupied
-let spawnStatus
+let freeSpawn = true
 //select enemy generating button
 const enemyGen = document.querySelector('.enemy-generator')
 enemyGen.style.visibility = 'hidden'
@@ -138,7 +138,7 @@ class Timer{
                 gameOver = true
                 endTheGame()
             }
-            
+            Enemy.create()
             
         },1000)
     
@@ -174,14 +174,14 @@ setInterval(() => {
  }
  //reset enemy counter
  Enemy.number = 0
- spawnStatus = 'occupied'
+ 
  
  //present the new map                
  setTimeout(() => {
      map.style.transform = 'rotateX(0deg) scaleX(1) skewX(0deg)'
      endLevel = false
-     spawnStatus = 'free'
-     Enemy.create()
+     freeSpawn = true
+     
  }, 1000);
 }, 180000);
 
@@ -1565,13 +1565,14 @@ setInterval(() => {
     allEnemyPositions = Enemy.getAllEnemies()
 
     Enemy.getAllEnemies().find((element) =>{
-        if(element.top <= 60 && element.left <= 60){
+        if(element.top <= 52 && element.left <= 52){
             document.querySelector('.enemy-spawn').style.opacity = '0.3'
-            spawnStatus = 'occupied'
-            return
+            freeSpawn = false
+            
         }else{
-            spawnStatus = 'free' 
-            Enemy.create()  
+            freeSpawn = true 
+            
+             
             document.querySelector('.enemy-spawn').style.opacity = '1'             
         }
     })
@@ -1783,41 +1784,44 @@ class Enemy{
             return
         }   
         
-        Enemy.getAllEnemies().find((element) =>{
-            if(element.top <= 55 && element.left <= 55){
-                document.querySelector('.enemy-spawn').style.opacity = '0.3'
-                spawnStatus = 'occupied'
-                return
-            }else{
-                spawnStatus = 'free'   
-                document.querySelector('.enemy-spawn').style.opacity = '1'             
-            }
-        })
+        // Enemy.getAllEnemies().find((element) =>{
+        //     if(element.top <= 55 && element.left <= 55){
+        //         document.querySelector('.enemy-spawn').style.opacity = '0.3'
+        //         freeSpawn = 'occupied'
+        //         return
+        //     }else{
+        //         freeSpawn = 'free'   
+        //         document.querySelector('.enemy-spawn').style.opacity = '1'             
+        //     }
+        // })
         
-        if(spawnStatus === 'occupied'){
+        if(!freeSpawn){
             return 
         }
+        if(freeSpawn){
+            //else create new enemy
+            const enemy = document.createElement('div')
+                    
+            //add CSS styles
+            enemy.classList.add('enemy-tank')
+            enemy.style.top = '0px'
+            enemy.style.left = '0px'
+
+            //add ID in case it is needed
+            enemy.setAttribute('id', `enemy${Enemy.number}`) 
+            //append it to map
+            map.appendChild(enemy)
+                    //increase current number of enemies
+            Enemy.number ++
+                    
+                    //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
+            Enemy.move(enemy)
+                    
+                    //initialize shooting interval
+            Enemy.shootMissle(enemy)
+        }
         
-        //else create new enemy
-        const enemy = document.createElement('div')
         
-        //add CSS styles
-        enemy.classList.add('enemy-tank')
-        enemy.style.top = '0px'
-        enemy.style.left = '0px'
-        
-        //add ID in case it is needed
-        enemy.setAttribute('id', `enemy${Enemy.number}`) 
-        //append it to map
-        map.appendChild(enemy)
-                //increase current number of enemies
-                Enemy.number ++
-                
-                //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
-                Enemy.move(enemy)
-                
-                //initialize shooting interval
-                Enemy.shootMissle(enemy)
                 
             }
             
@@ -1883,8 +1887,8 @@ class Enemy{
                                                 
                                                 
                                                 
-                                                //=========================MAIN AI MOVEMENT INTERVAL==============================
-                                                //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
+            //=========================MAIN AI MOVEMENT INTERVAL==============================
+         //\\//\\//\\//\\//\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//\\/\/\//\/\/\/\/\\/\/\
                                                 
                                                 let obstacleDetection
                                                 const enemyMovementInterval = setInterval(()=>{
@@ -2010,7 +2014,12 @@ class Enemy{
                         &&element.bottom >=enemy.offsetTop
                         &&element.left <= enemy.offsetLeft + 40
                         &&element.right >=enemy.offsetLeft
+                        
                         ){
+                            if(element.left <= enemy.offsetLeft + 30
+                                &&element.top <= enemy.offsetTop + 30){
+                                    element.DOMnode.style.display = 'none'
+                                }
                             upORdown -2
                             randomMove = Math.floor(Math.random() * 4)
                             AI_up()    }
