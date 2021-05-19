@@ -2303,6 +2303,10 @@ function StartGame(numOfPlayers){
         player2dead = true
         tank2.style.top = '2000px'
         document.querySelector('.player-two-stats').style.visibility = 'hidden'
+        
+        //hide player 2 gameover stats:
+        document.querySelector('#p2stat').style.visibility = 'hidden'
+        
     }
     //reset timer
     Timer.seconds = 0    

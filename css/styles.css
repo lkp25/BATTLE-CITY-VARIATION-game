@@ -327,13 +327,13 @@ aside{
 
 /* GAMEOVER STATS */
 .gameover{
-    display: flex;
+    display: none;
+    opacity: 0;
     width: 100vw;
     height: 100vh;
     background-color: black;
     position: absolute;
     z-index: 1000;
-    opacity: 1;
     justify-content: center;
     align-items: flex-start;
     padding-bottom: 5rem;
@@ -346,7 +346,7 @@ aside{
     place-self: center;
     background: url(../images/bricks2.png);
     -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
 }
 .gameover-stats{
     height: 200px;
@@ -355,7 +355,11 @@ aside{
     grid-template-columns: 1fr 1fr;
     gap: 5rem;
     place-self: center;
-    padding-top: 5rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.gameover-stats div{
+    font-size: 1.5rem;
 }
 .gameover button{
     align-self: flex-end;
