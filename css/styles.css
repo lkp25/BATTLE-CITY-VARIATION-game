@@ -327,16 +327,48 @@ aside{
 
 /* GAMEOVER STATS */
 .gameover{
-    display: none;
+    display: flex;
     width: 100vw;
     height: 100vh;
     background-color: black;
     position: absolute;
-    z-index: 100;
-    opacity: 0;
+    z-index: 1000;
+    opacity: 1;
+    justify-content: center;
+    align-items: flex-start;
+    padding-bottom: 5rem;
+    flex-direction: column;
+}
+.gameover h1{
+    color: transparent;
+    font-size: 10rem;
+    text-align: center;
+    place-self: center;
+    background: url(../images/bricks2.png);
+    -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gameover-stats{
+    height: 200px;
+    display: grid;
+    color: white;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    place-self: center;
+    padding-top: 5rem;
+}
+.gameover button{
+    align-self: flex-end;
+    place-self: center;
+    margin-bottom: 1rem;
+    padding: 2rem;
+    background: linear-gradient(180deg, rgb(3, 3, 3), rgba(0, 0, 0, 0.294)), url(../images/bricks2.png);
+    color: white;
+    font-size: 2rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .visible{
-    display: block;
+    display: flex;
     animation: fade-in 500ms ease-out forwards;
 }
 @keyframes fade-in{

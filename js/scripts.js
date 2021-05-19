@@ -1,3 +1,4 @@
+//before the game starts:
 let gameOver = true
 //level background array
 const levelBackground = [
@@ -19,6 +20,9 @@ let endLevel = false
 //=======================================================================
 //===================MAIN VARIABLES, CREATING PLAYERS====================
 //=======================================================================
+
+
+
 const map = document.querySelector('.map')
 const player1Life = document.querySelector('.player-one-lifebar')
 player1Life.style.width = '100%'
