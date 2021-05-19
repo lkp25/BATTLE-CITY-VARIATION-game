@@ -1784,7 +1784,7 @@ class Enemy{
         }   
         
         Enemy.getAllEnemies().find((element) =>{
-            if(element.top <= 50 && element.left <= 50){
+            if(element.top <= 55 && element.left <= 55){
                 document.querySelector('.enemy-spawn').style.opacity = '0.3'
                 spawnStatus = 'occupied'
                 return

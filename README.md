@@ -1,7 +1,13 @@
 My own variation of  famous video game Battle City by Nintendo (1985)
 All game graphics and logic are designed by me. 
 
-The game has single player mode as well as 2-players mode.
+The game has single player mode as well as 2-players mode - choice in main menu:
+![mainmenu](https://user-images.githubusercontent.com/76160924/118810943-b7a71c00-b8ac-11eb-85e5-a6b27d32fbe2.png)
+
+
+Gameplay screen:
+![gameplay](https://user-images.githubusercontent.com/76160924/118810937-b675ef00-b8ac-11eb-8498-9779a3dd9d1c.png)
+
 
 Short description:
 The goal of the game is to destroy as many enemies as possible and survive for as long as possible. 
@@ -36,7 +42,8 @@ left - A
 right - D
 FIRE - 'Q' key
 
-
+game over screen with basic stats:
+![gameover](https://user-images.githubusercontent.com/76160924/118810933-b5dd5880-b8ac-11eb-94fa-0833202415a4.png)
 
 
 
