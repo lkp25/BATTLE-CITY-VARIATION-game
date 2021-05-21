@@ -2343,6 +2343,7 @@ function StartGame(numOfPlayers){
     if(numOfPlayers === 1){
         player2dead = true
         tank2.style.top = '2000px'
+        tank2Position = {}
         document.querySelector('.player-two-stats').style.visibility = 'hidden'
         
         //hide player 2 gameover stats:
