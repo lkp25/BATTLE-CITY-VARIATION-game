@@ -1571,7 +1571,7 @@ setInterval(() => {
             
         }else{
             freeSpawn = true 
-           
+            
              
             document.querySelector('.enemy-spawn').style.opacity = '1'             
         }
@@ -1800,30 +1800,31 @@ class Enemy{
         }
         if(freeSpawn){
             //else create new enemy
-            setTimeout(() => {
-                if(freeSpawn){
-                    const enemy = document.createElement('div')
+            const enemy = document.createElement('div')
                     
-                    //add CSS styles
-                    enemy.classList.add('enemy-tank')
-                    enemy.style.top = '0px'
-                    enemy.style.left = '0px'
-        
-                    enemy.setAttribute('id', `enemy${Enemy.number * Math.random()}`) 
-                    //append it to map
-                    map.appendChild(enemy)
-                            //increase current number of enemies
-                    Enemy.number ++
-                            
-                            //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
-                    Enemy.move(enemy)
-                            
-                            //initialize shooting interval
-                    Enemy.shootMissle(enemy)
-                }
+            //add CSS styles
+            enemy.classList.add('enemy-tank')
+            enemy.style.top = '0px'
+            enemy.style.left = '0px'
 
-            }, 200);
-            
+            enemy.setAttribute('id', `enemy${Enemy.number * Math.random()}`) 
+            //append it to map
+            const check = Enemy.getAllEnemies()
+                    .find((element) =>element.top <= 46 && element.left <=46 )
+                    
+                    if(check){
+                        enemy.remove()
+                        return
+                    }
+            map.appendChild(enemy)
+                    //increase current number of enemies
+            Enemy.number ++
+                    
+                    //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
+            Enemy.move(enemy)
+                    
+                    //initialize shooting interval
+            Enemy.shootMissle(enemy)
         }
         
         

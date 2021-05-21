@@ -2388,3 +2388,11 @@ function endTheGame(){
         location.reload()
     })
 }
+
+const check = Enemy.getAllEnemies()
+                    .find((element) =>element.top <= 46 && element.left <=46 )
+                    
+                    if(check){
+                        enemy.remove()
+                        return
+                    }
