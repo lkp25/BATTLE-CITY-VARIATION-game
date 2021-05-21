@@ -463,8 +463,8 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                             if(
                                 
                                 //all values cached, no DOM requests inside find loop.
-                                !obstacle.node.classList.contains('water')
-                                && missleTop + 10 >= obstacle.top
+                                !obstacle?.node?.classList.contains('water')
+                                && missleTop + 10 >= obstacle?.top
                                 && missleTop  <= obstacle.bottom
                                 && missleLeft -2<= obstacle.right
                                 && missleLeft +8  >= obstacle.left
@@ -516,8 +516,8 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                         //check if obstacle was hit by missle
                         allTankObstaclePositions.find((obstacle, index) =>{
                             if(
-                                 !obstacle.node.classList.contains('water')
-                                && missleTop > obstacle.top
+                                 !obstacle?.node?.classList.contains('water')
+                                && missleTop > obstacle?.top
                                 && missleTop + 10  < obstacle.bottom
                                 && missleLeft - 2 < obstacle.right
                                 && missleLeft + 8  > obstacle.left
@@ -562,8 +562,8 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                         //check if obstacle was hit by missle
                         allTankObstaclePositions.forEach((obstacle, index) =>{
                             if(
-                               !obstacle.node.classList.contains('water')
-                                && missleTop + 10 >= obstacle.top
+                               !obstacle?.node?.classList.contains('water')
+                                && missleTop + 10 >= obstacle?.top
                                 && missleTop  <= obstacle.bottom
                                 && missleLeft <= obstacle.right
                                 && missleLeft + 6 >= obstacle.left
@@ -611,8 +611,8 @@ function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEat
                         //check if obstacle was hit by missle
                         allTankObstaclePositions.find((obstacle, index) =>{
                             if(
-                               !obstacle.node.classList.contains('water')
-                                && missleTop + 10 >= obstacle.top
+                               !obstacle?.node?.classList.contains('water')
+                                && missleTop + 10 >= obstacle?.top
                                 && missleTop  <= obstacle.bottom
                                 && missleLeft <= obstacle.right
                                 && missleLeft + 6 >= obstacle.left
@@ -1571,7 +1571,7 @@ setInterval(() => {
             
         }else{
             freeSpawn = true 
-            
+           
              
             document.querySelector('.enemy-spawn').style.opacity = '1'             
         }
@@ -1800,24 +1800,30 @@ class Enemy{
         }
         if(freeSpawn){
             //else create new enemy
-            const enemy = document.createElement('div')
+            setTimeout(() => {
+                if(freeSpawn){
+                    const enemy = document.createElement('div')
                     
-            //add CSS styles
-            enemy.classList.add('enemy-tank')
-            enemy.style.top = '0px'
-            enemy.style.left = '0px'
+                    //add CSS styles
+                    enemy.classList.add('enemy-tank')
+                    enemy.style.top = '0px'
+                    enemy.style.left = '0px'
+        
+                    enemy.setAttribute('id', `enemy${Enemy.number * Math.random()}`) 
+                    //append it to map
+                    map.appendChild(enemy)
+                            //increase current number of enemies
+                    Enemy.number ++
+                            
+                            //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
+                    Enemy.move(enemy)
+                            
+                            //initialize shooting interval
+                    Enemy.shootMissle(enemy)
+                }
 
-            enemy.setAttribute('id', `enemy${Enemy.number * Math.random()}`) 
-            //append it to map
-            map.appendChild(enemy)
-                    //increase current number of enemies
-            Enemy.number ++
-                    
-                    //INITIALIZE MOVENT OF THE ENEMY - passing single enemy div as an argument        
-            Enemy.move(enemy)
-                    
-                    //initialize shooting interval
-            Enemy.shootMissle(enemy)
+            }, 200);
+            
         }
         
         
