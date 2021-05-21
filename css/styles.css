@@ -295,7 +295,8 @@ aside{
         clip-path: polygon(68% 0, 100% 19%, 100% 43%, 100% 79%, 83% 100%, 23% 100%, 0 84%, 0 30%, 14% 0);
     }
 .forest{
-    transform: scale(2.1);
+    transform: scale(2.1 rotateZ(0deg));
+    animation: forest 5s both infinite ease-in;
         position: absolute;
         width: 22px;
         height: 22px;
@@ -306,6 +307,19 @@ aside{
         border-radius: 50%;
         clip-path: polygon(45% 100%, 100% 34%, 8% 7%, 100% 64%, 0 99%, 74% 0, 0 62%, 100% 100%, 0 32%, 96% 7%);
         /* clip-path: polygon(11% 97%, 100% 37%, 13% 2%, 100% 60%, 38% 100%, 52% 0, 0 78%, 100% 92%, 0 21%, 100% 0); */
+    }
+    @keyframes forest {
+        0%{transform: scale(2.1) rotateZ(0deg);}
+        10%{transform: scale(2.0) rotateZ(5deg);}
+        20%{transform: scale(2.1) rotateZ(2deg);}
+        30%{transform: scale(2.2) rotateZ(-3deg);}
+        40%{transform: scale(2.1) rotateZ(2deg);}
+        50%{transform: scale(2.0) rotateZ(-2deg);}
+        60%{transform: scale(2.1) rotateZ(4deg);}
+        70%{transform: scale(2.2) rotateZ(0deg);}
+        80%{transform: scale(2.25) rotateZ(-1deg);}
+        90%{transform: scale(2.2) rotateZ(-4deg);}        
+        100%{transform: scale(2.1) rotateZ(0deg);;}
     }
 .water{
     border-radius: 5px/2px;
