@@ -295,11 +295,11 @@ setInterval(() => {
 
 //function checking if player shot the obstacle
 function checkIfPlayerShotObstacle(missle, missleTop, missleLeft, performanceEater){
-    allTankObstaclePositions?.find((obstacle, index) =>{
+    allTankObstaclePositions.find((obstacle, index) =>{
         //check if obstacle was hit by missle
         if(
-           !obstacle?.node?.classList.contains('water') 
-           && missleTop + 10 >= obstacle?.top
+           !obstacle.node.classList.contains('water') 
+           && missleTop + 10 >= obstacle.top
            && missleTop  <= obstacle.bottom
            && missleLeft <= obstacle.right
            && missleLeft + 6 >= obstacle.left
@@ -1921,7 +1921,7 @@ class Enemy{
             let enemyTop = enemy.offsetTop
             
             
-            obstacleDetection = allTankObstaclePositions?.find((element, index) =>{
+            obstacleDetection = allTankObstaclePositions.find((element, index) =>{
                 if
                 (
                     
