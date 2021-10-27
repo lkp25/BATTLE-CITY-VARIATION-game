@@ -28,6 +28,7 @@ body{
     z-index: 100;
     display: grid;
     gap: 5rem;
+    top:0;
     justify-items: center;
     grid-template-rows: 1fr 1fr 1fr;
     overflow: hidden;

@@ -183,7 +183,7 @@ setInterval(() => {
      freeSpawn = true
      
  }, 1000);
-}, 180000);
+}, 1000 * 60 * 2); //2 minutes
 
 
 
@@ -1778,8 +1778,9 @@ class Enemy{
     //=======================create new enemy tank on the map.========================
     static create = function(){
         
-        //check if max number of enemies was not exceeded and don't execute if true
-        if(Enemy.number >= 15){
+        //check if max number of enemies was not exceeded and don't execute if true,
+        //also dont create if game is ended or not started yet
+        if(Enemy.number >= 4 || gameOver === true){
             
             return
         }   
